@@ -1,0 +1,31 @@
+<h1>{{ action }} Item</h1>
+<hr>
+<form name="itemForm" novalidate ng-submit="submitForm()">
+  <div class="form-group" ng-class="{'has-error': 
+  	itemForm.name.$invalid && itemForm.price.$invalid && itemForm.name.$dirty}">
+  	<div class="row">
+  	<label class="col-sm-2 control-label">Item name</label>
+  	<div class="col-sm-4">
+	    <input type="text" class="form-control" name="name" 
+	        placeholder="Name" autocomplete="off" required
+	        ng-model="name">
+	    <span class="has-error control-label" 
+	    	ng-show="itemForm.name.$invalid && itemForm.name.$dirty">
+	      Item name is required.
+	    </span>  
+	</div>
+  	<label class="col-sm-2 control-label">Item name</label>
+  	<div class="col-sm-4">	
+	    <input type="number" class="form-control" name="price" 
+	        placeholder="Price" autocomplete="off" required
+	        ng-model="price">
+	    <span class="has-error control-label" 
+	    	ng-show="itemForm.price.$invalid && itemForm.price.$dirty">
+	      Item price is required.
+	    </span>  
+	</div>     
+	</div>     
+  </div>
+  <button class="btn btn-primary" ng-disabled="itemForm.$invalid">{{ action }} Item</button>
+</form>
+<hr>
