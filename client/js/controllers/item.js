@@ -14,4 +14,29 @@
       .then(function() {
         $state.go('Items');
       });
+  }])
+  .controller('EditItemController', ['$scope', 'Item', '$stateParams', '$state', 
+    function($scope, Item, $stateParams, $state) {
+      $scope.action = 'Edit';
+
+      Item.findById({ id: $stateParams.id }).$promise
+      .then(function(item){
+        console.log(item);
+        $scope.name = item.name;
+        $scope.price = item.price;
+      });  
+
+      $scope.submitForm = function() {        
+        Item.prototype$updateAttributes(
+            { id:$stateParams.id }, 
+            { 
+              name: $scope.name,
+              price: $scope.price
+            }
+        )
+        .$promise
+        .then(function(){
+          $state.go('Items');
+        });
+      };
   }]);  
