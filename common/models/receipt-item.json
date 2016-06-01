@@ -28,7 +28,7 @@
       "type": "belongsTo",
       "model": "Item",
       "foreignKey": "itemId"
-    }      
+    }
   },
   "acls": [],
   "methods": {}

@@ -12,48 +12,52 @@
 		  	</div>
 	  	</div>
 		<div ng-repeat="item in items">
-		<div class="row">
-		  	<label class="col-sm-2 control-label">Item name</label>
-		  	<div class="col-sm-4">
-			    <input type="text" class="form-control" 
-			    	ame="itemname" placeholder="Item name" ng-model="item.name">
-		    </div>
+			<div class="row">
+			  	<label class="col-sm-2 control-label">Item name</label>
+			  	<div class="col-sm-4">
+				    <input type="text" class="form-control" 
+				    	ame="itemname" placeholder="Item name" ng-model="item.name">
+			    </div>
 
-		    <label class="col-sm-2 control-label">Item price</label>
-		    <div class="col-sm-4">
-		    	<div class="input-group">
-		    	<div class="input-group-addon">$</div>
-		    	<input type="number" class="form-control" 
-		    		name="itemprice" placeholder="Item price" ng-model="item.price">
-		    	</div>
+			    <label class="col-sm-2 control-label">Item price</label>
+			    <div class="col-sm-4">
+			    	<div class="input-group">
+			    	<div class="input-group-addon">$</div>
+			    	<input type="number" class="form-control" ng-change="changePrice()" 
+			    		name="itemprice" placeholder="Item price" ng-model="item.price">
+			    	</div>
+			    </div>
 		    </div>
-	    </div>
 		</div>
 
 		<div class="row">
 			<div class="col-sm-offset-2 col-sm-4">
-				<button class="btn btn-default" ng-click="newItem()">add Item</button>
+				<button class="btn btn-default" ng-click="newItem()">append Item</button>
 			</div>
 			<div class="col-sm-4 col-sm-offset-2">
 				<button class="btn btn-default" ng-click="spliceItem()" ng-disabled="delDisabled">del Item</button>
 			</div>			
 		</div>
-
+		<div class="row">
+			<div class="col-sm-offset-2 col-sm-10">
+			<hr>
+			</div>
+		</div>
 		<div class="row">
 			<label class="col-sm-2 control-label">Total Price</label>
 			<div class="col-sm-4">
 		    	<div class="input-group">
 			    	<div class="input-group-addon">$</div>
 					<input type="number" class="form-control" name="total" 
-						placeholder="Total Price" 
+						placeholder="Total Price" disabled="true" 
 						ng-model="receipt.total">  
 				</div>
 			</div>
 			<label class="col-sm-2 control-label">Number of items</label>
 			<div class="col-sm-4">
 				<input type="number" class="form-control" name="numberOfItem" 
-					placeholder="Number of item" disabled="true" 
-					ng-model="receipt.numberOfItem=items.length">      
+					placeholder="Number of item" disabled="true"
+					ng-model="receipt.numberOfItem">      
 			</div>
 		</div>
 		<div class="row">

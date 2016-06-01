@@ -74,5 +74,9 @@
     "public": true,
     "$promise": {},
     "$resolved": true
+  },
+  "Container": {
+    "dataSource": "storage",
+    "public": true
   }
 }
