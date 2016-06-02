@@ -1,25 +1,31 @@
-    <h1>Log In</h1>
+<h1>Log In</h1>
 
 <div class="row">
   <div class="col-md-6 col-md-offset-3">
-    <form action="" accept-charset="UTF-8" method="post"><input name="utf8" type="hidden" value="" />
+    <form name="loginForm" ng-submit="login()">
+      <div class="form-group" 
+          ng-class="{'has-error': (loginForm.email.$invalid && loginForm.email.$dirty) ||
+                    (loginForm.password.$invalid && loginForm.password.$dirty) }">
 
-      <input type="hidden" name="authenticity_token" value="" />
-    
-      <label for="session_email">Email</label>
-      <input class="form-control" type="email" name="session[email]" id="session_email" />
-    
-      <label for="session_password">Password</label>
-      
-      <input class="form-control" type="password" name="session[password]" id="session_password" />   
-      
-      <label class="checkbox inline" for="session_remember_me">
-        <input name="session[remember_me]" type="hidden" value="0" />
-        <input type="checkbox" name="session[remember_me]" id="session_remember_me" />
-        <span>Remember me on this computer</span>
-      </label>      
-      
-      <input type="button" name="commit" value="Log In" class="btn btn-primary" />
+        <div class="row">
+        <label for="email">Email</label>
+        <input class="form-control" type="email" required 
+            ng-model="user.email" name="email" placeholder="Email">
+        <span class="has-error control-label" ng-show="loginForm.email.$invalid && loginForm.email.$dirty">
+          Email is required.
+        </span>      
+        </div>
+        <div class="row">
+        <label for="password">Password</label>      
+        <input class="form-control" type="password" required 
+            ng-model="user.password" name="password" placeholder="Password"> 
+        <span class="has-error control-label" ng-show="loginForm.password.$invalid && loginForm.password.$dirty">
+          Password is required.
+        </span>  
+        </div>       
+     
+      </div>
+      <button class="btn btn-primary" ng-disabled="loginForm.$invalid">Log In</button>
     </form>    
     <p><br>New user? <a href="/#/Signup">Sign up now!</a>
   </div>

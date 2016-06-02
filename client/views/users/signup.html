@@ -2,23 +2,30 @@
 
 <div class="row">
   <div class="col-md-6 col-md-offset-3">
-  <form class="new_user" id="new_user" action="" accept-charset="UTF-8" method="post">
+  <form  name="signupForm" ng-submit="register()">
+      <div class="form-group" 
+          ng-class="{'has-error': (signupForm.email.$invalid && signupForm.email.$dirty) ||
+                    (signupForm.password.$invalid && signupForm.password.$dirty) }">
 
-    <input name="utf8" type="hidden" value="" /><input type="hidden" name="authenticity_token" value="" />  
-
-    <label for="user_name">Name</label>
-    <input class="form-control" type="name" name="user[name]" id="user_name" />
-    
-    <label for="user_email">Email</label>
-    <input class="form-control" type="email" name="user[email]" id="user_email" />
-    
-    <label for="user_password">Password</label>
-    <input class="form-control" type="password" name="user[password]" id="user_password" />
-    
-    <label for="user_password_confirmation">Password confirmation</label>
-    <input class="form-control" type="password" name="user[password_confirmation]" id="user_password_confirmation" />
-
-    <input type="button" name="commit" value="Create my account" class="btn btn-primary" />
+        <div class="row">
+        <label for="email">Email</label>
+        <input class="form-control" type="email" required 
+            ng-model="user.email" name="email" placeholder="Email">
+        <span class="has-error control-label" ng-show="signupForm.email.$invalid && signupForm.email.$dirty">
+          Email is required.
+        </span>      
+        </div>
+        <div class="row">
+        <label for="password">Password</label>      
+        <input class="form-control" type="password" required 
+            ng-model="user.password" name="password" placeholder="Password"> 
+        <span class="has-error control-label" ng-show="signupForm.password.$invalid && signupForm.password.$dirty">
+          Password is required.
+        </span>  
+        </div>       
+     
+      </div>
+      <button class="btn btn-primary" ng-disabled="signupForm.$invalid">Sign up</button>
   </form>
   </div>
 </div>

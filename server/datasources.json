@@ -3,6 +3,12 @@
     "name": "db",
     "connector": "memory"
   },
+      "storage": {
+    "name": "storage",
+    "connector": "loopback-component-storage",
+    "provider": "filesystem",
+    "root": "./server/storage"
+  },
   "MongoDB": {
     "host": "ds011872.mlab.com",
     "port": 11872,

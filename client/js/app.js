@@ -13,6 +13,14 @@ angular
 			url: '/Home',
 			templateUrl: 'views/pages/home.html'
 		})
+		.state('About', {
+			url: '/About',
+			templateUrl: 'views/pages/about.html'
+		})
+		.state('Contact', {
+			url: '/Contact',
+			templateUrl: 'views/pages/contact.html'
+		})				
       	.state('Items', {
 			url: '/Items',
 			templateUrl: 'views/items/items.html',
@@ -76,12 +84,22 @@ angular
       	})
 		.state('Login', {
 			url: '/Login',
-			templateUrl: 'views/users/login.html'
+			templateUrl: 'views/users/login.html',
+			controller: 'AuthLoginController'
 		})
+		.state('Logout', {
+			url: '/Logout',
+			controller: 'AuthLogoutController'
+		})		
 		.state('Signup', {
 			url: '/Signup',
-			templateUrl: 'views/users/signup.html'
-		});
+			templateUrl: 'views/users/signup.html',
+			controller: 'SignUpController'
+		})
+      .state('forbidden', {
+        url: '/forbidden',
+        templateUrl: 'views/pages/forbidden.html'
+      });
 
    $urlRouterProvider.otherwise('Home');
 

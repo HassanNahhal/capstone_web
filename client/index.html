@@ -18,6 +18,7 @@
      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
    <![endif]-->
     <!--<script src="http://code.angularjs.org/1.4.4/angular.min.js"></script>-->
+    
     <script src="vendor/angular/angular.min.js"></script>
     <script src="vendor/angular-file-upload/angular-file-upload.min.js"></script>
 
@@ -42,9 +43,12 @@
             <li><a href="">Profile</a></li>
             <li><a href="">Settings</a></li>
             <li class="divider"></li>
-            <li>
+            <li ng-hide="currentUser">
               <a rel="nofollow" href="/#/Login">Log in</a>
             </li>
+            <li ng-show="currentUser">
+              <a rel="nofollow" href="/#/Logout">Log out</a>
+            </li>            
           </ul>
         </li>
       </ul>
@@ -61,12 +65,12 @@
     <footer class="footer">
       <small>
         The <a href="https://receipt-keeper.herokuapp.com/">Spring/Summer 2016 Capstone Project</a>
-        by <a href="https://github.com/infomat/capstone">Group 2</a>
+        <a href="https://github.com/infomat/capstone"> - Receipt Keeper</a>
       </small>
       <nav>
         <ul>
-          <li><a href="">About</a></li>
-          <li><a href="">Contact</a></li>
+          <li><a href="/#/About">About</a></li>
+          <li><a href="/#/Contact">Contact</a></li>
         </ul>
       </nav>
     </footer>
@@ -80,9 +84,11 @@
  <script src="vendor/angular-ui-router/release/angular-ui-router.js"></script>
  <script src="js/app.js"></script>
  <script src="js/services/lb-services.js"></script> 
+ <script src="js/services/auth.js"></script>
  <script src="js/controllers/store.js"></script>
  <script src="js/controllers/receipt.js"></script>
  <script src="js/controllers/item.js"></script>
+ <script src="js/controllers/user.js"></script>
  <script src="js/controllers/file.js"></script>
  </body>
 </html>
