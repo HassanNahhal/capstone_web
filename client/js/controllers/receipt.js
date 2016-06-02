@@ -52,7 +52,7 @@
       };      
     };
 
-    var items;
+    //var items;
     Store.find()
       .$promise
       .then(function(stores){
@@ -74,9 +74,22 @@
           var selectedStoreIndex = stores.map(function(store){
             return store.id;
           }).indexOf($scope.receipt.storeId);
-          $scope.selectedStore = stores[selectedStoreIndex];
+          $scope.selectedStore = stores[selectedStoreIndex];          
         });
-    });         
+    });
+
+    $scope.changePrice = function(){
+      console.log("items.length: ", $scope.items.length);
+      $scope.totalprice=0;
+      if($scope.items.length > 0){ 
+        for(var i = 0 ; i < $scope.items.length ; i++){
+          $scope.totalprice += $scope.items[i].price;
+        };
+        console.log("total price: ", $scope.totalprice);
+        $scope.receipt.numberOfItem = $scope.items.length;
+        $scope.receipt.total = $scope.totalprice;
+      };   
+    };
 
     $scope.submitForm = function() {
       $scope.receipt.storeId = $scope.selectedStore.id;
@@ -133,6 +146,7 @@
       if($scope.items.length > 0){ 
         $scope.delDisabled = false;
       };
+      this.changePrice();
     };
 
     $scope.spliceItem = function(){
@@ -140,8 +154,22 @@
       $scope.items.splice($scope.items.length-1, 1);
       if($scope.items.length < 1){ 
         $scope.delDisabled = true;
-      };      
+      };
+      this.changePrice();
     };        
+
+    $scope.changePrice = function(){
+      console.log("items.length: ", $scope.items.length);
+      $scope.totalprice=0;
+      if($scope.items.length > 0){ 
+        for(var i = 0 ; i < $scope.items.length ; i++){
+          $scope.totalprice += $scope.items[i].price;
+        };
+        console.log("total price: ", $scope.totalprice);
+        $scope.receipt.numberOfItem = $scope.items.length;
+        $scope.receipt.total = $scope.totalprice;
+      };   
+    };
 
     $scope.submitForm = function() {
       //console.log(" go into submitForm");

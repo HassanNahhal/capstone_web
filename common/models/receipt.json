@@ -42,7 +42,7 @@
       "type": "belongsTo",
       "model": "Store",
       "foreignKey": "storeId"
-    }    
+    }
   },
   "acls": [],
   "methods": {}

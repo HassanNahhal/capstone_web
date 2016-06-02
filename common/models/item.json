@@ -29,7 +29,7 @@
       "model": "Receipt",
       "foreignKey": "",
       "through": "ReceiptItem"
-    }    
+    }
   },
   "acls": [],
   "methods": {}
