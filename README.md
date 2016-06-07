@@ -6,7 +6,7 @@
 - npm : 2.15.6
 - node : 0.12.14
 - python : 2.7.11
--
+
 - npm install
 - npm install loopback-connector-mongodb --save
 - npm install -g bower
