@@ -51,13 +51,43 @@
     "$promise": {},
     "$resolved": true
   },
+  "ReceiptTag": {
+    "dataSource": "MongoDB",
+    "public": true,
+    "$promise": {},
+    "$resolved": true
+  },
+  "StoreCategory": {
+    "dataSource": "MongoDB",
+    "public": true,
+    "$promise": {},
+    "$resolved": true
+  },
   "Item": {
     "dataSource": "MongoDB",
     "public": true,
     "$promise": {},
     "$resolved": true
   },
-  "AccountType": {
+  "CustomerGroup": {
+    "dataSource": "MongoDB",
+    "public": true,
+    "$promise": {},
+    "$resolved": true
+  },
+  "Group": {
+    "dataSource": "MongoDB",
+    "public": true,
+    "$promise": {},
+    "$resolved": true
+  },
+  "Tag": {
+    "dataSource": "MongoDB",
+    "public": true,
+    "$promise": {},
+    "$resolved": true
+  },
+  "Account": {
     "dataSource": "MongoDB",
     "public": true,
     "$promise": {},
@@ -77,6 +107,10 @@
   },
   "Container": {
     "dataSource": "storage",
+    "public": true
+  },
+  "GroupType": {
+    "dataSource": "MongoDB",
     "public": true
   }
 }

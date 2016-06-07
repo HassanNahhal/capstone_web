@@ -6,8 +6,9 @@ MongoDB.automigrate('Customer', function(err) {
    var Customer = app.models.Customer;
 
    Customer.create([
-    {username: 'Admin', email: 'cch.choi@gmail.com', password: 'abcdef', gender:1,},
-    {username: 'receipt', email: 'cch.choi@gmail.com', password: 'abcdef', gender:1}
+    {username: 'admin', email: 'admin@gmail.com', password: 'aaa', gender:1,},
+    {username: 'choi', email: 'cch.choi@gmail.com', password: 'aaa', gender:1},
+    {username: 'joe', email: 'joe@gmail.com', password: 'aaa', gender:1}
   ], function(err, users) {
     if (err) return (err);
      var Role = app.models.Role;
