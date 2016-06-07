@@ -1,0 +1,27 @@
+{
+  "name": "ReceiptTag",
+  "base": "PersistedModel",
+  "idInjection": true,
+  "options": {
+    "validateUpsert": true
+  },
+  "mixins": {
+    "TimeStamp": true
+  },
+  "properties": {},
+  "validations": [],
+  "relations": {
+    "receipt": {
+      "type": "belongsTo",
+      "model": "Receipt",
+      "foreignKey": "receiptId"
+    },
+    "tag": {
+      "type": "belongsTo",
+      "model": "Tag",
+      "foreignKey": "tagId"
+    }
+  },
+  "acls": [],
+  "methods": {}
+}

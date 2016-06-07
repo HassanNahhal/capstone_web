@@ -7,35 +7,19 @@
     "validateUpsert": true
   },
   "properties": {
-    "id": {
-      "type": "number",
-      "id": true
-    },
     "name": {
       "type": "string"
     }
   },
   "validations": [],
   "relations": {
-    "receipts": {
+    "stores": {
       "type": "hasMany",
-      "model": "Receipt",
-      "foreignKey": "categoryId"
+      "model": "Store",
+      "foreignKey": "",
+      "through": "StoreCategory"
     }
   },
-  "acls": [
-    {
-      "accessType": "WRITE",
-      "principalType": "ROLE",
-      "principalId": "$authenticated",
-      "permission": "ALLOW"
-    },
-    {
-      "accessType": "*",
-      "principalType": "ROLE",
-      "principalId": "admin",
-      "permission": "ALLOW"
-    }
-  ],
+  "acls": [],
   "methods": {}
 }

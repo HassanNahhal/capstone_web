@@ -17,6 +17,9 @@
       "type": "number",
       "required": true
     },
+    "date": {
+      "type": "date"
+    },
     "error": {
       "type": "boolean",
       "required": true,
@@ -28,6 +31,12 @@
     "imageFilePath": {
       "type": "string",
       "required": false
+    },
+    "categoryId": {
+      "type": "string",
+      "id": false,
+      "required": false,
+      "index": false
     }
   },
   "validations": [],
@@ -42,6 +51,17 @@
       "type": "belongsTo",
       "model": "Store",
       "foreignKey": "storeId"
+    },
+    "customer": {
+      "type": "belongsTo",
+      "model": "Customer",
+      "foreignKey": "customerId"
+    },
+    "tags": {
+      "type": "hasMany",
+      "model": "Tag",
+      "foreignKey": "",
+      "through": "ReceiptTag"
     }
   },
   "acls": [],

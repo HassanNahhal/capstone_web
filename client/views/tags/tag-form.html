@@ -1,0 +1,14 @@
+<h1>{{ action }} Tag</h1>
+<hr>
+<form name="tagForm" novalidate ng-submit="submitForm()">
+  <div class="form-group" ng-class="{'has-error': tagForm.name.$invalid && tagForm.name.$dirty}">
+    <input type="text" class="form-control" name="name" 
+        placeholder="Name" autocomplete="off" required
+        ng-model="tagname">
+    <span class="has-error control-label" ng-show="tagForm.name.$invalid && tagForm.name.$dirty">
+      Tag name is required.
+    </span>        
+  </div>
+  <button class="btn btn-default" ng-disabled="tagForm.$invalid">{{ action }} Tag</button>
+</form>
+<hr>

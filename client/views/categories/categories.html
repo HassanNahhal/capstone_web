@@ -1,0 +1,15 @@
+<h1>Category list</h1>
+<hr>
+<div class="list-group">
+	<span class="list-group-item" ng-repeat="category in categorys">
+	 	{{category.name}}&nbsp; &nbsp; 
+	    <i class="glyphicon glyphicon-remove pull-right text-danger" 
+	    	ui-sref="deleteCategory({id: category.id})"></i>	 	
+	 	<i class="glyphicon glyphicon-pencil pull-right text-primary" 
+	 		style="cursor: pointer; padding-right:20px" 
+	 		ui-sref="editCategory({id: category.id})"></i> 
+  	</span>
+</div>
+<div>
+	<button class="btn btn-default" ui-sref="addCategory">Add Category</button>
+</div>

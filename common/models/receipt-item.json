@@ -5,18 +5,10 @@
   "options": {
     "validateUpsert": true
   },
-  "properties": {
-    "receiptId": {
-      "type": "number",
-      "id": false,
-      "required": true
-    },
-    "itemId": {
-      "type": "number",
-      "id": false,
-      "required": true
-    }
+  "mixins": {
+    "TimeStamp": true
   },
+  "properties": {},
   "validations": [],
   "relations": {
     "receipt": {

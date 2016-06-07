@@ -2,7 +2,9 @@
 <hr>
 <div class="list-group">
 	<span class="list-group-item" ng-repeat="receipt in receipts">
-	 	Item No: {{receipt.numberOfItem}} / Total Price : $ {{ receipt.total }} / ID : {{ receipt.id }}
+	 	Store: {{receipt.store.name}} / 
+	 	Total: $ {{ receipt.total }} / 
+	 	#Items: {{receipt.numberOfItem}}
 	    <i class="glyphicon glyphicon-remove pull-right text-danger" 
 	    	ui-sref="deleteReceipt({id: receipt.id})"></i>	 	
 	 	<i class="glyphicon glyphicon-pencil pull-right text-primary" 

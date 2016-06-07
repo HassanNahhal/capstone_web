@@ -4,10 +4,19 @@ angular
  .module('app', [
     'ui.router',
     'lbServices',
-    'angularFileUpload'
+    'angularFileUpload',
+    'btorfs.multiselect',
+    'oc.lazyLoad',
+    'angular-loading-bar'
  ])
- .config(['$stateProvider', '$urlRouterProvider', function(
- 	$stateProvider, $urlRouterProvider) {
+ .config(['$stateProvider', '$urlRouterProvider', '$ocLazyLoadProvider', function(
+ 	$stateProvider, $urlRouterProvider, $ocLazyLoadProvider) {
+
+    $ocLazyLoadProvider.config({
+      debug:false,
+      events:true,
+    });	
+
    $stateProvider  
 		.state('Home', {
 			url: '/Home',
@@ -61,6 +70,48 @@ angular
 	        url: '/deleteStore/:id',
 	        controller: 'DeleteStoreController'
       	})
+		.state('Tags', {
+			url: '/Tags',
+			templateUrl: 'views/tags/tags.html',
+			controller: 'AllTagsController'
+		})
+		.state('addTag', {
+			url: '/addTag',
+			templateUrl: 'views/tags/tag-form.html',
+			controller: 'AddTagController'
+			// , authenticate: true
+		}) 		
+		.state('editTag', {
+			url: '/editTag/:id',
+			templateUrl: 'views/tags/tag-form.html',
+			controller: 'EditTagController'//
+			//, authenticate: true
+		})
+		.state('deleteTag', {
+	        url: '/deleteTag/:id',
+	        controller: 'DeleteTagController'
+      	})      	
+		.state('Categories', {
+			url: '/Categories',
+			templateUrl: 'views/categories/categories.html',
+			controller: 'AllCategoriesController'
+		})
+		.state('addCategory', {
+			url: '/addCategory',
+			templateUrl: 'views/categories/category-form.html',
+			controller: 'AddCategoryController'
+			// , authenticate: true
+		}) 		
+		.state('editCategory', {
+			url: '/editCategory/:id',
+			templateUrl: 'views/categories/category-form.html',
+			controller: 'EditCategoryController'//
+			//, authenticate: true
+		})
+		.state('deleteCategory', {
+	        url: '/deleteCategory/:id',
+	        controller: 'DeleteCategoryController'
+      	})      	
 		.state('addReceipt', {
 			url: '/addReceipt',
 			templateUrl: 'views/receipts/receipt-form.html',
@@ -82,6 +133,27 @@ angular
         url: '/deleteReceipt/:id',
         controller: 'DeleteReceiptController'
       	})
+		.state('Customers', {
+			url: '/Customers',
+			templateUrl: 'views/users/users.html',
+			controller: 'AllCustomersController'
+		})
+		.state('addCustomer', {
+			url: '/addCustomer',
+			templateUrl: 'views/users/user-form.html',
+			controller: 'AddCustomerController'
+			// , authenticate: true
+		}) 		
+		.state('editCustomer', {
+			url: '/editCustomer/:id',
+			templateUrl: 'views/users/user-form.html',
+			controller: 'EditCustomerController'//
+			//, authenticate: true
+		})
+		.state('deleteCustomer', {
+	        url: '/deleteCustomer/:id',
+	        controller: 'DeleteCustomerController'
+      	})      	
 		.state('Login', {
 			url: '/Login',
 			templateUrl: 'views/users/login.html',
@@ -96,10 +168,62 @@ angular
 			templateUrl: 'views/users/signup.html',
 			controller: 'SignUpController'
 		})
-      .state('forbidden', {
-        url: '/forbidden',
-        templateUrl: 'views/pages/forbidden.html'
-      });
+		.state('Profile', {
+			url: '/Profile',
+			templateUrl: 'views/users/profile.html',
+			controller: 'ProfileController'
+		})
+		.state('Groups', {
+			url: '/Groups',
+			templateUrl: 'views/groups/groups.html',
+			controller: 'AllGroupsController'
+		})	
+		.state('addGroup', {
+			url: '/addGroup',
+			templateUrl: 'views/groups/group-form.html',
+			controller: 'AddGroupController'
+		})	
+		.state('editGroup', {
+			url: '/editGroup/:id',
+			templateUrl: 'views/groups/group-form.html',
+			controller: 'EditGroupController'
+		})
+		.state('deleteGroup', {
+	        url: '/deleteGroup/:id',
+	        controller: 'DeleteGroupController'
+      	})
+		.state('Charts', {
+			url: '/Charts',
+			templateUrl: 'views/users/charts.html'
+		})       	
+		.state('Dashboard', {
+			url: '/Dashboard',
+			templateUrl: 'views/users/dashboard.html'
+		})      	 					
+		.state('forbidden', {
+			url: '/forbidden',
+			templateUrl: 'views/pages/forbidden.html'
+		})
+		.state('chart',{
+			url:'/chart',
+			templateUrl:'views/users/chart.html',			
+			controller:'ChartCtrl',
+			resolve: {
+			  loadMyFile:function($ocLazyLoad) {
+			    return $ocLazyLoad.load({
+			      name:'chart.js',
+			      files:[
+			        'vendor/angular-chart.js/dist/angular-chart.min.js',
+			        'vendor/angular-chart.js/dist/angular-chart.css'
+			      ]
+			    }),
+			    $ocLazyLoad.load({
+			        name:'app',
+			        files:['js/controllers/chart.js']
+			    })
+			  }
+			}
+		});	
 
    $urlRouterProvider.otherwise('Home');
 

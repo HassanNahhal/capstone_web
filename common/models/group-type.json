@@ -1,0 +1,34 @@
+{
+  "name": "GroupType",
+  "base": "PersistedModel",
+  "idInjection": true,
+  "options": {
+    "validateUpsert": true
+  },
+  "properties": {
+    "name": {
+      "type": "string",
+      "required": true
+    },
+    "limitedMember": {
+      "type": "number",
+      "required": true,
+      "default": "5"
+    },
+    "limitedReceipt": {
+      "type": "number",
+      "required": true,
+      "default": "50"
+    }
+  },
+  "validations": [],
+  "relations": {
+    "groups": {
+      "type": "hasMany",
+      "model": "Group",
+      "foreignKey": ""
+    }
+  },
+  "acls": [],
+  "methods": {}
+}

@@ -1,0 +1,24 @@
+<h1>{{ action }} User</h1>
+<hr>
+<form name="userForm" novalidate ng-submit="submitForm()">
+  <div class="form-group" ng-class="{'has-error': userForm.name.$invalid && userForm.name.$dirty}">
+  	<div class="row">
+    <input type="text" class="form-control" name="name" 
+        placeholder="Name" autocomplete="off" required
+        ng-model="username">
+    <span class="has-error control-label" ng-show="userForm.name.$invalid && userForm.name.$dirty">
+      User name is required.
+    </span>        
+    </div>
+  	<div class="row">
+    <input type="email" class="form-control" name="email" 
+        placeholder="Email" autocomplete="off" required
+        ng-model="email">
+    <span class="has-error control-label" ng-show="userForm.email.$invalid && userForm.email.$dirty">
+      Email name is required.
+    </span>        
+    </div>      
+  </div>
+  <button class="btn btn-default" ng-disabled="userForm.$invalid">{{ action }} User</button>
+</form>
+<hr>

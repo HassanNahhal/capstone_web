@@ -1,0 +1,14 @@
+<h1>{{ action }} Category</h1>
+<hr>
+<form name="categoryForm" novalidate ng-submit="submitForm()">
+  <div class="form-group" ng-class="{'has-error': categoryForm.name.$invalid && categoryForm.name.$dirty}">
+    <input type="text" class="form-control" name="name" 
+        placeholder="Name" autocomplete="off" required
+        ng-model="categoryname">
+    <span class="has-error control-label" ng-show="categoryForm.name.$invalid && categoryForm.name.$dirty">
+      Category name is required.
+    </span>        
+  </div>
+  <button class="btn btn-default" ng-disabled="categoryForm.$invalid">{{ action }} Category</button>
+</form>
+<hr>

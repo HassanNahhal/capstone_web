@@ -1,14 +1,48 @@
 <h1>{{ action }} Store</h1>
 <hr>
-<form name="storeForm" novalidate ng-submit="submitForm()">
+<form name="storeForm" novalidate >
   <div class="form-group" ng-class="{'has-error': storeForm.name.$invalid && storeForm.name.$dirty}">
-    <input type="text" class="form-control" name="name" 
-        placeholder="Name" autocomplete="off" required
-        ng-model="storename">
-    <span class="has-error control-label" ng-show="storeForm.name.$invalid && storeForm.name.$dirty">
-      Store name is required.
-    </span>        
+
+  	<div class="row">
+	  	<label class="col-sm-2 control-label">Store name</label>
+	  	<div class="col-sm-4">
+		    <input type="text" class="form-control" name="name" 
+		        placeholder="Name" autocomplete="off" required
+		        ng-model="store.name">
+		    <span class="has-error control-label" ng-show="storeForm.name.$invalid && storeForm.name.$dirty">
+		      Store name is required.
+		    </span>   
+		    <br>
+		    <!--
+		    <span>Selected category:<br>
+		    	<span>{{selectedCategory}}</span>
+		    </span>
+		    -->
+		</div>
+
+		<div class="col-sm-2 control-label" style="text-align:right;">
+	  	<label>Category</label>
+	  	<br><span style="text-align:center;">{{selCategoryCount}}</span>
+	  	</div>
+	  	<div class="col-sm-4">
+	  		<select multiple size=15 ng-multiple="true" ng-click="countSelectedCategory()"
+	  			ng-model="selectedCategory" class="form-control" 
+	  			ng-options="category as category.name for category in categories"></select>
+	  			
+	  			<!--<multiselect ng-model="selectedCategory" id="selectCategories" 
+	  				show-search="true" show-select-all="true" show-unselect-all="true"
+	  				options="options2" id-prop="id" display-prop="name"></multiselect>
+	  				<span>{{options2}}</span>-->	  			
+	  	</div>
+
+	</div>
+
   </div>
-  <button class="btn btn-default" ng-disabled="storeForm.$invalid">{{ action }} Store</button>
+  <hr>
+	<div class="col-sm-6">
+	<button class="btn btn-default" ng-disabled="storeForm.$invalid" ng-click="submitForm()">{{ action }} Store</button>
+	</div>
+	<div class="col-sm-6 text-right" ng-show="store.id">
+	<button class="btn btn-danger" ng-disabled="storeForm.$invalid" ng-click="deleteStore()">Delete Store</button>
+	</div>  
 </form>
-<hr>
