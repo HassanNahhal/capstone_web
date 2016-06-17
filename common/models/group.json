@@ -13,12 +13,18 @@
       "type": "string",
       "required": true
     },
-    "limitedMember": {
-      "type": "number"
+    "type": {
+      "type": "string",
+      "required": false,
+      "default": "member"
     },
-    "limitedReceipt": {
-      "type": "number"
-    }
+    "ownerId": {
+      "type": "string",
+      "id": false,
+      "required": false,
+      "index": false,
+      "default": ""
+    }            
   },
   "validations": [],
   "relations": {
@@ -32,7 +38,7 @@
       "type": "belongsTo",
       "model": "GroupType",
       "foreignKey": "groupTypeId"
-    }   
+    }
   },
   "acls": [],
   "methods": {}
