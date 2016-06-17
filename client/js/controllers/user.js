@@ -7,7 +7,10 @@ angular
   .module('app')
   .controller('AuthLoginController', ['$scope', 'AuthService', '$state',
       function($scope, AuthService, $state) {
-    $scope.user = {};
+    $scope.user = {
+      email: "aaa@gmail.com",
+      password: "aaa"
+    };
     $scope.login = function() {
       AuthService.login($scope.user.email, $scope.user.password)
         .then(function() {

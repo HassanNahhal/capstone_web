@@ -1,43 +1,36 @@
-<div ng-controller="TestController"  nv-file-drop uploader="uploader">
+<div ng-controller="UploadController"  nv-file-drop uploader="uploader">
 <div class="container">
 <div class="row">
         <div class="col-md-3">
 
         <img ng-src="{{image}}"> </img>
 
-            <h3>Select files</h3>
+            <h3>Upload Receipt</h3>
 
             <div ng-show="uploader.isHTML5">
                 <!-- 3. nv-file-over | nv-file-over="className" -->
                 <div class="well my-drop-zone" nv-file-over uploader="uploader">
-                    Base drop zone
-                </div>
-
-                <!-- Example: nv-file-drop | nv-file-drop="options" -->
-                <div class="well my-drop-zone" nv-file-drop="{ url: '/addFile' } "
-                     nv-file-over="another-file-over-class" uploader="uploader">
-                    Another drop zone with its own settings
+                    Drop receipt here
                 </div>
             </div>
-
-            <!-- 2. nv-file-select | nv-file-select="options" -->
-            Multiple
-            <input style="border:none;" nv-file-select uploader="uploader" type="file" multiple/><br/>
-
-            Single
-            <input style="border:none;" nv-file-select uploader="uploader" type="file"/>
+                <!-- The fileinput-button span is used to style the file input field as button -->
+                <span class="btn btn-primary fileinput-button" ng-class="{disabled: disabled}">
+                    <i class="glyphicon glyphicon-plus"></i>
+                    <span>Add Receipt...</span>
+                    <input nv-file-select uploader="uploader" type="file" multiple ng-disabled="disabled"/>
+                </span>            
         </div>
 
         <div class="col-md-9" style="margin-bottom: 40px">
 
-            <h3>Upload queue</h3>
+            <h3>Request receipt</h3>
 
-            <p>Queue length: {{ uploader.queue.length }}</p>
+            <p>Number of receipt: {{ uploader.queue.length }}</p>
 
             <table class="table">
                 <thead>
                 <tr>
-                    <th width="50%">Name</th>
+                    <th>Name</th>
                     <th ng-show="uploader.isHTML5">Size</th>
                     <th ng-show="uploader.isHTML5">Progress</th>
                     <th>Status</th>
@@ -46,7 +39,10 @@
                 </thead>
                 <tbody>
                 <tr ng-repeat="item in uploader.queue">
-                    <td><strong>{{ item.file.name }}</strong></td>
+                    <td>
+                        <strong>{{ item.file.name }}</strong>
+                        <div ng-show="uploader.isHTML5" ng-thumb="{ file: item._file, height: 100 }"></div>
+                    </td>
                     <td ng-show="uploader.isHTML5" nowrap>{{
                         item.file.size/1024/1024|number:2 }} MB
                     </td>
@@ -71,12 +67,14 @@
                             <span class="glyphicon glyphicon-upload"></span>
                             Upload
                         </button>
+                        <!--
                         <button type="button" class="btn btn-warning btn-xs"
                                 ng-click="item.cancel()"
                                 ng-disabled="!item.isUploading">
                             <span class="glyphicon glyphicon-ban-circle"></span>
                             Cancel
                         </button>
+                        -->
                         <button type="button" class="btn btn-danger btn-xs"
                                 ng-click="item.remove()">
                             <span class="glyphicon glyphicon-trash"></span>
@@ -89,7 +87,7 @@
 
             <div>
                 <p>
-                    Queue progress:
+                    Upload progress:
 
                 <div class="progress" style="">
                     <div class="progress-bar" role="progressbar"
@@ -101,12 +99,14 @@
                         ng-disabled="!uploader.getNotUploadedItems().length">
                     <span class="glyphicon glyphicon-upload"></span> Upload all
                 </button>
+                <!--
                 <button type="button" class="btn btn-warning btn-s"
                         ng-click="uploader.cancelAll()"
                         ng-disabled="!uploader.isUploading">
                     <span class="glyphicon glyphicon-ban-circle"></span> Cancel
                     all
                 </button>
+                -->
                 <button type="button" class="btn btn-danger btn-s"
                         ng-click="uploader.clearQueue()"
                         ng-disabled="!uploader.queue.length">
@@ -116,30 +116,37 @@
 
         </div>
 
-        <div class="col-md-9" style="margin-bottom: 40px"
+        <div class="col-md-offset-3 col-md-9" style="margin-bottom: 40px"
              ng-controller="FilesController" data-ng-init="load()">
 
-            <h3>Files in the container</h3>
+            <h3>Receipts in my repository</h3>
 
             <table class="table">
 
                 <tbody>
                 <tr ng-repeat="file in files">
                     <td>
-                        <a href="/api/containers/container1/download/{{file.name}}"><strong>{{
-                            file.name }}</strong></a></td>
+                        <a href="/api/containers/{{filepath}}download/{{file.name}}">
+                        <strong>
+                            {{
+                                file.name.substr(0, file.name .lastIndexOf('_')) + 
+                                '.' + file.name.split('.').pop()
+                            }}
+                        </strong>
+                        </a>
+                        <br>
+                        <a href="/api/containers/{{filepath}}/thumb/download/{{file.name}}"></a>
+                    </td>
                     <td>
+                    </td>
                     <td>
-                        <button type="button" class="btn btn-danger btn-xs"
+                        <button type="button" class="btn btn-danger btn-xs text-right"
                                 ng-click="delete($index, file.name)"
                                 title="Delete the file">
                             <span class="glyphicon glyphicon-trash"></span>
                             Remove
                         </button>
-
-                    </td>
-                    </button>
-                    </td>
+                    </td>                  
                 </tr>
                 </tbody>
             </table>

@@ -3,15 +3,15 @@
     "name": "db",
     "connector": "memory"
   },
-      "storage": {
+  "storage": {
     "name": "storage",
     "connector": "loopback-component-storage",
     "provider": "filesystem",
     "root": "./server/storage"
   },
   "MongoDB": {
-    "host": "ds011872.mlab.com",
-    "port": 11872,
+    "host": "ds039195.mlab.com",
+    "port": 39195,
     "url": "",
     "database": "receipt-keeper",
     "password": "receiptkeeper",
