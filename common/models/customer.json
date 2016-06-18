@@ -9,9 +9,12 @@
     "TimeStamp": true
   },
   "properties": {
-    "name": {
+    "firstName": {
       "type": "string"
     },
+    "lastName": {
+      "type": "string"
+    },    
     "dateOfBirth": {
       "type": "date"
     },

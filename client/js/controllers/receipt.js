@@ -3,8 +3,11 @@
  angular
   .module('app')
   .controller('AllReceiptsController', [
-  	'$scope', 'Receipt', '$rootScope', function($scope, Receipt, $rootScope) {
+  	'$scope', 'Receipt', '$rootScope',   
+     function($scope, Receipt, $rootScope) {
+
       var userId = $rootScope.currentUser.id;
+
 	    $scope.receipts = Receipt.find({
         filter: {
           order: 'createdAt DESC', 
@@ -12,10 +15,10 @@
           where: {customerId: userId}
         }
       });
-      console.log($scope.receipts);
   }])
   .controller('DeleteReceiptController', ['$scope', 'Receipt', '$state',
-      '$stateParams', function($scope, Receipt, $state, $stateParams) {
+      '$stateParams',  
+      function($scope, Receipt, $state, $stateParams) {
 
     Receipt.items.destroyAll(
       {id: $stateParams.id}, 
@@ -36,9 +39,9 @@
   }])
   .controller('EditReceiptController', ['$scope', 'Receipt', '$state',
       '$stateParams', 'Store', 'Item', 'ReceiptItem', 'Category', 
-      'ReceiptService', 'Tag', 'ReceiptTag', 
+      'Tag', 'ReceiptTag', 
       function($scope, Receipt, $state, $stateParams, Store, 
-        Item, ReceiptItem, Category, ReceiptService, Tag, ReceiptTag) {
+        Item, ReceiptItem, Category, Tag, ReceiptTag) {   
 
     $scope.action = 'Edit';
     $scope.stores = [];
@@ -83,6 +86,7 @@
           $scope.selectedStore = stores[selectedStoreIndex];   
           // Call to get the categories from selected store
           $scope.getStoreCategories($scope.selectedStore.id, $scope.receipt.categoryId);
+
           // Get categories by selected store using Service named 'ReceiptService'
           //ReceiptService.getCategoriesBySelectedStore($scope.selectedStore.id, $scope.receipt.categoryId);                  
 
@@ -234,9 +238,11 @@
     };
   }])
   .controller('AddReceiptController', ['$scope', '$state', 'Receipt', 'Store', 
-      'Category', 'Item', 'ReceiptItem', 'ReceiptService', 'Tag', 'ReceiptTag', '$rootScope',   
+      'Category', 'Item', 'ReceiptItem', 'Tag', 
+      'ReceiptTag', '$rootScope',  
       function($scope, $state, Receipt, Store, Category, 
-        Item, ReceiptItem, ReceiptService, Tag, ReceiptTag, $rootScope) {
+        Item, ReceiptItem, Tag, ReceiptTag, 
+        $rootScope) {             
 
     $scope.action = 'Add';
     $scope.stores = [];

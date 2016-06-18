@@ -1,0 +1,81 @@
+<div class="row">
+    <div class="col-lg-12">
+        <h1 class="page-header">Charts</h1>
+    </div>
+    <!-- /.col-lg-12 -->
+</div>
+<div class="row">
+    <div class="col-lg-6 col-sm-6" id="line-chart">
+        <div class="panel panel-default">
+            <div class="panel-heading">2016 Monthly consumption (6 months)</div>
+            <div class="panel-body">
+                <canvas id="line" class="chart chart-line chart-xl" data="line.data" labels="line.labels" legend="false"
+                click="line.onClick" series="line.series"></canvas>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-6 col-sm-6" id="bar-chart" ng-controller="ChartCtrl">
+        <div class="panel panel-default">
+            <div class="panel-heading">Comparison of 2015 (monthly)</div>
+            <div class="panel-body">
+                <canvas id="bar" class="chart chart-bar" data="bar.data" labels="bar.labels" series="bar.series"
+                options="bar.options"></canvas>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-lg-6 col-sm-4" id="doughnut-chart" ng-controller="ChartCtrl">
+        <div class="panel panel-default">
+            <div class="panel-heading">Category (June 2016)</div>
+            <div class="panel-body">
+            <canvas id="doughnut" class="chart chart-doughnut chart-xs" data="donut.data" labels="donut.labels"></canvas>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-6 col-sm-4" id="pie-chart" ng-controller="ChartCtrl">
+        <div class="panel panel-default">
+            <div class="panel-heading">Store (June 2016)</div>
+            <div class="panel-body">
+                <canvas id="pie" class="chart chart-pie chart-xs" data="pie.data" labels="pie.labels"></canvas>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-6 col-sm-4" id="doughnut1-chart" ng-controller="ChartCtrl">
+      <div class="panel panel-default">
+        <div class="panel-heading">Tag (June 2016)</div>
+        <div class="panel-body">
+          <canvas id="doughnut1" class="chart chart-doughnut chart-xs" data="donut1.data" labels="donut1.labels"></canvas>
+        </div>
+      </div>
+    </div>    
+
+    <div class="col-lg-6 col-sm-6" id="radar-chart" ng-controller="ChartCtrl">
+        <div class="panel panel-default">
+            <div class="panel-heading">Consumption Type (June 2016)</div>
+            <div class="panel-body">
+                <canvas id="area" class="chart chart-radar" data="radar.data" labels="radar.labels" click="onClick"></canvas>
+            </div>
+        </div>
+    </div>
+    <!--
+    <div class="col-lg-6 col-sm-6" id="polar area-chart" ng-controller="ChartCtrl">
+      <div class="panel panel-default">
+        <div class="panel-heading">Polar Chart</div>
+        <div class="panel-body">
+          <canvas id="polar" class="chart chart-polar-area" data="polar.data" labels="polar.labels"></canvas>
+        </div>
+      </div>
+    </div>
+    -->
+
+    <div class="col-lg-6 col-sm-6" id="base-chart" ng-controller="ChartCtrl">
+        <div class="panel panel-default"> 
+            <div class="panel-heading">Dynamic Chart</div>
+            <div class="panel-body">
+            <canvas id="base" class="chart chart-base" chart-type="dynamic.type" data="dynamic.data" labels="dynamic.labels" legend="false"></canvas>
+            </div>
+        </div>
+        <button type="button" class="btn btn-primary pull-right" ng-click="dynamic.toggle()">Toggle Chart</button>
+    </div>
+</div>

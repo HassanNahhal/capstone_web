@@ -5,18 +5,20 @@
 
 angular
   .module('app')
-  .factory('AuthService', ['Customer', '$q', '$rootScope', function(User, $q,
-      $rootScope) {
+  .factory('AuthService', ['Customer', '$q', '$rootScope',    
+    function(User, $q, $rootScope) {
     function login(email, password) {
       return User
         .login({email: email, password: password})
         .$promise
-        .then(function(response) {
+        .then(function(response) {          
           $rootScope.currentUser = {
             id: response.user.id,
             tokenId: response.id,
-            email: email
+            email: email,
+            username: response.user.username
           };
+          sessionStorage.setItem('access_token', JSON.stringify($rootScope.currentUser));
         });
     }
 
@@ -24,8 +26,9 @@ angular
       return User
        .logout()
        .$promise
-       .then(function() {
-         $rootScope.currentUser = null;
+       .then(function() {          
+          $rootScope.currentUser = null;
+          sessionStorage.removeItem('access_token');
        });
     }
 

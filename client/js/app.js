@@ -18,6 +18,10 @@ angular
     });	
 
    $stateProvider  
+		.state('/', {
+			url: '/',
+			templateUrl: 'views/pages/home.html'
+		})   
 		.state('Home', {
 			url: '/Home',
 			templateUrl: 'views/pages/home.html'
@@ -33,16 +37,19 @@ angular
       	.state('Items', {
 			url: '/Items',
 			templateUrl: 'views/items/items.html',
-			controller: 'AllItemsController'
+			controller: 'AllItemsController', 
+			authenticate: true
 		})
 		.state('deleteItem', {
 	        url: '/deleteItem/:id',
-	        controller: 'DeleteItemController'
+	        controller: 'DeleteItemController', 
+			authenticate: true
       	})	
 		.state('editItem', {
 	        url: '/editItem/:id',
 	        templateUrl: 'views/items/item-form.html',
-	        controller: 'EditItemController'
+	        controller: 'EditItemController', 
+			authenticate: true
       	})
 		.state('addFile', {
 			url: '/addFile',
@@ -52,107 +59,117 @@ angular
 		.state('Stores', {
 			url: '/Stores',
 			templateUrl: 'views/stores/stores.html',
-			controller: 'AllStoresController'
+			controller: 'AllStoresController', 
+			authenticate: true
 		})
 		.state('addStore', {
 			url: '/addStore',
 			templateUrl: 'views/stores/store-form.html',
-			controller: 'AddStoreController'
-			// , authenticate: true
+			controller: 'AddStoreController',
+			authenticate: true
 		}) 		
 		.state('editStore', {
 			url: '/editStore/:id',
 			templateUrl: 'views/stores/store-form.html',
-			controller: 'EditStoreController'//
-			//, authenticate: true
+			controller: 'EditStoreController',
+			authenticate: true
 		})
 		.state('deleteStore', {
 	        url: '/deleteStore/:id',
-	        controller: 'DeleteStoreController'
+	        controller: 'DeleteStoreController', 
+			authenticate: true
       	})
 		.state('Tags', {
 			url: '/Tags',
 			templateUrl: 'views/tags/tags.html',
-			controller: 'AllTagsController'
+			controller: 'AllTagsController', 
+			authenticate: true
 		})
 		.state('addTag', {
 			url: '/addTag',
 			templateUrl: 'views/tags/tag-form.html',
-			controller: 'AddTagController'
-			// , authenticate: true
+			controller: 'AddTagController', 
+			authenticate: true
 		}) 		
 		.state('editTag', {
 			url: '/editTag/:id',
 			templateUrl: 'views/tags/tag-form.html',
-			controller: 'EditTagController'//
-			//, authenticate: true
+			controller: 'EditTagController', 
+			authenticate: true
 		})
 		.state('deleteTag', {
 	        url: '/deleteTag/:id',
-	        controller: 'DeleteTagController'
+	        controller: 'DeleteTagController', 
+			authenticate: true
       	})      	
 		.state('Categories', {
 			url: '/Categories',
 			templateUrl: 'views/categories/categories.html',
-			controller: 'AllCategoriesController'
+			controller: 'AllCategoriesController', 
+			authenticate: true
 		})
 		.state('addCategory', {
 			url: '/addCategory',
 			templateUrl: 'views/categories/category-form.html',
-			controller: 'AddCategoryController'
-			// , authenticate: true
+			controller: 'AddCategoryController', 
+			authenticate: true
 		}) 		
 		.state('editCategory', {
 			url: '/editCategory/:id',
 			templateUrl: 'views/categories/category-form.html',
-			controller: 'EditCategoryController'//
-			//, authenticate: true
+			controller: 'EditCategoryController', 
+			authenticate: true
 		})
 		.state('deleteCategory', {
 	        url: '/deleteCategory/:id',
-	        controller: 'DeleteCategoryController'
+	        controller: 'DeleteCategoryController', 
+			authenticate: true
       	})      	
 		.state('addReceipt', {
 			url: '/addReceipt',
 			templateUrl: 'views/receipts/receipt-form.html',
-			controller: 'AddReceiptController'
-			//authenticate: true
+			controller: 'AddReceiptController',
+			authenticate: true
 		})
 		.state('editReceipt', {
 			url: '/editReceipt/:id',
 			templateUrl: 'views/receipts/receipt-form.html',
-			controller: 'EditReceiptController'
-			//authenticate: true
+			controller: 'EditReceiptController',
+			authenticate: true
 		}) 		      	
       	.state('Receipts', {
 			url: '/Receipts',
 			templateUrl: 'views/receipts/receipts.html',
-			controller: 'AllReceiptsController'
+			controller: 'AllReceiptsController',
+			authenticate: true
 		})
 		.state('deleteReceipt', {
-        url: '/deleteReceipt/:id',
-        controller: 'DeleteReceiptController'
+	        url: '/deleteReceipt/:id',
+	        controller: 'DeleteReceiptController',
+	        authenticate: true
       	})
 		.state('Customers', {
 			url: '/Customers',
 			templateUrl: 'views/users/users.html',
-			controller: 'AllCustomersController'
+			controller: 'AllCustomersController', 
+			authenticate: true
 		})
 		.state('addCustomer', {
 			url: '/addCustomer',
 			templateUrl: 'views/users/user-form.html',
-			controller: 'AddCustomerController'
-			// , authenticate: true
+			controller: 'AddCustomerController', 
+			authenticate: true
 		}) 		
 		.state('editCustomer', {
 			url: '/editCustomer/:id',
 			templateUrl: 'views/users/user-form.html',
-			controller: 'EditCustomerController'//
-			//, authenticate: true
+			controller: 'EditCustomerController', 
+			authenticate: true
 		})
 		.state('deleteCustomer', {
 	        url: '/deleteCustomer/:id',
-	        controller: 'DeleteCustomerController'
+	        controller: 'DeleteCustomerController', 
+			authenticate: true
       	})      	
 		.state('Login', {
 			url: '/Login',
@@ -161,7 +178,8 @@ angular
 		})
 		.state('Logout', {
 			url: '/Logout',
-			controller: 'AuthLogoutController'
+			controller: 'AuthLogoutController', 
+			authenticate: true
 		})		
 		.state('Signup', {
 			url: '/Signup',
@@ -171,34 +189,36 @@ angular
 		.state('Profile', {
 			url: '/Profile',
 			templateUrl: 'views/users/profile.html',
-			controller: 'ProfileController'
+			controller: 'ProfileController', 
+			authenticate: true
 		})
 		.state('Groups', {
 			url: '/Groups',
 			templateUrl: 'views/groups/groups.html',
-			controller: 'AllGroupsController'
+			controller: 'AllGroupsController', 
+			authenticate: true
 		})	
 		.state('addGroup', {
 			url: '/addGroup',
 			templateUrl: 'views/groups/group-form.html',
-			controller: 'AddGroupController'
+			controller: 'AddGroupController', 
+			authenticate: true
 		})	
 		.state('editGroup', {
 			url: '/editGroup/:id',
 			templateUrl: 'views/groups/group-form.html',
-			controller: 'EditGroupController'
+			controller: 'EditGroupController', 
+			authenticate: true
 		})
 		.state('deleteGroup', {
 	        url: '/deleteGroup/:id',
-	        controller: 'DeleteGroupController'
-      	})
-		.state('Charts', {
-			url: '/Charts',
-			templateUrl: 'views/users/charts.html'
-		})       	
+	        controller: 'DeleteGroupController', 
+			authenticate: true
+      	})      	
 		.state('Dashboard', {
 			url: '/Dashboard',
-			templateUrl: 'views/users/dashboard.html'
+			templateUrl: 'views/users/dashboard.html', 
+			authenticate: true
 		})      	 					
 		.state('forbidden', {
 			url: '/forbidden',
@@ -206,7 +226,7 @@ angular
 		})
 		.state('chart',{
 			url:'/chart',
-			templateUrl:'views/users/chart.html',			
+			templateUrl:'views/charts/chart.html',			
 			controller:'ChartCtrl',
 			resolve: {
 			  loadMyFile:function($ocLazyLoad) {
@@ -225,6 +245,16 @@ angular
 			}
 		});	
 
-   $urlRouterProvider.otherwise('Home');
+   $urlRouterProvider.otherwise('/');
 
+ }])
+.run(['$rootScope', '$state', function($rootScope, $state) {
+    $rootScope.$on('$stateChangeStart', function(event, next) {
+    $rootScope.currentUser = JSON.parse(sessionStorage.getItem('access_token'));
+      // redirect to login page if not logged in
+      if (next.authenticate && !$rootScope.currentUser) {
+        event.preventDefault(); //prevent current page from loading
+        $state.go('forbidden');
+      }
+    });
  }]);
