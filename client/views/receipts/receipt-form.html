@@ -27,7 +27,7 @@
 	    	<label class="col-sm-2 control-label">Date</label>
 	        <div class='col-sm-4'>
 	            <div class="form-group">
-	                <div class='input-group date' id='datetimepicker1'>
+	                <div class='input-group date' id='receiptdate'>
 	                    <input type='text' class="form-control" ng-model="receipt.date">
 	                    <span class="input-group-addon">
 	                        <span class="glyphicon glyphicon-calendar" ng-click="openCalendar()"></span>
@@ -104,10 +104,16 @@
 
 		</div>
 		<div class="row">
-			<div  class="col-sm-offset-2 col-sm-10">
+			<div  class="col-sm-offset-2 col-sm-2">
 				<button class="btn btn-primary"  ng-click="submitForm()"
 					ng-disabled="delDisabled">{{ action }} Receipt</button>
 			</div>
+			<div  class="col-sm-2">
+				<button class="btn btn-default"  ui-sref="Receipts">Receipts</button>
+			</div>	
+			<div ng-show="receipt.id" class="col-sm-offset-2 col-sm-4">
+				<button class="btn btn-danger" ng-click="delReceipt()">Delete Receipt</button>
+			</div>						
 		</div>
 	</div>		
 </form>

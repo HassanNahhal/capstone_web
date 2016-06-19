@@ -1,14 +1,30 @@
 <h1>{{ action }} Group</h1>
 <hr>
-<form name="groupForm" novalidate ng-submit="submitForm()">
+<form name="groupForm" novalidate>
   <div class="form-group" ng-class="{'has-error': groupForm.name.$invalid && groupForm.name.$dirty}">
-    <input type="text" class="form-control" name="name" 
-        placeholder="Group name" autocomplete="off" required
-        ng-model="group.name">
-    <span class="has-error control-label" ng-show="groupForm.name.$invalid && groupForm.name.$dirty">
-      Group name is required.
-    </span>        
+	<div class="row">
+		<label class="col-sm-3 control-label">Group name</label>
+		<div  class="col-sm-9"> 
+		    <input type="text" class="form-control" name="name" 
+		        placeholder="Group name" autocomplete="off" required
+		        ng-model="group.name">
+		    <span class="has-error control-label" ng-show="groupForm.name.$invalid && groupForm.name.$dirty">
+		      Group name is required.
+		    </span>
+		</div>
+	</div>      
+	<div class="row">
+		<div class="col-sm-3">
+				<button class="btn btn-primary" ng-disabled="groupForm.$invalid" ng-hide="isDisabled" ng-disabled="isDisabled" ng-click="submitForm()">{{ action }} Group</button>
+		</div>
+		<div  class="col-sm-3">
+			<button class="btn btn-default"  ui-sref="Groups">Groups</button>
+		</div>	
+		<div ng-show="group.id" class="col-sm-offset-3 col-sm-3">
+			<button class="btn btn-danger" ng-disabled="groupForm.$invalid" ng-click="deleteGroup()">Delete Group</button>
+		</div>
+	</div>
+
   </div>
-  <button class="btn btn-default" ng-disabled="groupForm.$invalid" ng-hide="isDisabled" ng-disabled="isDisabled">{{ action }} Group</button>
 </form>
 <hr>

@@ -145,6 +145,12 @@
         .then(function(group){
           $scope.group = group;
         });
+
+        $scope.deleteGroup = function(){
+          if(confirm("Are you sure?")){
+               $location.path('/deleteGroup/' + $scope.group.id);    
+          }         
+        }        
         
 		    $scope.submitForm = function() {	
           $scope.group

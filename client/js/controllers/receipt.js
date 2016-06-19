@@ -39,9 +39,9 @@
   }])
   .controller('EditReceiptController', ['$scope', 'Receipt', '$state',
       '$stateParams', 'Store', 'Item', 'ReceiptItem', 'Category', 
-      'Tag', 'ReceiptTag', 
+      'Tag', 'ReceiptTag', '$location', 
       function($scope, Receipt, $state, $stateParams, Store, 
-        Item, ReceiptItem, Category, Tag, ReceiptTag) {   
+        Item, ReceiptItem, Category, Tag, ReceiptTag, $location) {   
 
     $scope.action = 'Edit';
     $scope.stores = [];
@@ -52,7 +52,7 @@
     $scope.delDisabled = true;
     $scope.tags = [];  
     $scope.selectedTags=[];
-    $scope.selTagCount;    
+    $scope.selTagCount;   
 
     Store
       .find({
@@ -151,8 +151,11 @@
     }
 
     $scope.openCalendar = function(){
-      $('#datetimepicker1').datetimepicker();
-      $scope.receipt.date = $('#datetimepicker1 input').prop('value');
+      $('#receiptdate').datetimepicker({
+        format: 'YYYY-MM-DD',
+        useCurrent: false
+      });
+      $scope.receipt.date = $('#receiptdate input').prop('value');
     }
 
     $scope.items = [];        
@@ -187,6 +190,13 @@
         $scope.receipt.total = $scope.totalprice;
       };   
     };
+
+    // Delete selected receipt
+    $scope.delReceipt = function(){
+      if(confirm("Are you sure?")){
+           $location.path('/deleteReceipt/' + $scope.receipt.id);    
+      }    
+    }
 
     $scope.submitForm = function() {
       //console.log("selectedCategory: ", $scope.selectedCategory);
@@ -253,7 +263,7 @@
     $scope.delDisabled = true;
     $scope.tags = [];  
     $scope.selectedTags=[];
-    $scope.selTagCount;     
+    $scope.selTagCount; 
 
     Store
       .find()
@@ -312,8 +322,11 @@
     }
 
     $scope.openCalendar = function(){
-      $('#datetimepicker1').datetimepicker();
-      $scope.receipt.date = $('#datetimepicker1 input').prop('value');
+      $('#receiptdate').datetimepicker({
+        format: 'YYYY-MM-DD',
+        useCurrent: true
+      });
+      $scope.receipt.date = $('#receiptdate input').prop('value');
     }
 
     $scope.items = [];        

@@ -37,12 +37,18 @@
 
 	</div>
 
-  </div>
-  <hr>
-	<div class="col-sm-6">
-	<button class="btn btn-default" ng-disabled="storeForm.$invalid" ng-click="submitForm()">{{ action }} Store</button>
-	</div>
-	<div class="col-sm-6 text-right" ng-show="store.id">
-	<button class="btn btn-danger" ng-disabled="storeForm.$invalid" ng-click="deleteStore()">Delete Store</button>
-	</div>  
+
+  	<hr>
+  	<div class="row">
+		<div class="col-sm-2">
+		<button class="btn btn-primary" ng-disabled="storeForm.$invalid" ng-click="submitForm()">{{ action }} Store</button>
+		</div>
+		<div  class="col-sm-4">
+			<button class="btn btn-default"  ui-sref="Stores">Stores</button>
+		</div>	
+		<div ng-show="store.id" class="col-sm-offset-4 col-sm-2">
+			<button class="btn btn-danger" ng-disabled="storeForm.$invalid" ng-click="deleteStore()">Delete Store</button>
+		</div>		
+	</div> 
+  </div>	
 </form>

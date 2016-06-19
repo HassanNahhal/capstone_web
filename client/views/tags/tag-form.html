@@ -1,14 +1,30 @@
 <h1>{{ action }} Tag</h1>
 <hr>
-<form name="tagForm" novalidate ng-submit="submitForm()">
-  <div class="form-group" ng-class="{'has-error': tagForm.name.$invalid && tagForm.name.$dirty}">
-    <input type="text" class="form-control" name="name" 
-        placeholder="Name" autocomplete="off" required
-        ng-model="tagname">
-    <span class="has-error control-label" ng-show="tagForm.name.$invalid && tagForm.name.$dirty">
-      Tag name is required.
-    </span>        
-  </div>
-  <button class="btn btn-default" ng-disabled="tagForm.$invalid">{{ action }} Tag</button>
+<form name="tagForm" novalidate>
+	<div class="form-group" ng-class="{'has-error': tagForm.name.$invalid && tagForm.name.$dirty}">
+		<div class="row">
+			<label class="col-sm-3 control-label">Tag name</label>
+			<div  class="col-sm-9">  
+			    <input type="text" class="form-control" name="name" 
+			        placeholder="Name" autocomplete="off" required
+			        ng-model="tagname">
+			    <span class="has-error control-label" ng-show="tagForm.name.$invalid && tagForm.name.$dirty">
+			      Tag name is required.
+			    </span> 
+		    </div>
+		</div>       
+
+		<div class="row">
+			<div class="col-sm-3">
+					<button class="btn btn-primary" ng-disabled="tagForm.$invalid" ng-click="submitForm()">{{ action }} Tag</button>
+			</div>
+			<div  class="col-sm-3">
+				<button class="btn btn-default"  ui-sref="Tags">Tags</button>
+			</div>	
+			<div ng-show="tag.id" class="col-sm-offset-3 col-sm-3">
+				<button class="btn btn-danger" ng-disabled="tagForm.$invalid" ng-click="deleteTag()">Delete Tag</button>
+			</div>
+		</div>
+	</div>			  		
 </form>
 <hr>
