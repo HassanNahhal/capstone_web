@@ -38,7 +38,13 @@ angular
          email: email,
          password: password
        })
-       .$promise;
+       .$promise
+       .then(function(response){
+          //console.log("response: ", response);
+          // below redirect login doesn't seem goood
+          // need to create a page for sign up successfully
+          login(email, password);
+       });
     }
 
     return {

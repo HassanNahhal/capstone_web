@@ -10,11 +10,12 @@
 
 	    $scope.receipts = Receipt.find({
         filter: {
-          order: 'createdAt DESC', 
+          order: 'date DESC', 
           include: ['store', 'customer'],
           where: {customerId: userId}
         }
       });
+      
   }])
   .controller('DeleteReceiptController', ['$scope', 'Receipt', '$state',
       '$stateParams',  
@@ -63,6 +64,7 @@
       })
       .$promise
       .then(function(stores){
+        //console.log("Stores: ", stores);
         var stores = $scope.stores = stores;
         Receipt.findById({
          id: $stateParams.id, 
@@ -121,7 +123,7 @@
     $scope.getStoreCategories = function(storeId, categoryId){      
       if(storeId === null){
         storeId = $scope.selectedStore.id;
-        console.log("changeStoreId: ", storeId);
+        //console.log("changeStoreId: ", storeId);
       }
       Store.findById({ 
         id: storeId,
@@ -160,7 +162,7 @@
 
     $scope.items = [];        
     $scope.newItem = function () {
-      console.log("go into newItem");
+      //console.log("go into newItem");
       // Add Item input form
       $scope.items.push({});
       if($scope.items.length > 0){ 
@@ -169,7 +171,7 @@
     };
 
     $scope.spliceItem = function(){
-      console.log("Item length: ", $scope.items.length);
+      //console.log("Item length: ", $scope.items.length);
       $scope.items.splice($scope.items.length-1, 1);
       if($scope.items.length < 1){ 
         $scope.delDisabled = true;
@@ -213,6 +215,8 @@
           {id: $stateParams.id}, 
           function(){
             for(var i=0 ; i < $scope.items.length ; i++){
+              // need to fix, only new Item create
+              // already exist Item should be update
               Item
               .create({
                 name: $scope.items[i].name,

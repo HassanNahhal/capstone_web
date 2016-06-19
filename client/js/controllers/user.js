@@ -37,10 +37,10 @@ angular
     $scope.user = {};
     $scope.register = function() {      
       AuthService.register($scope.user.email, $scope.user.password)
-        .then(function(user) {
+        .then(function() {
           //below code is temporary for test need to adopt athentication correctly later
-          $rootScope.currentUser = user;
-          $state.transitionTo('Profile');
+          //$rootScope.currentUser = user;
+          //$state.transitionTo('Profile');
         });
     };
   }])
