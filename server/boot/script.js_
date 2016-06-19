@@ -4,7 +4,7 @@ var MongoDB = app.dataSources.MongoDB;
 MongoDB.automigrate('Customer', function(err) {
    if (err) throw (err);
    var Customer = app.models.Customer;
-
+    
    Customer.create([
     {username: 'admin', email: 'admin@gmail.com', password: 'aaa', gender:1,},
     {username: 'choi', email: 'cch.choi@gmail.com', password: 'aaa', gender:1},

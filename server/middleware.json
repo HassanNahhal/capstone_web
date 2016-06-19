@@ -5,7 +5,12 @@
     }
   },
   "initial": {
-    "compression": {},
+    "compression": {
+        "params": { "threshold": 512 }
+    },
+    "morgan": {
+        "params": ["dev", { "buffer": true } ]
+    },
     "cors": {
       "params": {
         "origin": true,
@@ -44,6 +49,7 @@
   },
   "files": {
     "loopback#static": {
+      "paths": "/client",
       "params": "$!../client"
     }
   },

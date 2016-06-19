@@ -17,6 +17,7 @@ angular
             tokenId: response.id,
             email: email
           };
+          console.log("currentUser: ", $rootScope.currentUser);
         });
     }
 

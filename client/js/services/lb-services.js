@@ -11912,6 +11912,93 @@ module.factory(
       { 'id': '@id' },
       {
 
+        // INTERNAL. Use Customer.receipts.findById() instead.
+        "prototype$__findById__receipts": {
+          params: {
+          'fk': '@fk'
+          },
+          url: urlBase + "/Customers/:id/receipts/:fk",
+          method: "GET"
+        },
+
+        // INTERNAL. Use Customer.receipts.destroyById() instead.
+        "prototype$__destroyById__receipts": {
+          params: {
+          'fk': '@fk'
+          },
+          url: urlBase + "/Customers/:id/receipts/:fk",
+          method: "DELETE"
+        },
+
+        // INTERNAL. Use Customer.receipts.updateById() instead.
+        "prototype$__updateById__receipts": {
+          params: {
+          'fk': '@fk'
+          },
+          url: urlBase + "/Customers/:id/receipts/:fk",
+          method: "PUT"
+        },
+
+        // INTERNAL. Use Customer.account() instead.
+        "prototype$__get__account": {
+          url: urlBase + "/Customers/:id/account",
+          method: "GET"
+        },
+
+        // INTERNAL. Use Customer.groups.findById() instead.
+        "prototype$__findById__groups": {
+          params: {
+          'fk': '@fk'
+          },
+          url: urlBase + "/Customers/:id/groups/:fk",
+          method: "GET"
+        },
+
+        // INTERNAL. Use Customer.groups.destroyById() instead.
+        "prototype$__destroyById__groups": {
+          params: {
+          'fk': '@fk'
+          },
+          url: urlBase + "/Customers/:id/groups/:fk",
+          method: "DELETE"
+        },
+
+        // INTERNAL. Use Customer.groups.updateById() instead.
+        "prototype$__updateById__groups": {
+          params: {
+          'fk': '@fk'
+          },
+          url: urlBase + "/Customers/:id/groups/:fk",
+          method: "PUT"
+        },
+
+        // INTERNAL. Use Customer.groups.link() instead.
+        "prototype$__link__groups": {
+          params: {
+          'fk': '@fk'
+          },
+          url: urlBase + "/Customers/:id/groups/rel/:fk",
+          method: "PUT"
+        },
+
+        // INTERNAL. Use Customer.groups.unlink() instead.
+        "prototype$__unlink__groups": {
+          params: {
+          'fk': '@fk'
+          },
+          url: urlBase + "/Customers/:id/groups/rel/:fk",
+          method: "DELETE"
+        },
+
+        // INTERNAL. Use Customer.groups.exists() instead.
+        "prototype$__exists__groups": {
+          params: {
+          'fk': '@fk'
+          },
+          url: urlBase + "/Customers/:id/groups/rel/:fk",
+          method: "HEAD"
+        },
+
         /**
          * @ngdoc method
          * @name lbServices.Customer#prototype$__findById__accessTokens
@@ -12027,91 +12114,284 @@ module.factory(
           method: "PUT"
         },
 
-        // INTERNAL. Use Customer.receipts.findById() instead.
-        "prototype$__findById__receipts": {
+        /**
+         * @ngdoc method
+         * @name lbServices.Customer#prototype$__findById__credentials
+         * @methodOf lbServices.Customer
+         *
+         * @description
+         *
+         * Find a related item by id for credentials.
+         *
+         * @param {Object=} parameters Request parameters.
+         *
+         *  - `id` – `{*}` - User id
+         *
+         *  - `fk` – `{*}` - Foreign key for credentials
+         *
+         * @param {function(Object,Object)=} successCb
+         *   Success callback with two arguments: `value`, `responseHeaders`.
+         *
+         * @param {function(Object)=} errorCb Error callback with one argument:
+         *   `httpResponse`.
+         *
+         * @returns {Object} An empty reference that will be
+         *   populated with the actual data once the response is returned
+         *   from the server.
+         *
+         * <em>
+         * (The remote method definition does not provide any description.
+         * This usually means the response is a `Customer` object.)
+         * </em>
+         */
+        "prototype$__findById__credentials": {
           params: {
           'fk': '@fk'
           },
-          url: urlBase + "/Customers/:id/receipts/:fk",
+          url: urlBase + "/Customers/:id/credentials/:fk",
           method: "GET"
         },
 
-        // INTERNAL. Use Customer.receipts.destroyById() instead.
-        "prototype$__destroyById__receipts": {
+        /**
+         * @ngdoc method
+         * @name lbServices.Customer#prototype$__destroyById__credentials
+         * @methodOf lbServices.Customer
+         *
+         * @description
+         *
+         * Delete a related item by id for credentials.
+         *
+         * @param {Object=} parameters Request parameters.
+         *
+         *  - `id` – `{*}` - User id
+         *
+         *  - `fk` – `{*}` - Foreign key for credentials
+         *
+         * @param {function(Object,Object)=} successCb
+         *   Success callback with two arguments: `value`, `responseHeaders`.
+         *
+         * @param {function(Object)=} errorCb Error callback with one argument:
+         *   `httpResponse`.
+         *
+         * @returns {Object} An empty reference that will be
+         *   populated with the actual data once the response is returned
+         *   from the server.
+         *
+         * This method returns no data.
+         */
+        "prototype$__destroyById__credentials": {
           params: {
           'fk': '@fk'
           },
-          url: urlBase + "/Customers/:id/receipts/:fk",
+          url: urlBase + "/Customers/:id/credentials/:fk",
           method: "DELETE"
         },
 
-        // INTERNAL. Use Customer.receipts.updateById() instead.
-        "prototype$__updateById__receipts": {
+        /**
+         * @ngdoc method
+         * @name lbServices.Customer#prototype$__updateById__credentials
+         * @methodOf lbServices.Customer
+         *
+         * @description
+         *
+         * Update a related item by id for credentials.
+         *
+         * @param {Object=} parameters Request parameters.
+         *
+         *  - `id` – `{*}` - User id
+         *
+         *  - `fk` – `{*}` - Foreign key for credentials
+         *
+         * @param {Object} postData Request data.
+         *
+         * This method expects a subset of model properties as request parameters.
+         *
+         * @param {function(Object,Object)=} successCb
+         *   Success callback with two arguments: `value`, `responseHeaders`.
+         *
+         * @param {function(Object)=} errorCb Error callback with one argument:
+         *   `httpResponse`.
+         *
+         * @returns {Object} An empty reference that will be
+         *   populated with the actual data once the response is returned
+         *   from the server.
+         *
+         * <em>
+         * (The remote method definition does not provide any description.
+         * This usually means the response is a `Customer` object.)
+         * </em>
+         */
+        "prototype$__updateById__credentials": {
           params: {
           'fk': '@fk'
           },
-          url: urlBase + "/Customers/:id/receipts/:fk",
+          url: urlBase + "/Customers/:id/credentials/:fk",
           method: "PUT"
         },
 
-        // INTERNAL. Use Customer.account() instead.
-        "prototype$__get__account": {
-          url: urlBase + "/Customers/:id/account",
+        /**
+         * @ngdoc method
+         * @name lbServices.Customer#prototype$__findById__identities
+         * @methodOf lbServices.Customer
+         *
+         * @description
+         *
+         * Find a related item by id for identities.
+         *
+         * @param {Object=} parameters Request parameters.
+         *
+         *  - `id` – `{*}` - User id
+         *
+         *  - `fk` – `{*}` - Foreign key for identities
+         *
+         * @param {function(Object,Object)=} successCb
+         *   Success callback with two arguments: `value`, `responseHeaders`.
+         *
+         * @param {function(Object)=} errorCb Error callback with one argument:
+         *   `httpResponse`.
+         *
+         * @returns {Object} An empty reference that will be
+         *   populated with the actual data once the response is returned
+         *   from the server.
+         *
+         * <em>
+         * (The remote method definition does not provide any description.
+         * This usually means the response is a `Customer` object.)
+         * </em>
+         */
+        "prototype$__findById__identities": {
+          params: {
+          'fk': '@fk'
+          },
+          url: urlBase + "/Customers/:id/identities/:fk",
           method: "GET"
         },
 
-        // INTERNAL. Use Customer.groups.findById() instead.
-        "prototype$__findById__groups": {
+        /**
+         * @ngdoc method
+         * @name lbServices.Customer#prototype$__destroyById__identities
+         * @methodOf lbServices.Customer
+         *
+         * @description
+         *
+         * Delete a related item by id for identities.
+         *
+         * @param {Object=} parameters Request parameters.
+         *
+         *  - `id` – `{*}` - User id
+         *
+         *  - `fk` – `{*}` - Foreign key for identities
+         *
+         * @param {function(Object,Object)=} successCb
+         *   Success callback with two arguments: `value`, `responseHeaders`.
+         *
+         * @param {function(Object)=} errorCb Error callback with one argument:
+         *   `httpResponse`.
+         *
+         * @returns {Object} An empty reference that will be
+         *   populated with the actual data once the response is returned
+         *   from the server.
+         *
+         * This method returns no data.
+         */
+        "prototype$__destroyById__identities": {
           params: {
           'fk': '@fk'
           },
-          url: urlBase + "/Customers/:id/groups/:fk",
+          url: urlBase + "/Customers/:id/identities/:fk",
+          method: "DELETE"
+        },
+
+        /**
+         * @ngdoc method
+         * @name lbServices.Customer#prototype$__updateById__identities
+         * @methodOf lbServices.Customer
+         *
+         * @description
+         *
+         * Update a related item by id for identities.
+         *
+         * @param {Object=} parameters Request parameters.
+         *
+         *  - `id` – `{*}` - User id
+         *
+         *  - `fk` – `{*}` - Foreign key for identities
+         *
+         * @param {Object} postData Request data.
+         *
+         * This method expects a subset of model properties as request parameters.
+         *
+         * @param {function(Object,Object)=} successCb
+         *   Success callback with two arguments: `value`, `responseHeaders`.
+         *
+         * @param {function(Object)=} errorCb Error callback with one argument:
+         *   `httpResponse`.
+         *
+         * @returns {Object} An empty reference that will be
+         *   populated with the actual data once the response is returned
+         *   from the server.
+         *
+         * <em>
+         * (The remote method definition does not provide any description.
+         * This usually means the response is a `Customer` object.)
+         * </em>
+         */
+        "prototype$__updateById__identities": {
+          params: {
+          'fk': '@fk'
+          },
+          url: urlBase + "/Customers/:id/identities/:fk",
+          method: "PUT"
+        },
+
+        // INTERNAL. Use Customer.receipts() instead.
+        "prototype$__get__receipts": {
+          isArray: true,
+          url: urlBase + "/Customers/:id/receipts",
           method: "GET"
         },
 
-        // INTERNAL. Use Customer.groups.destroyById() instead.
-        "prototype$__destroyById__groups": {
-          params: {
-          'fk': '@fk'
-          },
-          url: urlBase + "/Customers/:id/groups/:fk",
+        // INTERNAL. Use Customer.receipts.create() instead.
+        "prototype$__create__receipts": {
+          url: urlBase + "/Customers/:id/receipts",
+          method: "POST"
+        },
+
+        // INTERNAL. Use Customer.receipts.destroyAll() instead.
+        "prototype$__delete__receipts": {
+          url: urlBase + "/Customers/:id/receipts",
           method: "DELETE"
         },
 
-        // INTERNAL. Use Customer.groups.updateById() instead.
-        "prototype$__updateById__groups": {
-          params: {
-          'fk': '@fk'
-          },
-          url: urlBase + "/Customers/:id/groups/:fk",
-          method: "PUT"
+        // INTERNAL. Use Customer.receipts.count() instead.
+        "prototype$__count__receipts": {
+          url: urlBase + "/Customers/:id/receipts/count",
+          method: "GET"
         },
 
-        // INTERNAL. Use Customer.groups.link() instead.
-        "prototype$__link__groups": {
-          params: {
-          'fk': '@fk'
-          },
-          url: urlBase + "/Customers/:id/groups/rel/:fk",
-          method: "PUT"
+        // INTERNAL. Use Customer.groups() instead.
+        "prototype$__get__groups": {
+          isArray: true,
+          url: urlBase + "/Customers/:id/groups",
+          method: "GET"
         },
 
-        // INTERNAL. Use Customer.groups.unlink() instead.
-        "prototype$__unlink__groups": {
-          params: {
-          'fk': '@fk'
-          },
-          url: urlBase + "/Customers/:id/groups/rel/:fk",
+        // INTERNAL. Use Customer.groups.create() instead.
+        "prototype$__create__groups": {
+          url: urlBase + "/Customers/:id/groups",
+          method: "POST"
+        },
+
+        // INTERNAL. Use Customer.groups.destroyAll() instead.
+        "prototype$__delete__groups": {
+          url: urlBase + "/Customers/:id/groups",
           method: "DELETE"
         },
 
-        // INTERNAL. Use Customer.groups.exists() instead.
-        "prototype$__exists__groups": {
-          params: {
-          'fk': '@fk'
-          },
-          url: urlBase + "/Customers/:id/groups/rel/:fk",
-          method: "HEAD"
+        // INTERNAL. Use Customer.groups.count() instead.
+        "prototype$__count__groups": {
+          url: urlBase + "/Customers/:id/groups/count",
+          method: "GET"
         },
 
         /**
@@ -12251,53 +12531,277 @@ module.factory(
           method: "GET"
         },
 
-        // INTERNAL. Use Customer.receipts() instead.
-        "prototype$__get__receipts": {
+        /**
+         * @ngdoc method
+         * @name lbServices.Customer#prototype$__get__credentials
+         * @methodOf lbServices.Customer
+         *
+         * @description
+         *
+         * Queries credentials of Customer.
+         *
+         * @param {Object=} parameters Request parameters.
+         *
+         *  - `id` – `{*}` - User id
+         *
+         *  - `filter` – `{object=}` - 
+         *
+         * @param {function(Array.<Object>,Object)=} successCb
+         *   Success callback with two arguments: `value`, `responseHeaders`.
+         *
+         * @param {function(Object)=} errorCb Error callback with one argument:
+         *   `httpResponse`.
+         *
+         * @returns {Array.<Object>} An empty reference that will be
+         *   populated with the actual data once the response is returned
+         *   from the server.
+         *
+         * <em>
+         * (The remote method definition does not provide any description.
+         * This usually means the response is a `Customer` object.)
+         * </em>
+         */
+        "prototype$__get__credentials": {
           isArray: true,
-          url: urlBase + "/Customers/:id/receipts",
+          url: urlBase + "/Customers/:id/credentials",
           method: "GET"
         },
 
-        // INTERNAL. Use Customer.receipts.create() instead.
-        "prototype$__create__receipts": {
-          url: urlBase + "/Customers/:id/receipts",
+        /**
+         * @ngdoc method
+         * @name lbServices.Customer#prototype$__create__credentials
+         * @methodOf lbServices.Customer
+         *
+         * @description
+         *
+         * Creates a new instance in credentials of this model.
+         *
+         * @param {Object=} parameters Request parameters.
+         *
+         *  - `id` – `{*}` - User id
+         *
+         * @param {Object} postData Request data.
+         *
+         * This method expects a subset of model properties as request parameters.
+         *
+         * @param {function(Object,Object)=} successCb
+         *   Success callback with two arguments: `value`, `responseHeaders`.
+         *
+         * @param {function(Object)=} errorCb Error callback with one argument:
+         *   `httpResponse`.
+         *
+         * @returns {Object} An empty reference that will be
+         *   populated with the actual data once the response is returned
+         *   from the server.
+         *
+         * <em>
+         * (The remote method definition does not provide any description.
+         * This usually means the response is a `Customer` object.)
+         * </em>
+         */
+        "prototype$__create__credentials": {
+          url: urlBase + "/Customers/:id/credentials",
           method: "POST"
         },
 
-        // INTERNAL. Use Customer.receipts.destroyAll() instead.
-        "prototype$__delete__receipts": {
-          url: urlBase + "/Customers/:id/receipts",
+        /**
+         * @ngdoc method
+         * @name lbServices.Customer#prototype$__delete__credentials
+         * @methodOf lbServices.Customer
+         *
+         * @description
+         *
+         * Deletes all credentials of this model.
+         *
+         * @param {Object=} parameters Request parameters.
+         *
+         *  - `id` – `{*}` - User id
+         *
+         * @param {function(Object,Object)=} successCb
+         *   Success callback with two arguments: `value`, `responseHeaders`.
+         *
+         * @param {function(Object)=} errorCb Error callback with one argument:
+         *   `httpResponse`.
+         *
+         * @returns {Object} An empty reference that will be
+         *   populated with the actual data once the response is returned
+         *   from the server.
+         *
+         * This method returns no data.
+         */
+        "prototype$__delete__credentials": {
+          url: urlBase + "/Customers/:id/credentials",
           method: "DELETE"
         },
 
-        // INTERNAL. Use Customer.receipts.count() instead.
-        "prototype$__count__receipts": {
-          url: urlBase + "/Customers/:id/receipts/count",
+        /**
+         * @ngdoc method
+         * @name lbServices.Customer#prototype$__count__credentials
+         * @methodOf lbServices.Customer
+         *
+         * @description
+         *
+         * Counts credentials of Customer.
+         *
+         * @param {Object=} parameters Request parameters.
+         *
+         *  - `id` – `{*}` - User id
+         *
+         *  - `where` – `{object=}` - Criteria to match model instances
+         *
+         * @param {function(Object,Object)=} successCb
+         *   Success callback with two arguments: `value`, `responseHeaders`.
+         *
+         * @param {function(Object)=} errorCb Error callback with one argument:
+         *   `httpResponse`.
+         *
+         * @returns {Object} An empty reference that will be
+         *   populated with the actual data once the response is returned
+         *   from the server.
+         *
+         * Data properties:
+         *
+         *  - `count` – `{number=}` - 
+         */
+        "prototype$__count__credentials": {
+          url: urlBase + "/Customers/:id/credentials/count",
           method: "GET"
         },
 
-        // INTERNAL. Use Customer.groups() instead.
-        "prototype$__get__groups": {
+        /**
+         * @ngdoc method
+         * @name lbServices.Customer#prototype$__get__identities
+         * @methodOf lbServices.Customer
+         *
+         * @description
+         *
+         * Queries identities of Customer.
+         *
+         * @param {Object=} parameters Request parameters.
+         *
+         *  - `id` – `{*}` - User id
+         *
+         *  - `filter` – `{object=}` - 
+         *
+         * @param {function(Array.<Object>,Object)=} successCb
+         *   Success callback with two arguments: `value`, `responseHeaders`.
+         *
+         * @param {function(Object)=} errorCb Error callback with one argument:
+         *   `httpResponse`.
+         *
+         * @returns {Array.<Object>} An empty reference that will be
+         *   populated with the actual data once the response is returned
+         *   from the server.
+         *
+         * <em>
+         * (The remote method definition does not provide any description.
+         * This usually means the response is a `Customer` object.)
+         * </em>
+         */
+        "prototype$__get__identities": {
           isArray: true,
-          url: urlBase + "/Customers/:id/groups",
+          url: urlBase + "/Customers/:id/identities",
           method: "GET"
         },
 
-        // INTERNAL. Use Customer.groups.create() instead.
-        "prototype$__create__groups": {
-          url: urlBase + "/Customers/:id/groups",
+        /**
+         * @ngdoc method
+         * @name lbServices.Customer#prototype$__create__identities
+         * @methodOf lbServices.Customer
+         *
+         * @description
+         *
+         * Creates a new instance in identities of this model.
+         *
+         * @param {Object=} parameters Request parameters.
+         *
+         *  - `id` – `{*}` - User id
+         *
+         * @param {Object} postData Request data.
+         *
+         * This method expects a subset of model properties as request parameters.
+         *
+         * @param {function(Object,Object)=} successCb
+         *   Success callback with two arguments: `value`, `responseHeaders`.
+         *
+         * @param {function(Object)=} errorCb Error callback with one argument:
+         *   `httpResponse`.
+         *
+         * @returns {Object} An empty reference that will be
+         *   populated with the actual data once the response is returned
+         *   from the server.
+         *
+         * <em>
+         * (The remote method definition does not provide any description.
+         * This usually means the response is a `Customer` object.)
+         * </em>
+         */
+        "prototype$__create__identities": {
+          url: urlBase + "/Customers/:id/identities",
           method: "POST"
         },
 
-        // INTERNAL. Use Customer.groups.destroyAll() instead.
-        "prototype$__delete__groups": {
-          url: urlBase + "/Customers/:id/groups",
+        /**
+         * @ngdoc method
+         * @name lbServices.Customer#prototype$__delete__identities
+         * @methodOf lbServices.Customer
+         *
+         * @description
+         *
+         * Deletes all identities of this model.
+         *
+         * @param {Object=} parameters Request parameters.
+         *
+         *  - `id` – `{*}` - User id
+         *
+         * @param {function(Object,Object)=} successCb
+         *   Success callback with two arguments: `value`, `responseHeaders`.
+         *
+         * @param {function(Object)=} errorCb Error callback with one argument:
+         *   `httpResponse`.
+         *
+         * @returns {Object} An empty reference that will be
+         *   populated with the actual data once the response is returned
+         *   from the server.
+         *
+         * This method returns no data.
+         */
+        "prototype$__delete__identities": {
+          url: urlBase + "/Customers/:id/identities",
           method: "DELETE"
         },
 
-        // INTERNAL. Use Customer.groups.count() instead.
-        "prototype$__count__groups": {
-          url: urlBase + "/Customers/:id/groups/count",
+        /**
+         * @ngdoc method
+         * @name lbServices.Customer#prototype$__count__identities
+         * @methodOf lbServices.Customer
+         *
+         * @description
+         *
+         * Counts identities of Customer.
+         *
+         * @param {Object=} parameters Request parameters.
+         *
+         *  - `id` – `{*}` - User id
+         *
+         *  - `where` – `{object=}` - Criteria to match model instances
+         *
+         * @param {function(Object,Object)=} successCb
+         *   Success callback with two arguments: `value`, `responseHeaders`.
+         *
+         * @param {function(Object)=} errorCb Error callback with one argument:
+         *   `httpResponse`.
+         *
+         * @returns {Object} An empty reference that will be
+         *   populated with the actual data once the response is returned
+         *   from the server.
+         *
+         * Data properties:
+         *
+         *  - `count` – `{number=}` - 
+         */
+        "prototype$__count__identities": {
+          url: urlBase + "/Customers/:id/identities/count",
           method: "GET"
         },
 

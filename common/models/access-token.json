@@ -1,0 +1,16 @@
+{
+  "name": "accessToken",
+  "plural": "accessTokens",
+  "base": "AccessToken",
+  "properties": {},
+  "validations": [],
+  "relations": {
+    "Customer": {
+      "type": "belongsTo",
+      "model": "Customer",
+      "foreignKey": "customerId"
+    }
+  },
+  "acls": [],
+  "methods": []
+}

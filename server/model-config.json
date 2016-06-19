@@ -93,11 +93,29 @@
     "$promise": {},
     "$resolved": true
   },
+  "Email": {
+    "dataSource": "EmailDataSources"
+  },
   "Customer": {
     "dataSource": "MongoDB",
     "public": true,
+    "options": {
+        "emailVerificationRequired": true
+    },
     "$promise": {},
     "$resolved": true
+  },
+  "accessToken": {
+    "dataSource": "MongoDB",
+    "public": false
+  },
+  "CustomerCredential": {
+    "dataSource": "MongoDB",
+    "public": false
+  },
+  "CustomerIdentity": {
+    "dataSource": "MongoDB",
+    "public": false
   },
   "Category": {
     "dataSource": "MongoDB",

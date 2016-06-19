@@ -2,8 +2,8 @@
  
 angular
  .module('app', [
-    'ui.router',
     'lbServices',
+    'ui.router',
     'angularFileUpload',
     'btorfs.multiselect',
     'oc.lazyLoad',

@@ -1,22 +1,39 @@
 {
   "db": {
     "name": "db",
-    "connector": "memory"
+    "connector": "memory",
+    "file": "db.json"
   },
-      "storage": {
-    "name": "storage",
-    "connector": "loopback-component-storage",
-    "provider": "filesystem",
-    "root": "./server/storage"
+    "storage": {
+        "name": "storage",
+        "connector": "loopback-component-storage",
+        "provider": "filesystem",
+        "root": "./server/storage"
   },
-  "MongoDB": {
-    "host": "ds011872.mlab.com",
-    "port": 11872,
-    "url": "",
-    "database": "receipt-keeper",
-    "password": "receiptkeeper",
-    "name": "MongoDB",
-    "user": "receiptmongo",
-    "connector": "mongodb"
-  }
+    "MongoDB": {
+        "host": "localhost",
+        "port": 27017,
+        "url": "mongodb://localhost:27017/receipt_keeper",
+        "database": "receipt_keeper",
+        "name": "MongoDB",
+        "user": "admin",
+        "password": "aa030506",
+        "connector": "mongodb"
+  },
+    "EmailDataSources": {
+        "connector": "mail",
+        "transports": [{
+            "type": "smtp",
+            "host": "smtp.gmail.com",
+            "secure": false,
+            "port": 587,
+            "tls": {
+                "rejectUnauthorized": false
+            },
+            "auth": {
+                "user": "cch.choi@gmail.com",
+                "pass": "066zPMbzB3me"
+            }
+        }]
+    }
 }
