@@ -204,7 +204,7 @@
         $scope.receipt.categoryId = $scope.selectedCategory.id;
       }
       $scope.receipt.storeId = $scope.selectedStore.id;  
-      $scope.receipt.date = $scope.receipt.date = $('#datetimepicker1 input').prop('value');    
+      $scope.receipt.date = $scope.receipt.date = $('#receiptdate input').prop('value');    
       $scope.receipt
       .$save()
       .then(function(){
@@ -365,7 +365,7 @@
     };
 
     $scope.submitForm = function() {
-      $scope.receipt.date = $scope.receipt.date = $('#datetimepicker1 input').prop('value');
+      $scope.receipt.date = $scope.receipt.date = $('#receiptdate input').prop('value');
       //console.log("receipt.date: ", $scope.receipt.date);
       var userId = $rootScope.currentUser.id;
       Receipt
