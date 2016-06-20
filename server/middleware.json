@@ -6,10 +6,14 @@
   },
   "initial": {
     "compression": {
-        "params": { "threshold": 512 }
+      "params": {
+        "threshold": 512
+      }
     },
     "morgan": {
-        "params": ["dev", { "buffer": true } ]
+      "params": [
+        "dev"
+      ]
     },
     "cors": {
       "params": {

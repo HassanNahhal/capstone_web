@@ -30,9 +30,10 @@ angular
        });
     }
 
-    function register(email, password) {
+    function register(username, email, password) {
       return User
         .create({
+         username: username,
          email: email,
          password: password
        })

@@ -4,36 +4,39 @@
     "connector": "memory",
     "file": "db.json"
   },
-    "storage": {
-        "name": "storage",
-        "connector": "loopback-component-storage",
-        "provider": "filesystem",
-        "root": "./server/storage"
+  "MongoDB": {
+    "host": "localhost",
+    "port": 27017,
+    "url": "mongodb://localhost:27017/receipt_keeper",
+    "database": "receipt_keeper",
+    "password": "pass",
+    "name": "MongoDB",
+    "user": "admin",
+    "connector": "mongodb"
   },
-    "MongoDB": {
-        "host": "localhost",
-        "port": 27017,
-        "url": "mongodb://localhost:27017/receipt_keeper",
-        "database": "receipt_keeper",
-        "name": "MongoDB",
-        "user": "admin",
-        "password": "aa030506",
-        "connector": "mongodb"
+  "storage": {
+    "name": "storage",
+    "connector": "loopback-component-storage",
+    "provider": "filesystem",
+    "root": "./server/storage"
   },
-    "EmailDataSources": {
-        "connector": "mail",
-        "transports": [{
-            "type": "smtp",
-            "host": "smtp.gmail.com",
-            "secure": false,
-            "port": 587,
-            "tls": {
-                "rejectUnauthorized": false
-            },
-            "auth": {
-                "user": "cch.choi@gmail.com",
-                "pass": "066zPMbzB3me"
-            }
-        }]
-    }
+  "EmailDataSources": {
+    "name": "EmailDataSources",
+    "connector": "mail",
+    "transports": [
+      {
+        "type": "smtp",
+        "host": "smtp.gmail.com",
+        "secure": false,
+        "port": 587,
+        "tls": {
+          "rejectUnauthorized": false
+        },
+        "auth": {
+          "user": "heomonica@gmail.com",
+          "pass": "qOJ99Fe092iX"
+        }
+      }
+    ]
+  }
 }

@@ -31,11 +31,11 @@ angular
       function($scope, AuthService, $state, $rootScope) {
     $scope.user = {};
     $scope.register = function() {      
-      AuthService.register($scope.user.email, $scope.user.password)
+      AuthService.register($scope.user.username, $scope.user.email, $scope.user.password)
         .then(function(user) {
           //below code is temporary for test need to adopt athentication correctly later
           $rootScope.currentUser = user;
-          $state.transitionTo('Profile');
+          $state.transitionTo('Login');
         });
     };
   }])

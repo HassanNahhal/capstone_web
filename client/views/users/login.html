@@ -23,10 +23,26 @@
           Password is required.
         </span>  
         </div>       
-     
       </div>
-      <button class="btn btn-primary" ng-disabled="loginForm.$invalid">Log In</button>
+      <button class="btn btn-primary" id="loginBtn" ng-disabled="loginForm.$invalid">Log In</button>
     </form>    
-    <p><br>New user? <a href="/#/Signup">Sign up now!</a>
-  </div>
+</div>
+<div class="col-md-6 col-md-offset-3">
+    <form name="loginForm" ng-submit="login()">
+        <div class="row">
+            <p>New user? <a href="/#/Signup">Sign up now!</a></p> 
+        </div>
+        <div class="signup-or-separator">
+            <h6 class="text">or</h6>
+            <hr>
+        </div>
+        <div class="row">
+            <p>Login with SNS account</p>
+            <img ng-src="" 
+                    alt="{{image.name}}"  
+                   ng-click="openInNewWindow($index)"
+                   ng-show="nowShowing==$index">
+        </div>
+    </form>
+</div>
 </div>

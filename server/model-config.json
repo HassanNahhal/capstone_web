@@ -1,17 +1,9 @@
 {
   "_meta": {
     "sources": [
-      "loopback/common/models",
-      "loopback/server/models",
       "../common/models",
-      "./models"
-    ],
-    "mixins": [
-      "loopback/common/mixins",
-      "loopback/server/mixins",
-      "../node_modules/loopback-ds-timestamp-mixin",
-      "../common/mixins",
-      "./mixins"
+      "./models",
+      "../node_modules/loopback-component-passport/lib/models"
     ]
   },
   "User": {
@@ -100,7 +92,7 @@
     "dataSource": "MongoDB",
     "public": true,
     "options": {
-        "emailVerificationRequired": true
+      "emailVerificationRequired": true
     },
     "$promise": {},
     "$resolved": true
@@ -130,5 +122,11 @@
   "GroupType": {
     "dataSource": "MongoDB",
     "public": true
+  },
+  "AccountType": {
+    "dataSource": "MongoDB",
+    "public": true,
+    "$promise": {},
+    "$resolved": true
   }
 }

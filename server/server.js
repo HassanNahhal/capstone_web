@@ -1,9 +1,9 @@
 var loopback = require('loopback');
 var boot = require('loopback-boot');
-var morgan = require('morgan');
-
-
+var path = require('path');
+var fs = require('fs');
 var app = module.exports = loopback();
+var config = require('./config.json');
 
 // Passport configurators..
 var loopbackPassport = require('loopback-component-passport');
@@ -37,12 +37,10 @@ try {
   process.exit(1); // fatal
 }
 
-// Set up the /favicon.ico
-app.use(loopback.favicon());
-
-//for logging
-app.use(morgan('dev'));
-
+// Setup the view engine (jade)
+var path = require('path');
+app.set('views', path.join(__dirname, 'views'));
+app.set('view engine', 'ejs');
 
 // boot scripts mount components like REST API
 // Bootstrap the application, configure models, datasources and middleware.
@@ -64,14 +62,12 @@ app.middleware('auth', loopback.token({
   model: app.models.accessToken
 }));
 
-app.middleware('session:before', loopback.cookieParser(app.get('cookieSecret')));
-app.middleware('session', loopback.session({
+app.middleware('session:before', require('cookie-parser')(app.get('cookieSecret')));
+app.middleware('session', require('express-session')({
   secret: app.get('cookieSecret'),
   saveUninitialized: true,
   resave: true
 }));
-
-//~~~~~~~~~~~Passport Configuration~~~~~~~~~~~~~~~~~~
 passportConfigurator.init();
 
 // We need flash messages to see passport errors
@@ -90,11 +86,24 @@ for (var s in config) {
   passportConfigurator.configureProvider(s, c);
 }
 
+var ensureLoggedIn = require('connect-ensure-login').ensureLoggedIn;
+
+app.get('/auth/account', ensureLoggedIn('/login'), function (req, res, next) {
+  res.jon({id: response.user.id,
+            tokenId: response.id,
+            email: email
+          });
+});
+
+//After email verification, it will be redirected 
+app.get('/verified', function(req, res) {
+    res.render('pages/verified');
+});
 // -- Mount static files here--
 // All static middleware should be registered at the end, as all requests
 // passing the static middleware are hitting the file system
 // Example:
-var path = require('path');
+
 app.use(loopback.static(path.resolve(__dirname, '../client')));
 
 // Requests that get this far won't be handled

@@ -32,7 +32,7 @@
       "type": "belongsTo",
       "model": "GroupType",
       "foreignKey": "groupTypeId"
-    }   
+    }
   },
   "acls": [],
   "methods": {}

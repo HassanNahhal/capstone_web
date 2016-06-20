@@ -6,7 +6,7 @@
     "passwordField": "password",
     "authPath": "/auth/local",
     "successRedirect": "/auth/account",
-    "failureRedirect": "/local",
+    "failureRedirect": "/login",
     "failureFlash": true
   },
   "facebook-login": {
