@@ -30,6 +30,8 @@ angular.module('app')
     $scope.selectedMonth;
     $scope.thisYear = (new Date()).getFullYear();
     $scope.twelvemonths = [
+        {name: '1 month', number: 0},
+        {name: '2 months', number: 1},
         {name: '3 months', number: 2},
         {name: '4 months', number: 3},
         {name: '5 months', number: 4},
@@ -42,7 +44,7 @@ angular.module('app')
         {name: '12 months', number: 11}
     ];
     // default range of month is 6 months
-    $scope.selectedMonth = $scope.twelvemonths[3];
+    $scope.selectedMonth = $scope.twelvemonths[5];
 
     // Get recent 6 months receipts
     var ONE_MONTH = 30 * 24 * 60 * 60 * 1000; // Month in milliseconds
@@ -52,6 +54,17 @@ angular.module('app')
                     ];
 
     $scope.monthConsumptionChart = function(rangeOfMonth){
+
+        // Set start first day of month
+        var date = new Date();
+        var year = date.getFullYear();
+        var month = date.getMonth();
+        var startDate;  // Every month first
+        if(month - rangeOfMonth >= 0){
+            startDate = new Date(year, month-rangeOfMonth, 1);
+        }else{
+            startDate = new Date(year -1 , 12 + (month-rangeOfMonth), 1);
+        }
 
         totals = [];
         dates = []; 
@@ -86,7 +99,7 @@ angular.module('app')
                 ],                
                 where: {and: [
                     {customerId: userId},
-                    {date: {gt: Date.now() - ONE_MONTH * rangeOfMonth}}
+                    {date: {gt: startDate}}
                     //{date: {gt: new Date('2015-12-31T00:00:00.000Z')}}
                 ]}
             }
@@ -122,6 +135,14 @@ angular.module('app')
             } 
 
             // Get the monthly total as range of months for last year
+            // Set the range first day of start and end month
+            var endDate;
+            if(month + 1 > 11){
+                endDate = new Date(year, 0, 1);
+            }else{
+                endDate = new Date(year -1, month + 1, 1);
+            }
+            startDate = new Date(startDate.getFullYear() -1, startDate.getMonth(), 1);
             Receipt.find({
                 filter: {
                     order: 'date DESC', 
@@ -139,8 +160,8 @@ angular.module('app')
                     where: {and: [
                         {customerId: userId}, 
                         {and: [
-                                {date: {lt: Date.now() - ONE_MONTH * 11}},
-                                {date: {gt: Date.now() - ONE_MONTH * (12 + rangeOfMonth)}}
+                                {date: {lt: endDate}},
+                                {date: {gt: startDate}}
                             ]
                         }                        
                         //{date: {gt: new Date('2015-12-31T00:00:00.000Z')}}
@@ -173,7 +194,13 @@ angular.module('app')
                         monthTotal = 0;
                     }
                 }
-
+                //When laste year's monthly data is less than this year, set total 0    
+                if(monthlyTotalLastYear.length < monthlyTotal.length){
+                    var count = monthlyTotal.length - monthlyTotalLastYear.length;
+                    for(var i = 0 ; i < count ; i++){
+                        monthlyTotalLastYear.splice(0,0,0);
+                    }
+                }
                 // Bar Chart comparion of monthly of this year and last year
                 $scope.bar = {
                     labels: monthNameFromDate,
