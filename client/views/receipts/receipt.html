@@ -1,0 +1,83 @@
+<h1>View Receipt</h1>
+<hr>
+
+ 		<div class="row">
+		  	<label class="col-sm-2 control-label">Store name</label>
+		  	<div class="col-sm-4">
+		  		{{selectedStore.name}}
+		  	</div>
+		  	<label class="col-sm-2 control-label" style="text-align:right;">Category</label>
+		  	<div class="col-sm-4">
+		  		{{selectedCategory.name}}
+		  	</div>		  	
+	  	</div>
+		<!-- date picker -->
+	    <div class="row">
+	    	<label class="col-sm-2 control-label">Date</label>
+	        <div class='col-sm-4'>
+	        	{{(receipt.date).substring(0,10)}}
+	        </div>
+			<div class="col-sm-6">
+				
+			</div>
+			<div class="col-sm-offset-2 col-sm-10">
+			<hr style="margin-top:0">
+			</div>
+		</div>	  	
+		<div ng-repeat="item in items">
+			<div class="row">
+			  	<label class="col-sm-2 control-label">Item name</label>
+			  	<div class="col-sm-4">
+			  		{{item.name}}
+			    </div>
+
+			    <label class="col-sm-2 control-label" style="text-align:right;">Item price</label>
+			    <div class="col-sm-4">
+			    	{{item.price}}
+			    </div>
+		    </div>
+		</div>
+
+		<div class="row">
+			<label class="col-sm-2 control-label">Total Price</label>
+			<div class="col-sm-4">
+				{{receipt.total}}
+			</div>
+			<label class="col-sm-2 control-label" style="text-align:right;"># Items</label>
+			<div class="col-sm-4">
+				{{receipt.numberOfItem}}    
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-sm-offset-2 col-sm-10">
+			<hr style="margin-top:0">
+			</div>		
+			<label class="col-sm-2 control-label">Comment</label>
+			<div class="col-sm-4">
+				{{receipt.comment}} 
+			</div>
+
+			<div class="col-sm-2 control-label" style="text-align:right;">
+		  	<label>Tag</label>
+		  	<br><span style="text-align:center;">{{selTagCount}}</span>
+		  	</div>
+		  	<div class="col-sm-4">
+		  		<ul>
+		  			<li ng-repeat="tag in selectedTags">{{tag.name}}</li>
+		  		</ul>
+		  	</div>
+		</div>
+		<hr>
+		<div class="row">
+			<div  class="col-sm-offset-2 col-sm-2">
+				<button class="btn btn-default"  ui-sref="Receipts">Receipts</button>
+			</div>
+			<div  class="col-sm-2">
+				<button class="btn btn-default" ui-sref="editReceipt({id: receipt.id})">Edit Receipt</button>
+			</div>	
+			<div ng-show="receipt.id" class="col-sm-offset-2 col-sm-4">
+				<button class="btn btn-danger" ng-click="delReceipt()">Delete Receipt</button>
+			</div>						
+		</div>
+	
+

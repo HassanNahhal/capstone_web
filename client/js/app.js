@@ -131,6 +131,12 @@ angular
 			controller: 'AddReceiptController',
 			authenticate: true
 		})
+		.state('viewReceipt', {
+			url: '/viewReceipt/:id',
+			templateUrl: 'views/receipts/receipt.html',
+			controller: 'ViewReceiptController',
+			authenticate: true
+		})		
 		.state('editReceipt', {
 			url: '/editReceipt/:id',
 			templateUrl: 'views/receipts/receipt-form.html',

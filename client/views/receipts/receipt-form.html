@@ -110,8 +110,11 @@
 			</div>
 			<div  class="col-sm-2">
 				<button class="btn btn-default"  ui-sref="Receipts">Receipts</button>
-			</div>	
-			<div ng-show="receipt.id" class="col-sm-offset-2 col-sm-4">
+			</div>
+			<div ng-show="receipt.id" class="col-sm-2">
+				<button class="btn btn-default" ui-sref="viewReceipt({id: receipt.id})">View Receipt</button>
+			</div>				
+			<div ng-show="receipt.id" class="col-sm-2">
 				<button class="btn btn-danger" ng-click="delReceipt()">Delete Receipt</button>
 			</div>						
 		</div>

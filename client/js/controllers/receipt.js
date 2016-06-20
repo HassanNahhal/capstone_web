@@ -38,6 +38,122 @@
         });
     });
   }])
+  .controller('ViewReceiptController', ['$scope', 'Receipt', '$state',
+      '$stateParams', 'Store', 'Item', 'ReceiptItem', 'Category', 
+      'Tag', 'ReceiptTag', '$location', 
+      function($scope, Receipt, $state, $stateParams, Store, 
+        Item, ReceiptItem, Category, Tag, ReceiptTag, $location) {
+
+    $scope.stores = [];
+    $scope.selectedStore;
+    $scope.selectedCategory;
+    $scope.receipt = {};
+    $scope.tags = [];  
+    $scope.selectedTags=[];
+    $scope.selTagCount;   
+
+    Store
+      .find({
+        fields: {
+          id: true,
+          name: true
+        }
+      })
+      .$promise
+      .then(function(stores){
+        var stores = $scope.stores = stores;
+        Receipt.findById({
+         id: $stateParams.id, 
+         filter: { 
+          include: ['items', 'tags']
+          }
+        })
+        .$promise
+        .then(function(receipt){ 
+          console.log("receipt: ", receipt);   
+          // Set Items related to Receipt       
+          $scope.receipt = receipt; 
+          $scope.items = receipt.items;
+ 
+          // Set selected Store
+          var selectedStoreIndex = stores.map(function(store){ 
+            return store.id;
+          }).indexOf($scope.receipt.storeId);
+          $scope.selectedStore = stores[selectedStoreIndex];   
+          // Call to get the categories from selected store
+          $scope.getStoreCategories($scope.selectedStore.id, $scope.receipt.categoryId);
+
+          // Get categories by selected store using Service named 'ReceiptService'
+          //ReceiptService.getCategoriesBySelectedStore($scope.selectedStore.id, $scope.receipt.categoryId);                  
+
+          // Set Tag related to Receipt
+          Tag.find()
+            .$promise
+            .then(function(tags){
+              $scope.tags = tags;
+              if(receipt.tags.length > 0){
+                for(var i=0 ; i < receipt.tags.length ; i++){
+                  var selectedTagIndex = tags.map(function(tag){ 
+                    return tag.id;
+                  }).indexOf(receipt.tags[i].id);
+                  $scope.selectedTags.push(tags[selectedTagIndex]);
+                }
+                $scope.selTagCount=receipt.tags.length + " selected";
+              }
+            });
+
+        });
+    });
+ 
+    /*
+    // Get categories by selected store using Service named 'ReceiptService'
+    $scope.changeStore = function(){
+      console.log("changeStore: ", $scope.selectedStore.name);
+      ReceiptService.getCategoriesBySelectedStore($scope.selectedStore.id, null);
+    } 
+    */
+
+    // Get the Store's categories using Controller's function (but duplicated)
+    $scope.getStoreCategories = function(storeId, categoryId){      
+      if(storeId === null){
+        storeId = $scope.selectedStore.id;
+        //console.log("changeStoreId: ", storeId);
+      }
+      Store.findById({ 
+        id: storeId,
+        fields: {
+          id: true,
+          name: true
+        },            
+        filter: {
+          include: 'categories'
+        }
+      })
+      .$promise
+      .then(function(store){
+        var categories = $scope.categories = store.categories;
+        //console.log("store.categories: ", store.categories);
+        if(store.categories.length > 0 && categoryId != null){
+            var selectedCategoryIndex = categories.map(function(category){ 
+              return category.id;
+            }).indexOf(categoryId);
+            $scope.selectedCategory = categories[selectedCategoryIndex];
+        }
+      });
+    } 
+
+    $scope.countSelectedTag = function(){
+      $scope.selTagCount=$scope.selectedTags.length + " selected";
+    }
+
+    // Delete selected receipt
+    $scope.delReceipt = function(){
+      if(confirm("Are you sure?")){
+           $location.path('/deleteReceipt/' + $scope.receipt.id);    
+      }    
+    }
+      
+  }])  
   .controller('EditReceiptController', ['$scope', 'Receipt', '$state',
       '$stateParams', 'Store', 'Item', 'ReceiptItem', 'Category', 
       'Tag', 'ReceiptTag', '$location', 

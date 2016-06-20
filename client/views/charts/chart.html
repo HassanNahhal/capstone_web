@@ -7,15 +7,14 @@
 <div class="row">
     <div class="col-lg-6 col-sm-6" id="line-chart">
         <div class="panel panel-default">
-
             <div class="panel-heading">
                 {{thisYear}} Monthly consumption 
                 <select class="form-inline"  
                     style="width:100px;margin-bottom:0;margin-left:10px;"  
                     ng-change="changRangeOfMonth()" 
-                    ng-model="selectedMonth">
+                    ng-model="selectedMonth"
+                    ng-options="month.name for month in twelvemonths">
                     <option value="" disabled selected hidden>Range...</option>
-                    <option ng-repeat="x in twelvemonths" value="{{x}}">{{x}} months</option>
                 </select>                
             </div>
             <div class="panel-body">
@@ -37,7 +36,7 @@
 <div class="row">
     <div class="col-lg-6 col-sm-4" id="doughnut-chart">
         <div class="panel panel-default">
-            <div class="panel-heading">Category (June 2016)</div>
+            <div class="panel-heading">Category ({{thisYear}}/ {{selectedMonth.name}})</div>
             <div class="panel-body">
             <canvas id="doughnut" class="chart chart-doughnut chart-xs" data="donut.data" labels="donut.labels"></canvas>
             </div>
@@ -45,7 +44,7 @@
     </div>
     <div class="col-lg-6 col-sm-4" id="pie-chart">
         <div class="panel panel-default">
-            <div class="panel-heading">Store (June 2016)</div>
+            <div class="panel-heading">Store ({{thisYear}}/ {{selectedMonth.name}})</div>
             <div class="panel-body">
                 <canvas id="pie" class="chart chart-pie chart-xs" data="pie.data" labels="pie.labels"></canvas>
             </div>
@@ -53,7 +52,7 @@
     </div>
     <div class="col-lg-6 col-sm-4" id="doughnut1-chart">
       <div class="panel panel-default">
-        <div class="panel-heading">Tag (June 2016)</div>
+        <div class="panel-heading">Tag ({{thisYear}}/ {{selectedMonth.name}})</div>
         <div class="panel-body">
           <canvas id="doughnut1" class="chart chart-doughnut chart-xs" data="donut1.data" labels="donut1.labels"></canvas>
         </div>
@@ -62,7 +61,7 @@
 
     <div class="col-lg-6 col-sm-6" id="radar-chart">
         <div class="panel panel-default">
-            <div class="panel-heading">Consumption Type (June 2016)</div>
+            <div class="panel-heading">Consumption Type (Dummy data)</div>
             <div class="panel-body">
                 <canvas id="area" class="chart chart-radar" data="radar.data" labels="radar.labels" click="onClick"></canvas>
             </div>
@@ -81,7 +80,7 @@
 
     <div class="col-lg-6 col-sm-6" id="base-chart">
         <div class="panel panel-default"> 
-            <div class="panel-heading">Dynamic Chart</div>
+            <div class="panel-heading">Dynamic Chart (Dummy data)</div>
             <div class="panel-body">
             <canvas id="base" class="chart chart-base" chart-type="dynamic.type" data="dynamic.data" labels="dynamic.labels" legend="false"></canvas>
             </div>
