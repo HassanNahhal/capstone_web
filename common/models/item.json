@@ -20,6 +20,12 @@
     "unit": {
       "type": "number",
       "required": false
+    },
+    "customerId": {
+      "type": "string",
+      "id": false,
+      "required": false,
+      "index": false
     }
   },
   "validations": [],

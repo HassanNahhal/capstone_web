@@ -6,8 +6,7 @@
 		  	<label class="col-sm-2 control-label">Store name</label>
 		  	<div class="col-sm-4">
 		  		<select  class="form-control" 
-		  			ng-change="getStoreCategories(null, null)" 
-		  			ng-disabled="isDisabled"  
+		  			ng-change="getStoreCategories(null, null)"   
 		  			ng-model="selectedStore" 
 		  			ng-options="store as store.name for store in stores">
 	  				<option value="" disabled selected hidden>Plase Choose...</option>
@@ -58,7 +57,7 @@
 			    <div class="col-sm-4">
 			    	<div class="input-group">
 			    	<div class="input-group-addon">$</div>
-			    	<input type="number" class="form-control" ng-change="changePrice()" 
+			    	<input type="number" class="form-control" ng-change="changeItemPrice()" 
 			    		name="itemprice" placeholder="Item price" ng-model="item.price">
 			    	</div>
 			    </div>
@@ -71,14 +70,14 @@
 		    	<div class="input-group">
 			    	<div class="input-group-addon">$</div>
 					<input type="number" class="form-control" name="total" 
-						placeholder="Total Price" disabled="true" 
+						placeholder="Total Price" ng-change="changeTotal()"  
 						ng-model="receipt.total">  
 				</div>
 			</div>
 			<label class="col-sm-2 control-label" style="text-align:right;"># Items</label>
 			<div class="col-sm-4">
 				<input type="number" class="form-control" name="numberOfItem" 
-					placeholder="Number of item" disabled="true"
+					placeholder="Number of item" 
 					ng-model="receipt.numberOfItem">      
 			</div>
 		</div>
@@ -106,7 +105,7 @@
 		<div class="row">
 			<div  class="col-sm-offset-2 col-sm-2">
 				<button class="btn btn-primary"  ng-click="submitForm()"
-					ng-disabled="delDisabled">{{ action }} Receipt</button>
+					ng-disabled="isDisabled">{{ action }} Receipt</button>
 			</div>
 			<div  class="col-sm-2">
 				<button class="btn btn-default"  ui-sref="Receipts">Receipts</button>

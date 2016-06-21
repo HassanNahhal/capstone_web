@@ -9,6 +9,12 @@
   "properties": {
     "name": {
       "type": "string"
+    },
+    "customerId": {
+      "type": "string",
+      "id": false,
+      "required": false,
+      "index": false
     }
   },
   "validations": [],
@@ -18,7 +24,7 @@
       "model": "Store",
       "foreignKey": "",
       "through": "StoreCategory"
-    }
+    }   
   },
   "acls": [],
   "methods": {}

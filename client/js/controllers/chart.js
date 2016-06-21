@@ -106,7 +106,6 @@ angular.module('app')
         })
         .$promise
         .then(function(receipts){
-
             // Line and Bar charts
             totals = receipts.map(function(receipt){ return receipt.total});
             dates = receipts.map(function(receipt){ return receipt.date});

@@ -12,6 +12,12 @@
     "name": {
       "type": "string",
       "required": true
+    },
+    "customerId": {
+      "type": "string",
+      "id": false,
+      "required": false,
+      "index": false
     }
   },
   "validations": [],

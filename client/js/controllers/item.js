@@ -2,9 +2,14 @@
 
  angular
   .module('app')
-  .controller('AllItemsController', [
-  	'$scope', 'Item', function($scope, Item) {
-	    $scope.items = Item.find();
+  .controller('AllItemsController', ['$scope', 'Item', '$rootScope', 
+    function($scope, Item, $rootScope) {
+	    $scope.items = Item.find({
+              filter: {
+                order: 'updatedAt DESC',
+                where: {customerId: $rootScope.currentUser.id}
+              }
+            });
   }])
   .controller('DeleteItemController', ['$scope', 'Item', '$state',
       '$stateParams', function($scope, Item, $state, $stateParams) {

@@ -3,14 +3,16 @@
  angular
   .module('app')
   .controller('AddCategoryController', ['$scope', 'Category',
-      '$state', function($scope, Category, $state) {
+      '$state', '$rootScope', 
+      function($scope, Category, $state, $rootScope) {
     $scope.action = 'Add';
     $scope.category = {};
 
     $scope.submitForm = function() {
       Category
         .create({
-          name: $scope.categoryname
+          name: $scope.categoryname,
+          customerId: $rootScope.currentUser.id
         })
         .$promise
         .then(function() {
@@ -19,8 +21,14 @@
     };
   }])  
   .controller('AllCategoriesController', [
-  	'$scope', 'Category', function($scope, Category) {
-	    $scope.categorys = Category.find({filter: {order: 'name ASC'}});
+  	'$scope', 'Category', '$rootScope', function($scope, Category, $rootScope) {
+	    $scope.categorys = Category
+                    .find({
+                      filter: {
+                        order: 'name ASC',
+                        where: {customerId: $rootScope.currentUser.id}
+                      }
+                    });
   }])
   .controller('EditCategoryController', ['$scope', 'Category', '$stateParams', '$state', '$location',  
       function($scope, Category, $stateParams, $state, $location) {

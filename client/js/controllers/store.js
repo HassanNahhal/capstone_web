@@ -3,8 +3,8 @@
  angular
   .module('app')
   .controller('AddStoreController', ['$scope', 'Store', 'Category', 
-    '$state', 'StoreCategory', 
-    function($scope, Store, Category, $state, StoreCategory) {
+    '$state', 'StoreCategory', '$rootScope',
+    function($scope, Store, Category, $state, StoreCategory, $rootScope) {
 
     $scope.action = 'Add';
     $scope.categories = [];
@@ -13,7 +13,12 @@
     $scope.store = {};     
 
     Category
-      .find()
+      .find({
+        filter: {
+          order: 'name ASC',
+          where: {customerId: $rootScope.currentUser.id}
+        }
+      })
       .$promise
       .then(function(categories){
         $scope.categories = categories;
@@ -26,7 +31,8 @@
     $scope.submitForm = function() {
       Store
         .create({
-          name: $scope.store.name
+          name: $scope.store.name,
+          customerId: $rootScope.currentUser.id
         }, function(store) {
           for(var i = 0 ; i < $scope.selectedCategory.length ; i++){
             StoreCategory
@@ -40,8 +46,8 @@
     };
   }])  
   .controller('EditStoreController', ['$scope', 'Store', 'Category', 
-      '$stateParams', '$state', 'StoreCategory', '$rootScope', '$location',  
-      function($scope, Store, Category, $stateParams, $state, StoreCategory, $rootScope, $location) {
+      '$stateParams', '$state', 'StoreCategory', '$location', '$rootScope', 
+      function($scope, Store, Category, $stateParams, $state, StoreCategory, $location, $rootScope) {
 
 	    $scope.action = 'Edit';
       $scope.categories = [];
@@ -50,7 +56,12 @@
       $scope.selCategoryCount;
       $scope.store = {};        
 
-      Category.find()
+      Category.find({
+        filter: {
+          order: 'name ASC',
+          where: {customerId: $rootScope.currentUser.id}
+        }
+      })
       .$promise
       .then(function(categories){
           var categories = $scope.categories = categories;
@@ -60,7 +71,8 @@
               include: {
                 relation: 'categories',
                 scope:{
-                  fields: ['id', 'name']
+                  fields: ['id', 'name', 'customerId'],
+                  where: {customerId: $rootScope.currentUser.id}                  
                 }
               }
             }
@@ -113,22 +125,24 @@
 	    };
   }])
   .controller('AllStoresController', [
-    '$scope', 'Store', function($scope, Store) {
-      $scope.stores = Store.find({filter: {order: 'name ASC'}});
+    '$scope', 'Store', '$rootScope', function($scope, Store, $rootScope) {
+      $scope.stores = Store
+            .find({
+              filter: {
+                order: 'name ASC',
+                where: {customerId: $rootScope.currentUser.id}
+              }
+            });
   }])
-  .controller('DeleteStoreController', ['$scope', 'Store', '$state',
-      '$stateParams', '$rootScope', function($scope, Store, $state, $stateParams, $rootScope) {
-
-    $rootScope.$on("CallThisMethod", function(event, data){
-      $scope.submitForm();
-    }); 
+  .controller('DeleteStoreController', ['$scope', 'Store', '$state', '$stateParams', 
+      function($scope, Store, $state, $stateParams) {
 
     $scope.submitForm = function(){
      Store.categories.destroyAll(
       {id: $stateParams.id},
       function(res){
         Store
-          .destroyById({id: $stateParams.id})
+          .destroyById({ id: $stateParams.id })
           .$promise
           .then(function(){
             $state.go('Stores'); 

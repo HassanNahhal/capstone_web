@@ -3,14 +3,15 @@
  angular
   .module('app')
   .controller('AddTagController', ['$scope', 'Tag',
-      '$state', function($scope, Tag, $state) {
+      '$state', '$rootScope', function($scope, Tag, $state, $rootScope) {
     $scope.action = 'Add';
     $scope.tag = {};
 
     $scope.submitForm = function() {
       Tag
         .create({
-          name: $scope.tagname
+          name: $scope.tagname,
+          customerId: $rootScope.currentUser.id
         })
         .$promise
         .then(function() {
@@ -19,15 +20,21 @@
     };
   }])  
   .controller('AllTagsController', [
-  	'$scope', 'Tag', function($scope, Tag) {
-	    $scope.tags = Tag.find({filter: {order: 'name ASC'}});
+  	'$scope', 'Tag', '$rootScope', function($scope, Tag, $rootScope) {
+	    $scope.tags = Tag.find({
+        filter: {
+          order: 'name ASC',
+          where: {customerId: $rootScope.currentUser.id}
+        }
+      });
   }])
-  .controller('EditTagController', ['$scope', 'Tag', '$stateParams', '$state', '$location', 
+  .controller('EditTagController', ['$scope', 'Tag', '$stateParams', '$state', '$location',  
       function($scope, Tag, $stateParams, $state, $location) {
 		    $scope.action = 'Edit';
         $scope.tag = {};
 
-        Tag.findById({ id: $stateParams.id }).$promise
+        Tag.findById({ id: $stateParams.id })
+        .$promise
         .then(function(tag){
           $scope.tag = tag;
           $scope.tagname = tag.name;
