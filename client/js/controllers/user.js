@@ -5,8 +5,8 @@
 
 angular
   .module('app')
-  .controller('AuthLoginController', ['$scope', 'AuthService', '$state', '$http',
-      function($scope, AuthService, $state, $http) {
+  .controller('AuthLoginController', ['$scope', 'AuthService', '$state',
+      function($scope, AuthService, $state) {
     $scope.user = {};
     $scope.login = function() {
       AuthService.login($scope.user.email, $scope.user.password)
@@ -19,7 +19,13 @@ angular
     };
           
     $scope.localLogin = function() {
-        $http.post("http://localhost:3000/auth/local", JSON.stringify({email: $scope.user.email, password:$scope.user.password}))
+       AuthService.localLogin($scope.user.email, $scope.user.password)
+        .then(function() {
+          //Check the invalid user, and giving a message will need
+          $state.go('Dashboard');
+        }, function (err) {
+          console.log("error at login");
+      });
     };
           
     $scope.facebookLogin = function() {

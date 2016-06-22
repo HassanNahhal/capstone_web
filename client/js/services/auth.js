@@ -5,11 +5,23 @@
 
 angular
   .module('app')
-  .factory('AuthService', ['Customer', '$q', '$rootScope',    
+  .factory('AuthService', ['Customer', '$q', '$rootScope', '$http',
     function(User, $q, $rootScope, $http) {
         
-    function localLogin(email, assword, $http) {
-        return $http.post("http://0.0.0.0:3000/auth/local",JSON.stringify({email: email, password:password}));
+    function localLogin(email, assword) {
+        console.log("localLogin: "+ JSON.stringify({email: $scope.user.email, password:$scope.user.password}));
+        return $http.post("http://localhost:3000/auth/local", JSON.stringify({username: "infomat", password:$scope.user.password}))
+        .$promise
+        .then(function(response) {         
+          $rootScope.currentUser = {
+            id: response.user.id,
+            tokenId: response.id,
+            email: email,
+            username: response.user.username
+          };
+          console.log("currentUser: ", $rootScope.currentUser);
+          sessionStorage.setItem('access_token', JSON.stringify($rootScope.currentUser));
+        });
     }
         
     function facebookLogin(email, assword) {
