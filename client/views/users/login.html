@@ -2,47 +2,46 @@
 
 <div class="row">
   <div class="col-md-6 col-md-offset-3">
-    <form name="loginForm" ng-submit="login()">
-      <div class="form-group" 
-          ng-class="{'has-error': (loginForm.email.$invalid && loginForm.email.$dirty) ||
-                    (loginForm.password.$invalid && loginForm.password.$dirty) }">
+        <form name="loginForm" ng-submit="localLogin()">
+          <div class="form-group" 
+              ng-class="{'has-error': (loginForm.email.$invalid && loginForm.email.$dirty) ||
+                        (loginForm.password.$invalid && loginForm.password.$dirty) }">
 
-        <div class="row">
-        <label for="email">Email</label>
-        <input class="form-control" type="email" required 
-            ng-model="user.email" name="email" placeholder="Email">
-        <span class="has-error control-label" ng-show="loginForm.email.$invalid && loginForm.email.$dirty">
-          Email is required.
-        </span>      
-        </div>
-        <div class="row">
-        <label for="password">Password</label>      
-        <input class="form-control" type="password" required 
-            ng-model="user.password" name="password" placeholder="Password"> 
-        <span class="has-error control-label" ng-show="loginForm.password.$invalid && loginForm.password.$dirty">
-          Password is required.
-        </span>  
-        </div>       
-      </div>
-      <button class="btn btn-primary" id="loginBtn" ng-disabled="loginForm.$invalid">Log In</button>
-    </form>    
-</div>
-<div class="col-md-6 col-md-offset-3">
-    <form name="loginForm" ng-submit="login()">
-        <div class="row">
-            <p>New user? <a href="/#/Signup">Sign up now!</a></p> 
-        </div>
-        <div class="signup-or-separator">
-            <h6 class="text">or</h6>
-            <hr>
-        </div>
-        <div class="row">
-            <p>Login with SNS account</p>
-            <img ng-src="" 
-                    alt="{{image.name}}"  
-                   ng-click="openInNewWindow($index)"
-                   ng-show="nowShowing==$index">
-        </div>
-    </form>
-</div>
+            <div class="row">
+            <label for="email">Email</label>
+            <input class="form-control" type="email" required 
+                ng-model="user.email" name="email" placeholder="Email">
+            <span class="has-error control-label" ng-show="loginForm.email.$invalid && loginForm.email.$dirty">
+              Email is required.
+            </span>      
+            </div>
+            <div class="row">
+            <label for="password">Password</label>      
+            <input class="form-control" type="password" required 
+                ng-model="user.password" name="password" placeholder="Password"> 
+            <span class="has-error control-label" ng-show="loginForm.password.$invalid && loginForm.password.$dirty">
+              Password is required.
+            </span>  
+            </div>       
+          </div>
+          <button class="btn btn-primary" id="loginBtn" ng-disabled="loginForm.$invalid">Log In</button>
+        </form>    
+    </div>
+    <div class="col-md-6 col-md-offset-3">
+            <div class="row">
+                <p>New user? <a href="/#/Signup">Sign up now!</a></p> 
+            </div>
+            <div class="signup-or-separator">
+                <h6 class="text">or</h6>
+                <hr>
+            </div>
+             <form name="login3rdPartyForm" ng-submit="login()">
+                <div class="row">
+                    <p>Login with SNS account</p>
+                    <p><a href='/auth/facebook'>Facebook</a></p>
+                    <p><a href='/auth/google'>Google</a></p>
+                    <p><a href='/auth/twitter'>Twitter</a></p>
+                </div>
+            </form>
+    </div>
 </div>

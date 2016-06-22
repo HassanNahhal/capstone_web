@@ -40,8 +40,8 @@
     "provider": "google",
     "module": "passport-google-oauth",
     "strategy": "OAuth2Strategy",
-    "clientID": "{google-client-id-1}",
-    "clientSecret": "{google-client-secret-1}",
+    "clientID": "863398962441-k45qff00hqobl00rqvovp41fvibgbs43.apps.googleusercontent.com",
+    "clientSecret": "hEorRbDcnla1E72FnXR8_1-3",
     "callbackURL": "/auth/google/callback",
     "authPath": "/auth/google",
     "callbackPath": "/auth/google/callback",
@@ -59,8 +59,8 @@
     "callbackPath": "/auth/twitter/callback",
     "successRedirect": "/auth/account",
     "failureRedirect": "/login",
-    "consumerKey": "{twitter-consumer-key}",
-    "consumerSecret": "{twitter-consumer-secret}",
+    "consumerKey": "FZ54c1jyGvYzgZEfyXKx7mQ31",
+    "consumerSecret": "5c0Gclpsq1h5DwRwy6b4ZmEVHXetWuDYLrZTsqSbYMC7QYOP2a",
     "failureFlash": true
   },
  

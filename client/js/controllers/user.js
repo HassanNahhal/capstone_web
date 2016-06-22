@@ -5,27 +5,49 @@
 
 angular
   .module('app')
-  .controller('AuthLoginController', ['$scope', 'AuthService', '$state',
-      function($scope, AuthService, $state) {
+  .controller('AuthLoginController', ['$scope', 'AuthService', '$state', '$http',
+      function($scope, AuthService, $state, $http) {
     $scope.user = {};
     $scope.login = function() {
       AuthService.login($scope.user.email, $scope.user.password)
         .then(function() {
           //Check the invalid user, and giving a message will need
           $state.go('Dashboard');
-        });
+        }, function (err) {
+          console.log("error at login");
+      });
     };
+          
+    $scope.localLogin = function() {
+        $http.post("http://localhost:3000/auth/local", JSON.stringify({email: $scope.user.email, password:$scope.user.password}))
+    };
+          
+    $scope.facebookLogin = function() {
+      AuthService.facebookLogin()
+        .then(function() {
+          //Check the invalid user, and giving a message will need
+          $state.go('Dashboard');
+        }, function (err) {
+          console.log("error at login");
+      });
+         
+    };
+        
+
   }])
-  .controller('AuthLogoutController', ['$scope', 'AuthService', '$state', '$rootScope', 
-      function($scope, AuthService, $state, $rootScope) {
+  .controller('AuthLogoutController', ['$scope', 'AuthService', '$state', 
+      function($scope, AuthService, $state) {
       AuthService.logout()
         .then(function() {
           $state.go('Home');
       });
-      //Below code is not correct, just for test of logout
+          
+      //********* Below code is not correct, just for test of logout
       //which needed to modify with correct authentication
-      $rootScope.currentUser = null;   
-      $state.go('Home');        
+      //$rootScope.currentUser = null; 
+      //sessionStorage.removeItem('access_token');  
+      //$state.go('Home');   
+      //********* Above code is not correct, just for test of logout     
   }])
   .controller('SignUpController', ['$scope', 'AuthService', '$state', '$rootScope', 
       function($scope, AuthService, $state, $rootScope) {

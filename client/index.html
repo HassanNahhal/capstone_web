@@ -11,9 +11,10 @@
   <link href="vendor/bootstrap/dist/css/bootstrap.css" rel="stylesheet">
   <link href="css/style.css" rel="stylesheet">
   <link href="css/custom.css" rel="stylesheet">
-  <link href="css/sb-admin-2.css" rel="stylesheet">
+  <link href="css/user-chart-dashboard.css" rel="stylesheet">
   <link href="vendor/angular-loading-bar/build/loading-bar.min.css" rel="stylesheet">
   <link href="css/font-awesome.min.css" rel="stylesheet">  
+
  
    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -22,10 +23,9 @@
      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
    <![endif]-->
     <!--<script src="http://code.angularjs.org/1.4.4/angular.min.js"></script>-->
-    
+
     <script src="vendor/angular/angular.min.js"></script>
     <script src="vendor/angular-file-upload/angular-file-upload.min.js"></script>
-
  </head>
 <body ng-app="app">
 
@@ -50,7 +50,7 @@
             Home
           </a>
         </li>
-        <li class="dropdown">
+        <li ng-show="currentUser" class="dropdown">
           <a href="" class="dropdown-toggle" data-toggle="dropdown">
             <i class="glyphicon glyphicon-inbox"></i>
             Config <b class="caret"></b>
@@ -83,13 +83,13 @@
             </li> 
           </ul>
         </li>
-        <li>
+        <li ng-show="currentUser">
           <a href="/#/chart">
             <i class="glyphicon glyphicon-equalizer"></i> 
             Chart
           </a>
         </li>         
-        <li>
+        <li ng-show="currentUser">
           <a href="/#/Customers">
             <i class="glyphicon glyphicon-dashboard"></i>
             Admin
@@ -123,7 +123,7 @@
             </li>  
             <li ng-show="currentUser">
               <a href="/#/Dashboard">
-                <i class="glyphicon glyphicon-equalizer"></i> 
+                <i class="glyphicon glyphicon-dashboard"></i> 
                 Dashboard
               </a>
             </li>  
@@ -183,10 +183,11 @@
   <script src="vendor/jquery/dist/jquery.js"></script>
   <script src="vendor/bootstrap/dist/js/bootstrap.js"></script>
   <script src="vendor/angular/angular.js"></script>  
+
   <script src="vendor/angular-resource/angular-resource.js"></script>
   <script src="vendor/angular-ui-router/release/angular-ui-router.js"></script>
   <script src="vendor/angular-bootstrap-multiselect/dist/angular-bootstrap-multiselect.min.js"></script>
-  
+
   <!-- date picker -->
   <script type="text/javascript" src="vendor/moment/min/moment.min.js"></script>
   <script type="text/javascript" src="vendor/eonasdan-bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js"></script>
@@ -196,6 +197,7 @@
   <script src="js/services/lb-services.js"></script> 
   <script src="js/services/auth.js"></script>
   <script src="js/services/receipt-services.js"></script>
+
   <script src="js/controllers/store.js"></script>
   <script src="js/controllers/receipt.js"></script>
   <script src="js/controllers/item.js"></script>

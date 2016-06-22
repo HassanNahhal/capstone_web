@@ -3,19 +3,23 @@
  angular
   .module('app')
   .controller('AllReceiptsController', [
-  	'$scope', 'Receipt', '$rootScope', function($scope, Receipt, $rootScope) {
+  	'$scope', 'Receipt', '$rootScope',   
+     function($scope, Receipt, $rootScope) {
+
       var userId = $rootScope.currentUser.id;
+
 	    $scope.receipts = Receipt.find({
         filter: {
-          order: 'createdAt DESC', 
+          order: 'date DESC', 
           include: ['store', 'customer'],
           where: {customerId: userId}
         }
       });
-      console.log($scope.receipts);
+      
   }])
   .controller('DeleteReceiptController', ['$scope', 'Receipt', '$state',
-      '$stateParams', function($scope, Receipt, $state, $stateParams) {
+      '$stateParams',  
+      function($scope, Receipt, $state, $stateParams) {
 
     Receipt.items.destroyAll(
       {id: $stateParams.id}, 
@@ -34,22 +38,19 @@
         });
     });
   }])
-  .controller('EditReceiptController', ['$scope', 'Receipt', '$state',
+  .controller('ViewReceiptController', ['$scope', 'Receipt', '$state',
       '$stateParams', 'Store', 'Item', 'ReceiptItem', 'Category', 
-      'ReceiptService', 'Tag', 'ReceiptTag', 
+      'Tag', 'ReceiptTag', '$location', 
       function($scope, Receipt, $state, $stateParams, Store, 
-        Item, ReceiptItem, Category, ReceiptService, Tag, ReceiptTag) {
+        Item, ReceiptItem, Category, Tag, ReceiptTag, $location) {
 
-    $scope.action = 'Edit';
     $scope.stores = [];
     $scope.selectedStore;
     $scope.selectedCategory;
     $scope.receipt = {};
-    $scope.isDisabled = false;
-    $scope.delDisabled = true;
     $scope.tags = [];  
     $scope.selectedTags=[];
-    $scope.selTagCount;    
+    $scope.selTagCount;   
 
     Store
       .find({
@@ -73,9 +74,7 @@
           // Set Items related to Receipt       
           $scope.receipt = receipt; 
           $scope.items = receipt.items;
-          if($scope.items.length > 0){ 
-            $scope.delDisabled = false;
-          };
+ 
           // Set selected Store
           var selectedStoreIndex = stores.map(function(store){ 
             return store.id;
@@ -83,6 +82,7 @@
           $scope.selectedStore = stores[selectedStoreIndex];   
           // Call to get the categories from selected store
           $scope.getStoreCategories($scope.selectedStore.id, $scope.receipt.categoryId);
+
           // Get categories by selected store using Service named 'ReceiptService'
           //ReceiptService.getCategoriesBySelectedStore($scope.selectedStore.id, $scope.receipt.categoryId);                  
 
@@ -117,7 +117,129 @@
     $scope.getStoreCategories = function(storeId, categoryId){      
       if(storeId === null){
         storeId = $scope.selectedStore.id;
-        console.log("changeStoreId: ", storeId);
+        //console.log("changeStoreId: ", storeId);
+      }
+      Store.findById({ 
+        id: storeId,
+        fields: {
+          id: true,
+          name: true
+        },            
+        filter: {
+          include: 'categories'
+        }
+      })
+      .$promise
+      .then(function(store){
+        var categories = $scope.categories = store.categories;
+        //console.log("store.categories: ", store.categories);
+        if(store.categories.length > 0 && categoryId != null){
+            var selectedCategoryIndex = categories.map(function(category){ 
+              return category.id;
+            }).indexOf(categoryId);
+            $scope.selectedCategory = categories[selectedCategoryIndex];
+        }
+      });
+    } 
+
+    $scope.countSelectedTag = function(){
+      $scope.selTagCount=$scope.selectedTags.length + " selected";
+    }
+
+    // Delete selected receipt
+    $scope.delReceipt = function(){
+      if(confirm("Are you sure?")){
+           $location.path('/deleteReceipt/' + $scope.receipt.id);    
+      }    
+    }
+      
+  }])  
+  .controller('EditReceiptController', ['$scope', 'Receipt', '$state',
+      '$stateParams', 'Store', 'Item', 'ReceiptItem', 'Category', 
+      'Tag', 'ReceiptTag', '$location', 
+      function($scope, Receipt, $state, $stateParams, Store, 
+        Item, ReceiptItem, Category, Tag, ReceiptTag, $location) {   
+
+    $scope.action = 'Edit';
+    $scope.stores = [];
+    $scope.selectedStore;
+    $scope.selectedCategory;
+    $scope.receipt = {};
+    $scope.isDisabled = false;
+    $scope.delDisabled = true;
+    $scope.tags = [];  
+    $scope.selectedTags=[];
+    $scope.selTagCount;   
+
+    Store
+      .find({
+        fields: {
+          id: true,
+          name: true
+        }
+      })
+      .$promise
+      .then(function(stores){
+        //console.log("Stores: ", stores);
+        var stores = $scope.stores = stores;
+        Receipt.findById({
+         id: $stateParams.id, 
+         filter: { 
+          include: ['items', 'tags']
+          }
+        })
+        .$promise
+        .then(function(receipt){ 
+          console.log("receipt: ", receipt);   
+          // Set Items related to Receipt       
+          $scope.receipt = receipt; 
+          $scope.items = receipt.items;
+          if($scope.items.length > 0){ 
+            $scope.delDisabled = false;
+          };
+          // Set selected Store
+          var selectedStoreIndex = stores.map(function(store){ 
+            return store.id;
+          }).indexOf($scope.receipt.storeId);
+          $scope.selectedStore = stores[selectedStoreIndex];   
+          // Call to get the categories from selected store
+          $scope.getStoreCategories($scope.selectedStore.id, $scope.receipt.categoryId);
+
+          // Get categories by selected store using Service named 'ReceiptService'
+          //ReceiptService.getCategoriesBySelectedStore($scope.selectedStore.id, $scope.receipt.categoryId);                  
+
+          // Set Tag related to Receipt
+          Tag.find()
+            .$promise
+            .then(function(tags){
+              $scope.tags = tags;
+              if(receipt.tags.length > 0){
+                for(var i=0 ; i < receipt.tags.length ; i++){
+                  var selectedTagIndex = tags.map(function(tag){ 
+                    return tag.id;
+                  }).indexOf(receipt.tags[i].id);
+                  $scope.selectedTags.push(tags[selectedTagIndex]);
+                }
+                $scope.selTagCount=receipt.tags.length + " selected";
+              }
+            });
+
+        });
+    });
+ 
+    /*
+    // Get categories by selected store using Service named 'ReceiptService'
+    $scope.changeStore = function(){
+      console.log("changeStore: ", $scope.selectedStore.name);
+      ReceiptService.getCategoriesBySelectedStore($scope.selectedStore.id, null);
+    } 
+    */
+
+    // Get the Store's categories using Controller's function (but duplicated)
+    $scope.getStoreCategories = function(storeId, categoryId){      
+      if(storeId === null){
+        storeId = $scope.selectedStore.id;
+        //console.log("changeStoreId: ", storeId);
       }
       Store.findById({ 
         id: storeId,
@@ -147,13 +269,16 @@
     }
 
     $scope.openCalendar = function(){
-      $('#datetimepicker1').datetimepicker();
-      $scope.receipt.date = $('#datetimepicker1 input').prop('value');
+      $('#receiptdate').datetimepicker({
+        format: 'YYYY-MM-DD',
+        useCurrent: false
+      });
+      $scope.receipt.date = $('#receiptdate input').prop('value');
     }
 
     $scope.items = [];        
     $scope.newItem = function () {
-      console.log("go into newItem");
+      //console.log("go into newItem");
       // Add Item input form
       $scope.items.push({});
       if($scope.items.length > 0){ 
@@ -162,7 +287,7 @@
     };
 
     $scope.spliceItem = function(){
-      console.log("Item length: ", $scope.items.length);
+      //console.log("Item length: ", $scope.items.length);
       $scope.items.splice($scope.items.length-1, 1);
       if($scope.items.length < 1){ 
         $scope.delDisabled = true;
@@ -184,13 +309,20 @@
       };   
     };
 
+    // Delete selected receipt
+    $scope.delReceipt = function(){
+      if(confirm("Are you sure?")){
+           $location.path('/deleteReceipt/' + $scope.receipt.id);    
+      }    
+    }
+
     $scope.submitForm = function() {
       //console.log("selectedCategory: ", $scope.selectedCategory);
       if($scope.selectedCategory !== undefined){
         $scope.receipt.categoryId = $scope.selectedCategory.id;
       }
       $scope.receipt.storeId = $scope.selectedStore.id;  
-      $scope.receipt.date = $scope.receipt.date = $('#datetimepicker1 input').prop('value');    
+      $scope.receipt.date = $scope.receipt.date = $('#receiptdate input').prop('value');    
       $scope.receipt
       .$save()
       .then(function(){
@@ -199,6 +331,8 @@
           {id: $stateParams.id}, 
           function(){
             for(var i=0 ; i < $scope.items.length ; i++){
+              // need to fix, only new Item create
+              // already exist Item should be update
               Item
               .create({
                 name: $scope.items[i].name,
@@ -234,9 +368,11 @@
     };
   }])
   .controller('AddReceiptController', ['$scope', '$state', 'Receipt', 'Store', 
-      'Category', 'Item', 'ReceiptItem', 'ReceiptService', 'Tag', 'ReceiptTag', '$rootScope',   
+      'Category', 'Item', 'ReceiptItem', 'Tag', 
+      'ReceiptTag', '$rootScope',  
       function($scope, $state, Receipt, Store, Category, 
-        Item, ReceiptItem, ReceiptService, Tag, ReceiptTag, $rootScope) {
+        Item, ReceiptItem, Tag, ReceiptTag, 
+        $rootScope) {             
 
     $scope.action = 'Add';
     $scope.stores = [];
@@ -247,7 +383,7 @@
     $scope.delDisabled = true;
     $scope.tags = [];  
     $scope.selectedTags=[];
-    $scope.selTagCount;     
+    $scope.selTagCount; 
 
     Store
       .find()
@@ -306,8 +442,11 @@
     }
 
     $scope.openCalendar = function(){
-      $('#datetimepicker1').datetimepicker();
-      $scope.receipt.date = $('#datetimepicker1 input').prop('value');
+      $('#receiptdate').datetimepicker({
+        format: 'YYYY-MM-DD',
+        useCurrent: true
+      });
+      $scope.receipt.date = $('#receiptdate input').prop('value');
     }
 
     $scope.items = [];        
@@ -346,7 +485,7 @@
     };
 
     $scope.submitForm = function() {
-      $scope.receipt.date = $scope.receipt.date = $('#datetimepicker1 input').prop('value');
+      $scope.receipt.date = $scope.receipt.date = $('#receiptdate input').prop('value');
       //console.log("receipt.date: ", $scope.receipt.date);
       var userId = $rootScope.currentUser.id;
       Receipt

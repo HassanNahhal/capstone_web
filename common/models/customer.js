@@ -23,8 +23,8 @@ module.exports = function(Customer) {
       user: Customer
     };
  
-    Customer.verify(options, function(err, response, next) {
-      if (err) return this.next(err);
+    Customer.verify(options, function(err, response) {
+      if (err) return next(err);
  
       console.log('> verification email sent:', response);
  

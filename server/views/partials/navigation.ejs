@@ -1,0 +1,34 @@
+  <nav class="navbar navbar-fixed-top navbar-inverse" role="navigation">
+  <div class="container">
+    <a id="logo" href="/">
+      <i class="glyphicon glyphicon-list-alt" style="margin-right:5px;"></i>
+      RECEIPT KEEPER
+    </a>
+    <div class="navbar-header">
+      <a class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </a>
+    </div>    
+    <nav class="navbar-collapse collapse">
+      <ul class="nav navbar-nav navbar-right">
+            <li class="divider"></li>
+            <li ng-hide="currentUser">
+              <a rel="nofollow" href="api/Customers/Login">
+                <i class="glyphicon glyphicon-log-in"></i> 
+                Log in
+              </a>
+            </li>
+            <li ng-show="currentUser">
+              <a rel="nofollow" href="/#/Logout">
+                <i class="glyphicon glyphicon-log-out"></i> 
+                Log out
+              </a>
+            </li>            
+          </ul>
+        </li>
+      </ul>
+    </nav>
+  </div>
+  </nav>

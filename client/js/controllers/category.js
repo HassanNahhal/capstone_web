@@ -22,14 +22,22 @@
   	'$scope', 'Category', function($scope, Category) {
 	    $scope.categorys = Category.find({filter: {order: 'name ASC'}});
   }])
-  .controller('EditCategoryController', ['$scope', 'Category', '$stateParams', '$state', 
-      function($scope, Category, $stateParams, $state) {
+  .controller('EditCategoryController', ['$scope', 'Category', '$stateParams', '$state', '$location',  
+      function($scope, Category, $stateParams, $state, $location) {
 		    $scope.action = 'Edit';
+        $scope.category = {};
 
         Category.findById({ id: $stateParams.id }).$promise
         .then(function(category){
           $scope.categoryname = category.name;
+          $scope.category = category;
         });  
+
+        $scope.deleteCategory = function(){
+          if(confirm("Are you sure?")){
+               $location.path('/deleteCategory/' + $scope.category.id);    
+          }         
+        }        
 
 		    $scope.submitForm = function() {				
           Category.prototype$updateAttributes(

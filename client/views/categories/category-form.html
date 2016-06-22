@@ -1,14 +1,29 @@
 <h1>{{ action }} Category</h1>
 <hr>
-<form name="categoryForm" novalidate ng-submit="submitForm()">
-  <div class="form-group" ng-class="{'has-error': categoryForm.name.$invalid && categoryForm.name.$dirty}">
-    <input type="text" class="form-control" name="name" 
-        placeholder="Name" autocomplete="off" required
-        ng-model="categoryname">
-    <span class="has-error control-label" ng-show="categoryForm.name.$invalid && categoryForm.name.$dirty">
-      Category name is required.
-    </span>        
-  </div>
-  <button class="btn btn-default" ng-disabled="categoryForm.$invalid">{{ action }} Category</button>
+<form name="categoryForm" novalidate>
+	<div class="form-group" ng-class="{'has-error': categoryForm.name.$invalid && categoryForm.name.$dirty}">
+		<div class="row">
+			<label class="col-sm-3 control-label">Category name</label>
+			<div  class="col-sm-9">
+				<input type="text" class="form-control" name="name" 
+				    placeholder="Name" autocomplete="off" required
+				    ng-model="categoryname">
+				<span class="has-error control-label" ng-show="categoryForm.name.$invalid && categoryForm.name.$dirty">
+				  Category name is required.
+				</span> 
+			</div>
+		</div>     
+		<div class="row">
+			<div class="col-sm-3">
+			<button class="btn btn-primary" ng-disabled="categoryForm.$invalid" ng-click="submitForm()">{{ action }} Category</button>
+			</div>
+			<div  class="col-sm-3">
+				<button class="btn btn-default"  ui-sref="Categories">Categories</button>
+			</div>	
+			<div ng-show="category.id" class="col-sm-offset-3 col-sm-3">
+				<button class="btn btn-danger" ng-disabled="categoryForm.$invalid" ng-click="deleteCategory()">Delete Category</button>
+			</div> 
+		</div> 
+	</div>		
 </form>
 <hr>

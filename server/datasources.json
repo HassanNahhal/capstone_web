@@ -4,6 +4,25 @@
     "connector": "memory",
     "file": "db.json"
   },
+  "EmailDataSources": {
+    "name": "EmailDataSources",
+    "connector": "mail",
+    "transports": [
+      {
+        "type": "smtp",
+        "host": "smtp.gmail.com",
+        "secure": true,
+        "port": 465,
+        "tls": {
+          "rejectUnauthorized": false
+        },
+        "auth": {
+          "user": "heomonica@gmail.com",
+          "pass": "qOJ99Fe092iX"
+        }
+      }
+    ]
+  },
   "MongoDB": {
     "host": "localhost",
     "port": 27017,
@@ -19,24 +38,5 @@
     "connector": "loopback-component-storage",
     "provider": "filesystem",
     "root": "./server/storage"
-  },
-  "EmailDataSources": {
-    "name": "EmailDataSources",
-    "connector": "mail",
-    "transports": [
-      {
-        "type": "smtp",
-        "host": "smtp.gmail.com",
-        "secure": false,
-        "port": 587,
-        "tls": {
-          "rejectUnauthorized": false
-        },
-        "auth": {
-          "user": "heomonica@gmail.com",
-          "pass": "qOJ99Fe092iX"
-        }
-      }
-    ]
   }
 }

@@ -52,10 +52,22 @@
     }
   },
   "files": {
-    "loopback#static": {
+    "loopback#static": [{
       "paths": "/client",
       "params": "$!../client"
-    }
+    },
+    {
+      "paths": "/css",
+      "params": "$!../client/css" 
+    },
+    {
+      "paths": "/vendor",
+      "params": "$!../client/vendor" 
+    },
+    {
+      "paths": "/js",
+      "params": "$!../client/js" 
+    }]
   },
   "final": {
     "loopback#urlNotFound": {}

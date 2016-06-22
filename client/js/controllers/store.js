@@ -40,8 +40,8 @@
     };
   }])  
   .controller('EditStoreController', ['$scope', 'Store', 'Category', 
-      '$stateParams', '$state', 'StoreCategory', '$rootScope',  
-      function($scope, Store, Category, $stateParams, $state, StoreCategory, $rootScope) {
+      '$stateParams', '$state', 'StoreCategory', '$rootScope', '$location',  
+      function($scope, Store, Category, $stateParams, $state, StoreCategory, $rootScope, $location) {
 
 	    $scope.action = 'Edit';
       $scope.categories = [];
@@ -88,8 +88,8 @@
 
       $scope.deleteStore = function(){
         if(confirm("Are you sure?")){
-          $rootScope.$emit("CallThisMethod",res);          
-        }        
+             $location.path('/deleteStore/' + $scope.store.id);    
+        }         
       }  
 
 	    $scope.submitForm = function() {

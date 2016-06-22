@@ -5,19 +5,30 @@
 
 angular
   .module('app')
-  .factory('AuthService', ['Customer', '$q', '$rootScope', function(User, $q,
-      $rootScope) {
+  .factory('AuthService', ['Customer', '$q', '$rootScope',    
+    function(User, $q, $rootScope, $http) {
+        
+    function localLogin(email, assword, $http) {
+        return $http.post("http://0.0.0.0:3000/auth/local",JSON.stringify({email: email, password:password}));
+    }
+        
+    function facebookLogin(email, assword) {
+        
+    }
+            
     function login(email, password) {
       return User
         .login({email: email, password: password})
         .$promise
-        .then(function(response) {
+        .then(function(response) {          
           $rootScope.currentUser = {
             id: response.user.id,
             tokenId: response.id,
-            email: email
+            email: email,
+            username: response.user.username
           };
           console.log("currentUser: ", $rootScope.currentUser);
+          sessionStorage.setItem('access_token', JSON.stringify($rootScope.currentUser));
         });
     }
 
@@ -25,8 +36,9 @@ angular
       return User
        .logout()
        .$promise
-       .then(function() {
-         $rootScope.currentUser = null;
+       .then(function() {          
+          $rootScope.currentUser = null;
+          sessionStorage.removeItem('access_token');
        });
     }
 
@@ -37,9 +49,16 @@ angular
          email: email,
          password: password
        })
-       .$promise;
+       .$promise
+       .then(function(response){
+          //console.log("response: ", response);
+          // below redirect login doesn't seem goood
+          // need to create a page for sign up successfully
+          login(email, password);
+       });
     }
 
+        
     return {
       login: login,
       logout: logout,

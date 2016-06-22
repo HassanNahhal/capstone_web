@@ -1,6 +1,9 @@
 <h1>Group list</h1>
 <hr>
 <div class="list-group">
+	<div class="row">
+	<label class="col-sm-3 control-label">Owner of group</label>
+	<div class="col-sm-9">
 	<span class="list-group-item" ng-repeat="group in groups">
 	 	{{group.name}} / 
 	 	Member limitation: {{group.grouptype.limitedMember}} / 
@@ -11,6 +14,27 @@
 	 		style="cursor: pointer; padding-right:20px" 
 	 		ui-sref="editGroup({id: group.id})"></i> 
   	</span>
+  	</div>
+  	</div>  	
+</div>
+<div class="list-group">
+	<div class="row">
+	<label class="col-sm-3 control-label">Member of group</label>
+	<div class="col-sm-9">
+	<span class="list-group-item" ng-repeat="group in groupsinmember">
+	 	{{group.name}} / 
+	 	Member limitation: {{group.grouptype.limitedMember}} / 
+	 	Receipt limitation: {{group.grouptype.limitedReceipt}} / 
+	 	<!--
+	    <i class="glyphicon glyphicon-remove pull-right text-danger" 
+	    	ui-sref="deleteGroup({id: group.id})"></i>	 	
+	 	<i class="glyphicon glyphicon-pencil pull-right text-primary" 
+	 		style="cursor: pointer; padding-right:20px" 
+	 		ui-sref="editGroup({id: group.id})"></i> 
+	 	-->
+  	</span>
+  	</div>
+  	</div>
 </div>
 <div>
 	<button class="btn btn-default" ui-sref="addGroup" ng-hide="isDisabled" ng-disabled="isDisabled">Add Group</button>

@@ -88,12 +88,15 @@ for (var s in config) {
 
 var ensureLoggedIn = require('connect-ensure-login').ensureLoggedIn;
 
-app.get('/auth/account', ensureLoggedIn('/login'), function (req, res, next) {
-  res.jon({id: response.user.id,
-            tokenId: response.id,
-            email: email
-          });
+app.post('/login', function(req, res) {
+    res.redirect('/#Dashboard');
 });
+
+app.get('/auth/account', function (req, res, next) {
+  res.redirect('/#Dashboard');
+    //res.render('pages/verified');
+});
+
 
 //After email verification, it will be redirected 
 app.get('/verified', function(req, res) {
@@ -114,6 +117,8 @@ app.use(loopback.urlNotFound());
 // The ultimate error handler.
 app.use(loopback.errorHandler());
 
+// use loopback.context on all routes
+app.use(loopback.context());
 
 app.start = function() {
   // start the web server

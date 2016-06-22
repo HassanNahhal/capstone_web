@@ -1,0 +1,90 @@
+<div class="row">
+    <div class="col-lg-12">
+        <h1 class="page-header">Charts</h1>
+    </div>
+    <!-- /.col-lg-12 -->
+</div>
+<div class="row">
+    <div class="col-lg-6 col-sm-6" id="line-chart">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                {{thisYear}} Monthly consumption 
+                <select class="form-inline"  
+                    style="width:100px;margin-bottom:0;margin-left:10px;"  
+                    ng-change="changRangeOfMonth()" 
+                    ng-model="selectedMonth"
+                    ng-options="month.name for month in twelvemonths">
+                    <option value="" disabled selected hidden>Range...</option>
+                </select>                
+            </div>
+            <div class="panel-body">
+                <canvas id="line" class="chart chart-line chart-xl" data="line.data" labels="line.labels" legend="false"
+                click="line.onClick" series="line.series"></canvas>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-6 col-sm-6" id="bar-chart">
+        <div class="panel panel-default">
+            <div class="panel-heading">Comparison of {{thisYear-1}} (monthly)</div>
+            <div class="panel-body">
+                <canvas id="bar" class="chart chart-bar" data="bar.data" labels="bar.labels" series="bar.series"
+                options="bar.options"></canvas>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-lg-6 col-sm-4" id="doughnut-chart">
+        <div class="panel panel-default">
+            <div class="panel-heading">Category ({{thisYear}}/ {{selectedMonth.name}})</div>
+            <div class="panel-body">
+            <canvas id="doughnut" class="chart chart-doughnut chart-xs" data="donut.data" labels="donut.labels"></canvas>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-6 col-sm-4" id="pie-chart">
+        <div class="panel panel-default">
+            <div class="panel-heading">Store ({{thisYear}}/ {{selectedMonth.name}})</div>
+            <div class="panel-body">
+                <canvas id="pie" class="chart chart-pie chart-xs" data="pie.data" labels="pie.labels"></canvas>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-6 col-sm-4" id="doughnut1-chart">
+      <div class="panel panel-default">
+        <div class="panel-heading">Tag ({{thisYear}}/ {{selectedMonth.name}})</div>
+        <div class="panel-body">
+          <canvas id="doughnut1" class="chart chart-doughnut chart-xs" data="donut1.data" labels="donut1.labels"></canvas>
+        </div>
+      </div>
+    </div>    
+
+    <div class="col-lg-6 col-sm-6" id="radar-chart">
+        <div class="panel panel-default">
+            <div class="panel-heading">Consumption Type (Dummy data)</div>
+            <div class="panel-body">
+                <canvas id="area" class="chart chart-radar" data="radar.data" labels="radar.labels" click="onClick"></canvas>
+            </div>
+        </div>
+    </div>
+    <!--
+    <div class="col-lg-6 col-sm-6" id="polar area-chart">
+      <div class="panel panel-default">
+        <div class="panel-heading">Polar Chart</div>
+        <div class="panel-body">
+          <canvas id="polar" class="chart chart-polar-area" data="polar.data" labels="polar.labels"></canvas>
+        </div>
+      </div>
+    </div>
+    -->
+
+    <div class="col-lg-6 col-sm-6" id="base-chart">
+        <div class="panel panel-default"> 
+            <div class="panel-heading">Dynamic Chart (Dummy data)</div>
+            <div class="panel-body">
+            <canvas id="base" class="chart chart-base" chart-type="dynamic.type" data="dynamic.data" labels="dynamic.labels" legend="false"></canvas>
+            </div>
+        </div>
+        <button type="button" class="btn btn-primary pull-right" ng-click="dynamic.toggle()">Toggle Chart</button>
+    </div>
+</div>
