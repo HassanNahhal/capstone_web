@@ -1,0 +1,62 @@
+{
+  "name": "Notification",
+  "base": "PersistedModel",
+  "idInjection": true,
+  "options": {
+    "validateUpsert": true
+  },
+  "properties": {
+    "senderId": {
+      "type": "string",
+      "required": true
+    },
+    "senderEmail": {
+      "type": "string",
+      "required": true
+    },    
+    "receiverId": {
+      "type": "string",
+      "required": true
+    },
+    "seen": {
+      "type": "boolean",
+      "required": true,
+      "default": false
+    },
+    "receiverEmail": {
+      "type": "string",
+      "required": true
+    },    
+    "accepted": {
+      "type": "boolean",
+      "required": true,
+      "default": false
+    },    
+    "left": {
+      "type": "boolean",
+      "required": true,
+      "default": false
+    },    
+    "removeFromOwner": {
+      "type": "boolean",
+      "required": true,
+      "default": false
+    },    
+    "removeFromMember": {
+      "type": "boolean",
+      "required": true,
+      "default": false
+    }
+
+  },
+  "validations": [],
+  "relations": {
+    "group": {
+      "type": "belongsTo",
+      "model": "Group",
+      "foreignKey": "groupId"
+    }    
+  },
+  "acls": [],
+  "methods": {}
+}

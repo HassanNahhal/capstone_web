@@ -1,41 +1,115 @@
 <h1>Group list</h1>
 <hr>
+<!-- Group as a owner -->
 <div class="list-group">
 	<div class="row">
-	<label class="col-sm-3 control-label">Owner of group</label>
-	<div class="col-sm-9">
-	<span class="list-group-item" ng-repeat="group in groups">
-	 	{{group.name}} / 
-	 	Member limitation: {{group.grouptype.limitedMember}} / 
-	 	Receipt limitation: {{group.grouptype.limitedReceipt}} / 
-	    <i class="glyphicon glyphicon-remove pull-right text-danger" 
-	    	ui-sref="deleteGroup({id: group.id})"></i>	 	
-	 	<i class="glyphicon glyphicon-pencil pull-right text-primary" 
-	 		style="cursor: pointer; padding-right:20px" 
-	 		ui-sref="editGroup({id: group.id})"></i> 
-  	</span>
-  	</div>
+		<label class="col-sm-3 control-label">Group as owner</label>
+		<div class="col-sm-9">
+		<span class="list-group-item" ng-repeat="group in groups">
+		 	{{group.name}} / 
+		 	Member limitation: {{group.grouptype.limitedMember}} / 
+		 	Receipt limitation: {{group.grouptype.limitedReceipt}} / 
+
+		    <i class="glyphicon glyphicon-eye-open pull-right text-success" 
+		    	style="padding-left:10px" 
+		    	ui-sref="viewGroup({id: group.id})" title="View"></i>	
+		    
+		 	<i class="glyphicon glyphicon-pencil pull-right text-primary" 
+		 		style="padding-right:10px" 
+		 		ui-sref="editGroup({id: group.id})" title="Edit"></i> 
+	  	</span>
+	  	<span ng-hide="groups" class="list-group-item">No group you own.</span>
+	  	</div>
   	</div>  	
 </div>
+<!-- Group as a owner -->
+
+<!-- Group as a member -->
 <div class="list-group">
 	<div class="row">
-	<label class="col-sm-3 control-label">Member of group</label>
-	<div class="col-sm-9">
-	<span class="list-group-item" ng-repeat="group in groupsinmember">
-	 	{{group.name}} / 
-	 	Member limitation: {{group.grouptype.limitedMember}} / 
-	 	Receipt limitation: {{group.grouptype.limitedReceipt}} / 
-	 	<!--
-	    <i class="glyphicon glyphicon-remove pull-right text-danger" 
-	    	ui-sref="deleteGroup({id: group.id})"></i>	 	
-	 	<i class="glyphicon glyphicon-pencil pull-right text-primary" 
-	 		style="cursor: pointer; padding-right:20px" 
-	 		ui-sref="editGroup({id: group.id})"></i> 
-	 	-->
-  	</span>
-  	</div>
+		<label class="col-sm-3 control-label">Group as member</label>
+		<div class="col-sm-9">
+		<span class="list-group-item" ng-repeat="group in groupsinmember">
+		 	{{group.name}} / 
+		 	Member limitation: {{group.grouptype.limitedMember}} / 
+		 	Receipt limitation: {{group.grouptype.limitedReceipt}} / 
+
+		    <i class="glyphicon glyphicon-eye-open pull-right text-success" 
+		    	ui-sref="viewGroup({id: group.id})" title="View"></i>
+	  	</span>
+	  	<span ng-hide="groupsinmember" class="list-group-item">No group as a member.</span>
+	  	</div>
   	</div>
 </div>
+<!-- Group as a member -->
+
+<!-- Notification List  -->
+<div class="list-group" ng-show="notifications">
+	<div class="row">
+	<hr class="col-sm-offset-3 col-sm-3" style="margin-top:5px;margin-bottom10px;">
+	</div>
+	<div class="row">
+		<label class="col-sm-3 control-label">Notification</label>
+		<div class="col-sm-9">
+			<div ng-repeat="notification in notifications">
+				<span class="list-group-item text-info">
+					<i class="glyphicon glyphicon-bell" style="margin-right:10px;" ></i>
+		 			Invitation for a group ({{notification.senderEmail}})
+		 			{{!notification.seen && notification.left ? " (re-invite)" : ""}}
+				    <i class="glyphicon glyphicon-ban-circle pull-right text-danger" 
+				    	style="margin-right:10px;margin-left:10px;" 
+				    	ng-click="refuseJoin(notification.id)" 
+				    	title="Refuse invitation"></i>			 			
+				    <i class="glyphicon glyphicon-eye-open pull-right text-success" 
+				    	style="margin-left:10px;margin-right:10px;"
+				    	ng-click="showDetails =! showDetails" 
+				    	title="View group"></i>
+				    <i class="glyphicon glyphicon-ok pull-right text-primary" 
+				    	style="margin-right:10px;" 
+				    	ng-click="acceptJoin(notification.id)" 
+				    	title="Accept invitation"></i>	
+
+			  	</span>
+			  	<div class="invitation-desc" ng-show="showDetails">
+			  		<ul>
+			  			<li>
+			  				<strong>Group name: </strong> 
+			  				{{notification.group.name}}
+			  			</li>
+			  			<li>
+			  				<strong>Group owner: </strong>
+			  				{{notification.senderEmail}}
+			  			</li>
+			  			<li>
+			  				<strong>Group description: </strong>
+			  				{{notification.group.description}}
+			  			</li>
+			  		</ul>
+			  	</div>
+		  	</div>
+	  	</div>
+  	</div>
+</div>
+<script type="text/javascript">
+	$(document).ready(function(){
+	    $(".close").click(function(){
+	        $("#acceptInvitation").removeClass("in");
+	    });
+	});		    		
+</script>
+<div id="acceptInvitation" class="alert alert-info fade">
+	<a href="" class="close" data-dismiss="alert">&times;</a>
+	<i class="glyphicon glyphicon-info-sign text-info"></i>
+	<strong>Note:</strong> You have joined in selected group.
+</div>	
+<div id="refuseInvitation" class="alert alert-info fade">
+	<a href="" class="close" data-dismiss="alert">&times;</a>
+	<i class="glyphicon glyphicon-info-sign text-info"></i>
+	<strong>Note:</strong> You have refused to join in group.
+</div>	
+<!-- Notification List -->
+
+
 <div>
 	<button class="btn btn-default" ui-sref="addGroup" ng-hide="isDisabled" ng-disabled="isDisabled">Add Group</button>
 </div>

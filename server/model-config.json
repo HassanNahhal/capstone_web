@@ -112,5 +112,9 @@
   "GroupType": {
     "dataSource": "MongoDB",
     "public": true
+  },
+  "Notification": {
+    "dataSource": "MongoDB",
+    "public": true
   }
 }

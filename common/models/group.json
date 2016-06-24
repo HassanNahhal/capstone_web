@@ -13,6 +13,10 @@
       "type": "string",
       "required": true
     },
+    "description": {
+      "type": "string",
+      "required": false
+    },
     "type": {
       "type": "string",
       "required": false,
@@ -24,7 +28,7 @@
       "required": false,
       "index": false,
       "default": ""
-    }            
+    }
   },
   "validations": [],
   "relations": {
@@ -38,7 +42,12 @@
       "type": "belongsTo",
       "model": "GroupType",
       "foreignKey": "groupTypeId"
-    }
+    },
+    "notifications": {
+      "type": "hasMany",
+      "model": "Notification",
+      "foreignKey": ""
+    }    
   },
   "acls": [],
   "methods": {}

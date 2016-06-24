@@ -1,0 +1,56 @@
+<h1>View Group</h1>
+<hr>
+<form name="groupForm" novalidate>
+	<div class="row">
+		<label class="col-sm-3 control-label">Group name</label>
+		<div  class="col-sm-9"> 
+			{{group.name}}
+		</div>
+	</div>
+	<div class="row">
+		<label class="col-sm-3 control-label">Description</label>
+		<div class="col-sm-9" style="white-space: pre-line;"> 
+			{{group.description}} 
+		</div>
+	</div> 	
+	<div class="row">
+		<label class="col-sm-3 control-label">Member limitation</label>
+		<div  class="col-sm-3"> 
+			{{group.grouptype.limitedMember}}
+		</div>
+		<label class="col-sm-3 control-label">Receipt limitation</label>
+		<div  class="col-sm-3"> 
+			{{group.grouptype.limitedReceipt}}
+		</div>		 
+	</div>  
+	<div class="row" ng-show="members">
+		<div class="col-sm-offset-3 col-sm-9">
+		<hr>
+		</div>
+		<label class="col-sm-3 control-label">Member list</label>
+		<div class="col-sm-9">
+			<ul>
+				<li ng-repeat="member in members">
+					{{member.email}} 
+					{{member.id == group.ownerId ? '(Owner)' : ''}}
+				</li>
+			</ul>
+		</div>
+	</div> 
+	<hr>
+	<div class="row">
+		<div class="col-sm-offset-3 col-sm-3">
+			<button class="btn btn-default"  ui-sref="Groups">Groups</button>
+		</div>
+		<div  ng-show="isEnabled" class="col-sm-offset-3 col-sm-3">
+			<button class="btn btn-default" 
+				ui-sref="editGroup({id: group.id})">Edit Group</button>			
+		</div>	
+		<div  ng-show="isLeave" class="col-sm-offset-3 col-sm-3">
+			<button class="btn btn-danger" ng-click="leaveGroup()">
+				Leave Group
+			</button>			
+		</div>			
+	</div>
+
+</form>

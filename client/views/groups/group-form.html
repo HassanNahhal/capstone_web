@@ -12,19 +12,137 @@
 		      Group name is required.
 		    </span>
 		</div>
-	</div>      
+	</div> 
 	<div class="row">
-		<div class="col-sm-3">
+		<label class="col-sm-3 control-label">Description</label>
+		<div  class="col-sm-9"> 
+			<textarea class="form-control" 
+				name="description" 
+				rows="4" maxlength="250" 
+				placeholder="Description" 
+				ng-model="group.description"></textarea> 
+		</div>
+	</div> 	
+	<!-- Group Edit / Delete Button -->
+	<div class="row">
+		<div class="col-sm-offset-3 col-sm-9">
+		<hr style="margin-top:0px; margin-bottom:15px;">
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-sm-offset-3 col-sm-3">
 				<button class="btn btn-primary" ng-disabled="groupForm.$invalid" ng-hide="isDisabled" ng-disabled="isDisabled" ng-click="submitForm()">{{ action }} Group</button>
 		</div>
 		<div  class="col-sm-3">
 			<button class="btn btn-default"  ui-sref="Groups">Groups</button>
 		</div>	
-		<div ng-show="group.id" class="col-sm-offset-3 col-sm-3">
+		<div ng-show="group.id" class="col-sm-3 text-right">
 			<button class="btn btn-danger" ng-disabled="groupForm.$invalid" ng-click="deleteGroup()">Delete Group</button>
 		</div>
 	</div>
+	<!-- Edit / Delete Button -->
+	</div>	
+</form>	
 
-  </div>
-</form>
-<hr>
+<!-- Member List -->
+<div class="row" ng-show="members">
+	<div class="col-sm-offset-3 col-sm-9">
+	<hr>
+	</div>
+	<label class="col-sm-3 control-label">Member list</label>
+	<div class="col-sm-9">	
+		<span id="memberlist"
+			class="text-primary" 
+			ng-repeat="member in members">
+			{{member.email}}
+	 		<i class="glyphicon glyphicon-remove pull-right text-danger" 
+		 		ng-click="removeMember(member.id)" 
+		 		style="padding-right:15px" title="Remove"></i>
+		</span>	
+	</div>
+</div> 
+<div id="removeMember" class="alert alert-info fade">
+	<a href="" class="close" data-dismiss="alert">&times;</a>
+	<i class="glyphicon glyphicon-info-sign text-info"></i>
+	<strong>Note:</strong> Selected member has been removed.
+</div>
+<!-- Member List -->
+
+<!-- Invitation Request-->
+<form name="invitationForm" novalidate ng-show="isEnabled">	
+	<div 	class="form-group" 
+			ng-class="{'has-error': invitationForm.email.$invalid && invitationForm.email.$dirty}">			
+	<div class="row">
+		<div class="col-sm-12">
+		<hr style="margin-top:15px;">
+		</div>
+	    <label class="col-sm-3 control-label">Invite member</label>
+	    <div class="col-sm-6">
+		    <input id="email" class="form-control" type="email" required 
+		        ng-model="email" name="email" placeholder="Email" value="">
+
+	    	<div  class="alert alert-warning fade in" style="margin-bottom:0;"
+	    	ng-show="invitationForm.email.$invalid && invitationForm.email.$dirty">
+	    	<a href="" class="close" data-dismiss="alert">&times;</a>
+	    	<i class="glyphicon glyphicon-warning-sign text-warning"></i>
+	    	<strong>Warning:</strong> Email is invalid.
+	    	</div>
+
+	    	<div id="invitationErr" class="alert alert-danger fade">
+		    	<a href="" class="close" data-dismiss="alert">&times;</a>
+		    	<i class="glyphicon glyphicon-exclamation-sign text-danger"></i>
+		    	<strong>Alert:</strong> Email is not found.
+	    	</div>	
+
+	    	<script type="text/javascript">
+				$(document).ready(function(){
+				    $(".close").click(function(){
+				        $(".alert").removeClass("in");
+				    });
+				});		    		
+	    	</script>		    	
+	    </div>	    
+	    <div class="col-sm-3">
+	    	<button id="invitationButton" class="btn btn-primary" 
+	    		ng-disabled="invitationForm.$invalid"
+	    		ng-click="sendInvitation()" >Invitation</button>     
+	    </div>
+	    <div class="col-sm-offset-3 col-sm-9">
+	    
+		</div>
+	</div>	
+		<!-- Invitation Request-->
+	</div>
+  	<!-- Invitation List -->
+	<div class="row" ng-show="notifications">
+		<div class="col-sm-offset-3 col-sm-9">
+		<hr style="margin-top:0;">
+		</div>
+		<label class="col-sm-3 control-label">Invitation list</label>
+		<div class="col-sm-9">	
+			<span id="memberlist"
+				class="text-warning" 
+				ng-repeat="notification in notifications">
+				{{notification.display}}
+		 		<i class="glyphicon glyphicon-remove pull-right text-danger" 
+			 		ng-click="removeInvitation(notification.receiverId)" 
+			 		style="padding-left:10px" title="Remove"></i>
+		 		<i ng-show="notification.seen && notification.left" class="glyphicon glyphicon-bullhorn pull-right text-primary" 
+			 		ng-click="againInvitation(notification.id)" 
+			 		style="padding-right:10px" title="Re-invitation"></i>
+			</span>	
+		</div>
+	</div> 
+	<div id="invitationSuccess" class="alert alert-success fade">
+    	<a href="" class="close" data-dismiss="alert">&times;</a>
+    	<i class="glyphicon glyphicon-exclamation-check text-success"></i>
+    	<strong>Success:</strong> Your invitation message has been sent successfully.
+	</div>	
+	<div id="removeInvitation" class="alert alert-info fade">
+    	<a href="" class="close" data-dismiss="alert">&times;</a>
+    	<i class="glyphicon glyphicon-info-sign text-info"></i>
+    	<strong>Note:</strong> Selected invitation has been removed.
+	</div>	
+	<!-- Invitation List -->
+ </form>
+

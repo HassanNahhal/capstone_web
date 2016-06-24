@@ -1,7 +1,15 @@
 body {
  padding-top:50px;
 }
-.glyphicon-remove:hover {
+
+.glyphicon-remove, 
+.glyphicon-pencil, 
+.glyphicon-eye-open, 
+.glyphicon-ok,
+.glyphicon-erase,
+.glyphicon-bullhorn,
+.glyphicon-ban-circle,
+.glyphicon-heart:hover {
  cursor:pointer;
 }
 

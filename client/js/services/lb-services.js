@@ -8574,6 +8574,33 @@ module.factory(
           method: "GET"
         },
 
+        // INTERNAL. Use Group.notifications.findById() instead.
+        "prototype$__findById__notifications": {
+          params: {
+          'fk': '@fk'
+          },
+          url: urlBase + "/Groups/:id/notifications/:fk",
+          method: "GET"
+        },
+
+        // INTERNAL. Use Group.notifications.destroyById() instead.
+        "prototype$__destroyById__notifications": {
+          params: {
+          'fk': '@fk'
+          },
+          url: urlBase + "/Groups/:id/notifications/:fk",
+          method: "DELETE"
+        },
+
+        // INTERNAL. Use Group.notifications.updateById() instead.
+        "prototype$__updateById__notifications": {
+          params: {
+          'fk': '@fk'
+          },
+          url: urlBase + "/Groups/:id/notifications/:fk",
+          method: "PUT"
+        },
+
         // INTERNAL. Use Group.customers() instead.
         "prototype$__get__customers": {
           isArray: true,
@@ -8596,6 +8623,31 @@ module.factory(
         // INTERNAL. Use Group.customers.count() instead.
         "prototype$__count__customers": {
           url: urlBase + "/Groups/:id/customers/count",
+          method: "GET"
+        },
+
+        // INTERNAL. Use Group.notifications() instead.
+        "prototype$__get__notifications": {
+          isArray: true,
+          url: urlBase + "/Groups/:id/notifications",
+          method: "GET"
+        },
+
+        // INTERNAL. Use Group.notifications.create() instead.
+        "prototype$__create__notifications": {
+          url: urlBase + "/Groups/:id/notifications",
+          method: "POST"
+        },
+
+        // INTERNAL. Use Group.notifications.destroyAll() instead.
+        "prototype$__delete__notifications": {
+          url: urlBase + "/Groups/:id/notifications",
+          method: "DELETE"
+        },
+
+        // INTERNAL. Use Group.notifications.count() instead.
+        "prototype$__count__notifications": {
+          url: urlBase + "/Groups/:id/notifications/count",
           method: "GET"
         },
 
@@ -9169,6 +9221,12 @@ module.factory(
         // INTERNAL. Use GroupType.groups.count() instead.
         "::count::GroupType::groups": {
           url: urlBase + "/GroupTypes/:id/groups/count",
+          method: "GET"
+        },
+
+        // INTERNAL. Use Notification.group() instead.
+        "::get::Notification::group": {
+          url: urlBase + "/Notifications/:id/group",
           method: "GET"
         },
       }
@@ -9757,6 +9815,307 @@ module.factory(
         R.grouptype = function() {
           var TargetResource = $injector.get("GroupType");
           var action = TargetResource["::get::Group::grouptype"];
+          return action.apply(R, arguments);
+        };
+    /**
+     * @ngdoc object
+     * @name lbServices.Group.notifications
+     * @header lbServices.Group.notifications
+     * @object
+     * @description
+     *
+     * The object `Group.notifications` groups methods
+     * manipulating `Notification` instances related to `Group`.
+     *
+     * Call {@link lbServices.Group#notifications Group.notifications()}
+     * to query all related instances.
+     */
+
+
+        /**
+         * @ngdoc method
+         * @name lbServices.Group#notifications
+         * @methodOf lbServices.Group
+         *
+         * @description
+         *
+         * Queries notifications of Group.
+         *
+         * @param {Object=} parameters Request parameters.
+         *
+         *  - `id` – `{*}` - PersistedModel id
+         *
+         *  - `filter` – `{object=}` - 
+         *
+         * @param {function(Array.<Object>,Object)=} successCb
+         *   Success callback with two arguments: `value`, `responseHeaders`.
+         *
+         * @param {function(Object)=} errorCb Error callback with one argument:
+         *   `httpResponse`.
+         *
+         * @returns {Array.<Object>} An empty reference that will be
+         *   populated with the actual data once the response is returned
+         *   from the server.
+         *
+         * <em>
+         * (The remote method definition does not provide any description.
+         * This usually means the response is a `Notification` object.)
+         * </em>
+         */
+        R.notifications = function() {
+          var TargetResource = $injector.get("Notification");
+          var action = TargetResource["::get::Group::notifications"];
+          return action.apply(R, arguments);
+        };
+
+        /**
+         * @ngdoc method
+         * @name lbServices.Group.notifications#count
+         * @methodOf lbServices.Group.notifications
+         *
+         * @description
+         *
+         * Counts notifications of Group.
+         *
+         * @param {Object=} parameters Request parameters.
+         *
+         *  - `id` – `{*}` - PersistedModel id
+         *
+         *  - `where` – `{object=}` - Criteria to match model instances
+         *
+         * @param {function(Object,Object)=} successCb
+         *   Success callback with two arguments: `value`, `responseHeaders`.
+         *
+         * @param {function(Object)=} errorCb Error callback with one argument:
+         *   `httpResponse`.
+         *
+         * @returns {Object} An empty reference that will be
+         *   populated with the actual data once the response is returned
+         *   from the server.
+         *
+         * Data properties:
+         *
+         *  - `count` – `{number=}` - 
+         */
+        R.notifications.count = function() {
+          var TargetResource = $injector.get("Notification");
+          var action = TargetResource["::count::Group::notifications"];
+          return action.apply(R, arguments);
+        };
+
+        /**
+         * @ngdoc method
+         * @name lbServices.Group.notifications#create
+         * @methodOf lbServices.Group.notifications
+         *
+         * @description
+         *
+         * Creates a new instance in notifications of this model.
+         *
+         * @param {Object=} parameters Request parameters.
+         *
+         *  - `id` – `{*}` - PersistedModel id
+         *
+         * @param {Object} postData Request data.
+         *
+         * This method expects a subset of model properties as request parameters.
+         *
+         * @param {function(Object,Object)=} successCb
+         *   Success callback with two arguments: `value`, `responseHeaders`.
+         *
+         * @param {function(Object)=} errorCb Error callback with one argument:
+         *   `httpResponse`.
+         *
+         * @returns {Object} An empty reference that will be
+         *   populated with the actual data once the response is returned
+         *   from the server.
+         *
+         * <em>
+         * (The remote method definition does not provide any description.
+         * This usually means the response is a `Notification` object.)
+         * </em>
+         */
+        R.notifications.create = function() {
+          var TargetResource = $injector.get("Notification");
+          var action = TargetResource["::create::Group::notifications"];
+          return action.apply(R, arguments);
+        };
+
+        /**
+         * @ngdoc method
+         * @name lbServices.Group.notifications#createMany
+         * @methodOf lbServices.Group.notifications
+         *
+         * @description
+         *
+         * Creates a new instance in notifications of this model.
+         *
+         * @param {Object=} parameters Request parameters.
+         *
+         *  - `id` – `{*}` - PersistedModel id
+         *
+         * @param {Object} postData Request data.
+         *
+         * This method expects a subset of model properties as request parameters.
+         *
+         * @param {function(Array.<Object>,Object)=} successCb
+         *   Success callback with two arguments: `value`, `responseHeaders`.
+         *
+         * @param {function(Object)=} errorCb Error callback with one argument:
+         *   `httpResponse`.
+         *
+         * @returns {Array.<Object>} An empty reference that will be
+         *   populated with the actual data once the response is returned
+         *   from the server.
+         *
+         * <em>
+         * (The remote method definition does not provide any description.
+         * This usually means the response is a `Notification` object.)
+         * </em>
+         */
+        R.notifications.createMany = function() {
+          var TargetResource = $injector.get("Notification");
+          var action = TargetResource["::createMany::Group::notifications"];
+          return action.apply(R, arguments);
+        };
+
+        /**
+         * @ngdoc method
+         * @name lbServices.Group.notifications#destroyAll
+         * @methodOf lbServices.Group.notifications
+         *
+         * @description
+         *
+         * Deletes all notifications of this model.
+         *
+         * @param {Object=} parameters Request parameters.
+         *
+         *  - `id` – `{*}` - PersistedModel id
+         *
+         * @param {function(Object,Object)=} successCb
+         *   Success callback with two arguments: `value`, `responseHeaders`.
+         *
+         * @param {function(Object)=} errorCb Error callback with one argument:
+         *   `httpResponse`.
+         *
+         * @returns {Object} An empty reference that will be
+         *   populated with the actual data once the response is returned
+         *   from the server.
+         *
+         * This method returns no data.
+         */
+        R.notifications.destroyAll = function() {
+          var TargetResource = $injector.get("Notification");
+          var action = TargetResource["::delete::Group::notifications"];
+          return action.apply(R, arguments);
+        };
+
+        /**
+         * @ngdoc method
+         * @name lbServices.Group.notifications#destroyById
+         * @methodOf lbServices.Group.notifications
+         *
+         * @description
+         *
+         * Delete a related item by id for notifications.
+         *
+         * @param {Object=} parameters Request parameters.
+         *
+         *  - `id` – `{*}` - PersistedModel id
+         *
+         *  - `fk` – `{*}` - Foreign key for notifications
+         *
+         * @param {function(Object,Object)=} successCb
+         *   Success callback with two arguments: `value`, `responseHeaders`.
+         *
+         * @param {function(Object)=} errorCb Error callback with one argument:
+         *   `httpResponse`.
+         *
+         * @returns {Object} An empty reference that will be
+         *   populated with the actual data once the response is returned
+         *   from the server.
+         *
+         * This method returns no data.
+         */
+        R.notifications.destroyById = function() {
+          var TargetResource = $injector.get("Notification");
+          var action = TargetResource["::destroyById::Group::notifications"];
+          return action.apply(R, arguments);
+        };
+
+        /**
+         * @ngdoc method
+         * @name lbServices.Group.notifications#findById
+         * @methodOf lbServices.Group.notifications
+         *
+         * @description
+         *
+         * Find a related item by id for notifications.
+         *
+         * @param {Object=} parameters Request parameters.
+         *
+         *  - `id` – `{*}` - PersistedModel id
+         *
+         *  - `fk` – `{*}` - Foreign key for notifications
+         *
+         * @param {function(Object,Object)=} successCb
+         *   Success callback with two arguments: `value`, `responseHeaders`.
+         *
+         * @param {function(Object)=} errorCb Error callback with one argument:
+         *   `httpResponse`.
+         *
+         * @returns {Object} An empty reference that will be
+         *   populated with the actual data once the response is returned
+         *   from the server.
+         *
+         * <em>
+         * (The remote method definition does not provide any description.
+         * This usually means the response is a `Notification` object.)
+         * </em>
+         */
+        R.notifications.findById = function() {
+          var TargetResource = $injector.get("Notification");
+          var action = TargetResource["::findById::Group::notifications"];
+          return action.apply(R, arguments);
+        };
+
+        /**
+         * @ngdoc method
+         * @name lbServices.Group.notifications#updateById
+         * @methodOf lbServices.Group.notifications
+         *
+         * @description
+         *
+         * Update a related item by id for notifications.
+         *
+         * @param {Object=} parameters Request parameters.
+         *
+         *  - `id` – `{*}` - PersistedModel id
+         *
+         *  - `fk` – `{*}` - Foreign key for notifications
+         *
+         * @param {Object} postData Request data.
+         *
+         * This method expects a subset of model properties as request parameters.
+         *
+         * @param {function(Object,Object)=} successCb
+         *   Success callback with two arguments: `value`, `responseHeaders`.
+         *
+         * @param {function(Object)=} errorCb Error callback with one argument:
+         *   `httpResponse`.
+         *
+         * @returns {Object} An empty reference that will be
+         *   populated with the actual data once the response is returned
+         *   from the server.
+         *
+         * <em>
+         * (The remote method definition does not provide any description.
+         * This usually means the response is a `Notification` object.)
+         * </em>
+         */
+        R.notifications.updateById = function() {
+          var TargetResource = $injector.get("Notification");
+          var action = TargetResource["::updateById::Group::notifications"];
           return action.apply(R, arguments);
         };
 
@@ -16515,6 +16874,699 @@ module.factory(
         R.groups.updateById = function() {
           var TargetResource = $injector.get("Group");
           var action = TargetResource["::updateById::GroupType::groups"];
+          return action.apply(R, arguments);
+        };
+
+    return R;
+  }]);
+
+/**
+ * @ngdoc object
+ * @name lbServices.Notification
+ * @header lbServices.Notification
+ * @object
+ *
+ * @description
+ *
+ * A $resource object for interacting with the `Notification` model.
+ *
+ * ## Example
+ *
+ * See
+ * {@link http://docs.angularjs.org/api/ngResource.$resource#example $resource}
+ * for an example of using this object.
+ *
+ */
+module.factory(
+  "Notification",
+  ['LoopBackResource', 'LoopBackAuth', '$injector', function(Resource, LoopBackAuth, $injector) {
+    var R = Resource(
+      urlBase + "/Notifications/:id",
+      { 'id': '@id' },
+      {
+
+        // INTERNAL. Use Notification.group() instead.
+        "prototype$__get__group": {
+          url: urlBase + "/Notifications/:id/group",
+          method: "GET"
+        },
+
+        /**
+         * @ngdoc method
+         * @name lbServices.Notification#create
+         * @methodOf lbServices.Notification
+         *
+         * @description
+         *
+         * Create a new instance of the model and persist it into the data source.
+         *
+         * @param {Object=} parameters Request parameters.
+         *
+         *   This method does not accept any parameters.
+         *   Supply an empty object or omit this argument altogether.
+         *
+         * @param {Object} postData Request data.
+         *
+         * This method expects a subset of model properties as request parameters.
+         *
+         * @param {function(Object,Object)=} successCb
+         *   Success callback with two arguments: `value`, `responseHeaders`.
+         *
+         * @param {function(Object)=} errorCb Error callback with one argument:
+         *   `httpResponse`.
+         *
+         * @returns {Object} An empty reference that will be
+         *   populated with the actual data once the response is returned
+         *   from the server.
+         *
+         * <em>
+         * (The remote method definition does not provide any description.
+         * This usually means the response is a `Notification` object.)
+         * </em>
+         */
+        "create": {
+          url: urlBase + "/Notifications",
+          method: "POST"
+        },
+
+        /**
+         * @ngdoc method
+         * @name lbServices.Notification#createMany
+         * @methodOf lbServices.Notification
+         *
+         * @description
+         *
+         * Create a new instance of the model and persist it into the data source.
+         *
+         * @param {Object=} parameters Request parameters.
+         *
+         *   This method does not accept any parameters.
+         *   Supply an empty object or omit this argument altogether.
+         *
+         * @param {Object} postData Request data.
+         *
+         * This method expects a subset of model properties as request parameters.
+         *
+         * @param {function(Array.<Object>,Object)=} successCb
+         *   Success callback with two arguments: `value`, `responseHeaders`.
+         *
+         * @param {function(Object)=} errorCb Error callback with one argument:
+         *   `httpResponse`.
+         *
+         * @returns {Array.<Object>} An empty reference that will be
+         *   populated with the actual data once the response is returned
+         *   from the server.
+         *
+         * <em>
+         * (The remote method definition does not provide any description.
+         * This usually means the response is a `Notification` object.)
+         * </em>
+         */
+        "createMany": {
+          isArray: true,
+          url: urlBase + "/Notifications",
+          method: "POST"
+        },
+
+        /**
+         * @ngdoc method
+         * @name lbServices.Notification#upsert
+         * @methodOf lbServices.Notification
+         *
+         * @description
+         *
+         * Update an existing model instance or insert a new one into the data source.
+         *
+         * @param {Object=} parameters Request parameters.
+         *
+         *   This method does not accept any parameters.
+         *   Supply an empty object or omit this argument altogether.
+         *
+         * @param {Object} postData Request data.
+         *
+         * This method expects a subset of model properties as request parameters.
+         *
+         * @param {function(Object,Object)=} successCb
+         *   Success callback with two arguments: `value`, `responseHeaders`.
+         *
+         * @param {function(Object)=} errorCb Error callback with one argument:
+         *   `httpResponse`.
+         *
+         * @returns {Object} An empty reference that will be
+         *   populated with the actual data once the response is returned
+         *   from the server.
+         *
+         * <em>
+         * (The remote method definition does not provide any description.
+         * This usually means the response is a `Notification` object.)
+         * </em>
+         */
+        "upsert": {
+          url: urlBase + "/Notifications",
+          method: "PUT"
+        },
+
+        /**
+         * @ngdoc method
+         * @name lbServices.Notification#exists
+         * @methodOf lbServices.Notification
+         *
+         * @description
+         *
+         * Check whether a model instance exists in the data source.
+         *
+         * @param {Object=} parameters Request parameters.
+         *
+         *  - `id` – `{*}` - Model id
+         *
+         * @param {function(Object,Object)=} successCb
+         *   Success callback with two arguments: `value`, `responseHeaders`.
+         *
+         * @param {function(Object)=} errorCb Error callback with one argument:
+         *   `httpResponse`.
+         *
+         * @returns {Object} An empty reference that will be
+         *   populated with the actual data once the response is returned
+         *   from the server.
+         *
+         * Data properties:
+         *
+         *  - `exists` – `{boolean=}` - 
+         */
+        "exists": {
+          url: urlBase + "/Notifications/:id/exists",
+          method: "GET"
+        },
+
+        /**
+         * @ngdoc method
+         * @name lbServices.Notification#findById
+         * @methodOf lbServices.Notification
+         *
+         * @description
+         *
+         * Find a model instance by id from the data source.
+         *
+         * @param {Object=} parameters Request parameters.
+         *
+         *  - `id` – `{*}` - Model id
+         *
+         *  - `filter` – `{object=}` - Filter defining fields and include
+         *
+         * @param {function(Object,Object)=} successCb
+         *   Success callback with two arguments: `value`, `responseHeaders`.
+         *
+         * @param {function(Object)=} errorCb Error callback with one argument:
+         *   `httpResponse`.
+         *
+         * @returns {Object} An empty reference that will be
+         *   populated with the actual data once the response is returned
+         *   from the server.
+         *
+         * <em>
+         * (The remote method definition does not provide any description.
+         * This usually means the response is a `Notification` object.)
+         * </em>
+         */
+        "findById": {
+          url: urlBase + "/Notifications/:id",
+          method: "GET"
+        },
+
+        /**
+         * @ngdoc method
+         * @name lbServices.Notification#find
+         * @methodOf lbServices.Notification
+         *
+         * @description
+         *
+         * Find all instances of the model matched by filter from the data source.
+         *
+         * @param {Object=} parameters Request parameters.
+         *
+         *  - `filter` – `{object=}` - Filter defining fields, where, include, order, offset, and limit
+         *
+         * @param {function(Array.<Object>,Object)=} successCb
+         *   Success callback with two arguments: `value`, `responseHeaders`.
+         *
+         * @param {function(Object)=} errorCb Error callback with one argument:
+         *   `httpResponse`.
+         *
+         * @returns {Array.<Object>} An empty reference that will be
+         *   populated with the actual data once the response is returned
+         *   from the server.
+         *
+         * <em>
+         * (The remote method definition does not provide any description.
+         * This usually means the response is a `Notification` object.)
+         * </em>
+         */
+        "find": {
+          isArray: true,
+          url: urlBase + "/Notifications",
+          method: "GET"
+        },
+
+        /**
+         * @ngdoc method
+         * @name lbServices.Notification#findOne
+         * @methodOf lbServices.Notification
+         *
+         * @description
+         *
+         * Find first instance of the model matched by filter from the data source.
+         *
+         * @param {Object=} parameters Request parameters.
+         *
+         *  - `filter` – `{object=}` - Filter defining fields, where, include, order, offset, and limit
+         *
+         * @param {function(Object,Object)=} successCb
+         *   Success callback with two arguments: `value`, `responseHeaders`.
+         *
+         * @param {function(Object)=} errorCb Error callback with one argument:
+         *   `httpResponse`.
+         *
+         * @returns {Object} An empty reference that will be
+         *   populated with the actual data once the response is returned
+         *   from the server.
+         *
+         * <em>
+         * (The remote method definition does not provide any description.
+         * This usually means the response is a `Notification` object.)
+         * </em>
+         */
+        "findOne": {
+          url: urlBase + "/Notifications/findOne",
+          method: "GET"
+        },
+
+        /**
+         * @ngdoc method
+         * @name lbServices.Notification#updateAll
+         * @methodOf lbServices.Notification
+         *
+         * @description
+         *
+         * Update instances of the model matched by where from the data source.
+         *
+         * @param {Object=} parameters Request parameters.
+         *
+         *  - `where` – `{object=}` - Criteria to match model instances
+         *
+         * @param {Object} postData Request data.
+         *
+         * This method expects a subset of model properties as request parameters.
+         *
+         * @param {function(Object,Object)=} successCb
+         *   Success callback with two arguments: `value`, `responseHeaders`.
+         *
+         * @param {function(Object)=} errorCb Error callback with one argument:
+         *   `httpResponse`.
+         *
+         * @returns {Object} An empty reference that will be
+         *   populated with the actual data once the response is returned
+         *   from the server.
+         *
+         * The number of instances updated
+         */
+        "updateAll": {
+          url: urlBase + "/Notifications/update",
+          method: "POST"
+        },
+
+        /**
+         * @ngdoc method
+         * @name lbServices.Notification#deleteById
+         * @methodOf lbServices.Notification
+         *
+         * @description
+         *
+         * Delete a model instance by id from the data source.
+         *
+         * @param {Object=} parameters Request parameters.
+         *
+         *  - `id` – `{*}` - Model id
+         *
+         * @param {function(Object,Object)=} successCb
+         *   Success callback with two arguments: `value`, `responseHeaders`.
+         *
+         * @param {function(Object)=} errorCb Error callback with one argument:
+         *   `httpResponse`.
+         *
+         * @returns {Object} An empty reference that will be
+         *   populated with the actual data once the response is returned
+         *   from the server.
+         *
+         * <em>
+         * (The remote method definition does not provide any description.
+         * This usually means the response is a `Notification` object.)
+         * </em>
+         */
+        "deleteById": {
+          url: urlBase + "/Notifications/:id",
+          method: "DELETE"
+        },
+
+        /**
+         * @ngdoc method
+         * @name lbServices.Notification#count
+         * @methodOf lbServices.Notification
+         *
+         * @description
+         *
+         * Count instances of the model matched by where from the data source.
+         *
+         * @param {Object=} parameters Request parameters.
+         *
+         *  - `where` – `{object=}` - Criteria to match model instances
+         *
+         * @param {function(Object,Object)=} successCb
+         *   Success callback with two arguments: `value`, `responseHeaders`.
+         *
+         * @param {function(Object)=} errorCb Error callback with one argument:
+         *   `httpResponse`.
+         *
+         * @returns {Object} An empty reference that will be
+         *   populated with the actual data once the response is returned
+         *   from the server.
+         *
+         * Data properties:
+         *
+         *  - `count` – `{number=}` - 
+         */
+        "count": {
+          url: urlBase + "/Notifications/count",
+          method: "GET"
+        },
+
+        /**
+         * @ngdoc method
+         * @name lbServices.Notification#prototype$updateAttributes
+         * @methodOf lbServices.Notification
+         *
+         * @description
+         *
+         * Update attributes for a model instance and persist it into the data source.
+         *
+         * @param {Object=} parameters Request parameters.
+         *
+         *  - `id` – `{*}` - PersistedModel id
+         *
+         * @param {Object} postData Request data.
+         *
+         * This method expects a subset of model properties as request parameters.
+         *
+         * @param {function(Object,Object)=} successCb
+         *   Success callback with two arguments: `value`, `responseHeaders`.
+         *
+         * @param {function(Object)=} errorCb Error callback with one argument:
+         *   `httpResponse`.
+         *
+         * @returns {Object} An empty reference that will be
+         *   populated with the actual data once the response is returned
+         *   from the server.
+         *
+         * <em>
+         * (The remote method definition does not provide any description.
+         * This usually means the response is a `Notification` object.)
+         * </em>
+         */
+        "prototype$updateAttributes": {
+          url: urlBase + "/Notifications/:id",
+          method: "PUT"
+        },
+
+        /**
+         * @ngdoc method
+         * @name lbServices.Notification#createChangeStream
+         * @methodOf lbServices.Notification
+         *
+         * @description
+         *
+         * Create a change stream.
+         *
+         * @param {Object=} parameters Request parameters.
+         *
+         *   This method does not accept any parameters.
+         *   Supply an empty object or omit this argument altogether.
+         *
+         * @param {Object} postData Request data.
+         *
+         *  - `options` – `{object=}` - 
+         *
+         * @param {function(Object,Object)=} successCb
+         *   Success callback with two arguments: `value`, `responseHeaders`.
+         *
+         * @param {function(Object)=} errorCb Error callback with one argument:
+         *   `httpResponse`.
+         *
+         * @returns {Object} An empty reference that will be
+         *   populated with the actual data once the response is returned
+         *   from the server.
+         *
+         * Data properties:
+         *
+         *  - `changes` – `{ReadableStream=}` - 
+         */
+        "createChangeStream": {
+          url: urlBase + "/Notifications/change-stream",
+          method: "POST"
+        },
+
+        // INTERNAL. Use Group.notifications.findById() instead.
+        "::findById::Group::notifications": {
+          params: {
+          'fk': '@fk'
+          },
+          url: urlBase + "/Groups/:id/notifications/:fk",
+          method: "GET"
+        },
+
+        // INTERNAL. Use Group.notifications.destroyById() instead.
+        "::destroyById::Group::notifications": {
+          params: {
+          'fk': '@fk'
+          },
+          url: urlBase + "/Groups/:id/notifications/:fk",
+          method: "DELETE"
+        },
+
+        // INTERNAL. Use Group.notifications.updateById() instead.
+        "::updateById::Group::notifications": {
+          params: {
+          'fk': '@fk'
+          },
+          url: urlBase + "/Groups/:id/notifications/:fk",
+          method: "PUT"
+        },
+
+        // INTERNAL. Use Group.notifications() instead.
+        "::get::Group::notifications": {
+          isArray: true,
+          url: urlBase + "/Groups/:id/notifications",
+          method: "GET"
+        },
+
+        // INTERNAL. Use Group.notifications.create() instead.
+        "::create::Group::notifications": {
+          url: urlBase + "/Groups/:id/notifications",
+          method: "POST"
+        },
+
+        // INTERNAL. Use Group.notifications.createMany() instead.
+        "::createMany::Group::notifications": {
+          isArray: true,
+          url: urlBase + "/Groups/:id/notifications",
+          method: "POST"
+        },
+
+        // INTERNAL. Use Group.notifications.destroyAll() instead.
+        "::delete::Group::notifications": {
+          url: urlBase + "/Groups/:id/notifications",
+          method: "DELETE"
+        },
+
+        // INTERNAL. Use Group.notifications.count() instead.
+        "::count::Group::notifications": {
+          url: urlBase + "/Groups/:id/notifications/count",
+          method: "GET"
+        },
+      }
+    );
+
+
+
+        /**
+         * @ngdoc method
+         * @name lbServices.Notification#updateOrCreate
+         * @methodOf lbServices.Notification
+         *
+         * @description
+         *
+         * Update an existing model instance or insert a new one into the data source.
+         *
+         * @param {Object=} parameters Request parameters.
+         *
+         *   This method does not accept any parameters.
+         *   Supply an empty object or omit this argument altogether.
+         *
+         * @param {Object} postData Request data.
+         *
+         * This method expects a subset of model properties as request parameters.
+         *
+         * @param {function(Object,Object)=} successCb
+         *   Success callback with two arguments: `value`, `responseHeaders`.
+         *
+         * @param {function(Object)=} errorCb Error callback with one argument:
+         *   `httpResponse`.
+         *
+         * @returns {Object} An empty reference that will be
+         *   populated with the actual data once the response is returned
+         *   from the server.
+         *
+         * <em>
+         * (The remote method definition does not provide any description.
+         * This usually means the response is a `Notification` object.)
+         * </em>
+         */
+        R["updateOrCreate"] = R["upsert"];
+
+        /**
+         * @ngdoc method
+         * @name lbServices.Notification#update
+         * @methodOf lbServices.Notification
+         *
+         * @description
+         *
+         * Update instances of the model matched by where from the data source.
+         *
+         * @param {Object=} parameters Request parameters.
+         *
+         *  - `where` – `{object=}` - Criteria to match model instances
+         *
+         * @param {Object} postData Request data.
+         *
+         * This method expects a subset of model properties as request parameters.
+         *
+         * @param {function(Object,Object)=} successCb
+         *   Success callback with two arguments: `value`, `responseHeaders`.
+         *
+         * @param {function(Object)=} errorCb Error callback with one argument:
+         *   `httpResponse`.
+         *
+         * @returns {Object} An empty reference that will be
+         *   populated with the actual data once the response is returned
+         *   from the server.
+         *
+         * The number of instances updated
+         */
+        R["update"] = R["updateAll"];
+
+        /**
+         * @ngdoc method
+         * @name lbServices.Notification#destroyById
+         * @methodOf lbServices.Notification
+         *
+         * @description
+         *
+         * Delete a model instance by id from the data source.
+         *
+         * @param {Object=} parameters Request parameters.
+         *
+         *  - `id` – `{*}` - Model id
+         *
+         * @param {function(Object,Object)=} successCb
+         *   Success callback with two arguments: `value`, `responseHeaders`.
+         *
+         * @param {function(Object)=} errorCb Error callback with one argument:
+         *   `httpResponse`.
+         *
+         * @returns {Object} An empty reference that will be
+         *   populated with the actual data once the response is returned
+         *   from the server.
+         *
+         * <em>
+         * (The remote method definition does not provide any description.
+         * This usually means the response is a `Notification` object.)
+         * </em>
+         */
+        R["destroyById"] = R["deleteById"];
+
+        /**
+         * @ngdoc method
+         * @name lbServices.Notification#removeById
+         * @methodOf lbServices.Notification
+         *
+         * @description
+         *
+         * Delete a model instance by id from the data source.
+         *
+         * @param {Object=} parameters Request parameters.
+         *
+         *  - `id` – `{*}` - Model id
+         *
+         * @param {function(Object,Object)=} successCb
+         *   Success callback with two arguments: `value`, `responseHeaders`.
+         *
+         * @param {function(Object)=} errorCb Error callback with one argument:
+         *   `httpResponse`.
+         *
+         * @returns {Object} An empty reference that will be
+         *   populated with the actual data once the response is returned
+         *   from the server.
+         *
+         * <em>
+         * (The remote method definition does not provide any description.
+         * This usually means the response is a `Notification` object.)
+         * </em>
+         */
+        R["removeById"] = R["deleteById"];
+
+
+    /**
+    * @ngdoc property
+    * @name lbServices.Notification#modelName
+    * @propertyOf lbServices.Notification
+    * @description
+    * The name of the model represented by this $resource,
+    * i.e. `Notification`.
+    */
+    R.modelName = "Notification";
+
+
+        /**
+         * @ngdoc method
+         * @name lbServices.Notification#group
+         * @methodOf lbServices.Notification
+         *
+         * @description
+         *
+         * Fetches belongsTo relation group.
+         *
+         * @param {Object=} parameters Request parameters.
+         *
+         *  - `id` – `{*}` - PersistedModel id
+         *
+         *  - `refresh` – `{boolean=}` - 
+         *
+         * @param {function(Object,Object)=} successCb
+         *   Success callback with two arguments: `value`, `responseHeaders`.
+         *
+         * @param {function(Object)=} errorCb Error callback with one argument:
+         *   `httpResponse`.
+         *
+         * @returns {Object} An empty reference that will be
+         *   populated with the actual data once the response is returned
+         *   from the server.
+         *
+         * <em>
+         * (The remote method definition does not provide any description.
+         * This usually means the response is a `Group` object.)
+         * </em>
+         */
+        R.group = function() {
+          var TargetResource = $injector.get("Group");
+          var action = TargetResource["::get::Notification::group"];
           return action.apply(R, arguments);
         };
 

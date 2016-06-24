@@ -5,7 +5,6 @@ angular
     'ui.router',
     'lbServices',
     'angularFileUpload',
-    'btorfs.multiselect',
     'oc.lazyLoad',
     'angular-loading-bar'
  ])
@@ -210,6 +209,12 @@ angular
 			controller: 'AddGroupController', 
 			authenticate: true
 		})	
+		.state('viewGroup', {
+			url: '/viewGroup/:id',
+			templateUrl: 'views/groups/group.html',
+			controller: 'ViewGroupController', 
+			authenticate: true
+		})		
 		.state('editGroup', {
 			url: '/editGroup/:id',
 			templateUrl: 'views/groups/group-form.html',
