@@ -1,15 +1,20 @@
-<h1>Store list</h1>
+<h1>{{groupName}} Stores</h1>
 <hr>
 <div class="list-group">
 	<span class="list-group-item" ng-repeat="store in stores">
 	 	{{store.name}}&nbsp; &nbsp; 
 	    <i class="glyphicon glyphicon-remove pull-right text-danger" 
-	    	ui-sref="deleteStore({id: store.id})"></i>	 	
+	    	ng-click="deleteStore(store.id)" title="Delete"></i>	 	
 	 	<i class="glyphicon glyphicon-pencil pull-right text-primary" 
-	 		style="cursor: pointer; padding-right:20px" 
-	 		ui-sref="editStore({id: store.id})"></i> 
+	 		style="padding-right:20px" 
+	 		ng-click="editStore(store.id)" title="Edit"></i> 
   	</span>
 </div>
-<div>
-	<button class="btn btn-default" ui-sref="addStore">Add Store</button>
+<div class="row">
+<div class="col-sm-3">
+	<button class="btn btn-default" ng-click="addStore()">Add Store</button>
+</div>
+<div ng-show="groupName" class="col-sm-3">
+	<button class="btn btn-default" ng-click="viewGroup()">View Group</button>
+</div>
 </div>

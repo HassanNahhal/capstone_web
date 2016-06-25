@@ -3,26 +3,55 @@
  angular
   .module('app')
   .controller('AddStoreController', ['$scope', 'Store', 'Category', 
-    '$state', 'StoreCategory', '$rootScope',
-    function($scope, Store, Category, $state, StoreCategory, $rootScope) {
+    '$state', 'StoreCategory', '$rootScope', '$stateParams', 
+    function($scope, Store, Category, $state, StoreCategory, $rootScope, $stateParams) {
 
     $scope.action = 'Add';
     $scope.categories = [];
     $scope.selectedCategory=[];
     $scope.selCategoryCount;
-    $scope.store = {};     
+    $scope.store = {};  
+
+    $scope.groupName = $stateParams.groupName;   
+
+    var userId, groupId;
+    if($stateParams.groupId == undefined){
+      userId = $rootScope.currentUser.id;
+      groupId = "";
+    }else{
+      userId = $stateParams.ownerId;
+      groupId = $stateParams.groupId;
+    }  
 
     Category
       .find({
         filter: {
           order: 'name ASC',
-          where: {customerId: $rootScope.currentUser.id}
+          where: {and: [
+            {customerId: userId},
+            {groupId: groupId}
+          ]}
         }
       })
       .$promise
       .then(function(categories){
         $scope.categories = categories;
     });
+
+    $scope.Stores = function(){
+      if($stateParams.groupId == undefined){
+        $state.go('Stores');
+      }else{
+         $state.go(
+          'groupStores', 
+          {
+            'groupId':    $stateParams.groupId, 
+            'groupName':  $stateParams.groupName,
+            'ownerId':    $stateParams.ownerId
+          }
+        );
+      }      
+    }      
 
     $scope.countSelectedCategory = function(){
       $scope.selCategoryCount=$scope.selectedCategory.length + " selected";
@@ -32,7 +61,8 @@
       Store
         .create({
           name: $scope.store.name,
-          customerId: $rootScope.currentUser.id
+          customerId: userId,
+          groupId: groupId
         }, function(store) {
           for(var i = 0 ; i < $scope.selectedCategory.length ; i++){
             StoreCategory
@@ -41,7 +71,7 @@
                 categoryId: $scope.selectedCategory[i].id
               }).$promise;              
           }
-          $state.go('Stores');
+          $scope.Stores();
         });
     };
   }])  
@@ -49,17 +79,30 @@
       '$stateParams', '$state', 'StoreCategory', '$location', '$rootScope', 
       function($scope, Store, Category, $stateParams, $state, StoreCategory, $location, $rootScope) {
 
-	    $scope.action = 'Edit';
-      $scope.categories = [];
-      $scope.options2=[];
-      $scope.selectedCategory=[];
-      $scope.selCategoryCount;
-      $scope.store = {};        
+    $scope.action = 'Edit';
+    $scope.categories = [];
+    $scope.options2=[];
+    $scope.selectedCategory=[];
+    $scope.selCategoryCount;
+    $scope.store = {}; 
 
-      Category.find({
+    var userId, groupId;
+    if($stateParams.groupId == undefined){
+      userId = $rootScope.currentUser.id;
+      groupId = "";
+    }else{
+      userId = $stateParams.ownerId;
+      groupId = $stateParams.groupId;
+    }  
+
+    Category
+      .find({
         filter: {
           order: 'name ASC',
-          where: {customerId: $rootScope.currentUser.id}
+          where: {and: [
+            {customerId: userId},
+            {groupId: groupId}
+          ]}
         }
       })
       .$promise
@@ -71,8 +114,11 @@
               include: {
                 relation: 'categories',
                 scope:{
-                  fields: ['id', 'name', 'customerId'],
-                  where: {customerId: $rootScope.currentUser.id}                  
+                  fields: ['id', 'name', 'customerId', 'groupId'],
+                  where: {and: [
+                    {customerId: userId},
+                    {groupId: groupId}
+                  ]}                 
                 }
               }
             }
@@ -98,10 +144,37 @@
         $scope.selCategoryCount=$scope.selectedCategory.length + " selected";
       }
 
+      var groupParameters;
+      if($stateParams.groupId != undefined){
+        groupParameters = {
+              'groupId': $stateParams.groupId, 
+              'groupName': $stateParams.groupName, 
+              'ownerId': $stateParams.ownerId
+            };
+      }       
+
+      $scope.Stores = function(){
+        if($stateParams.groupId == undefined){
+          $state.go('Stores');
+        }else{
+           $state.go('groupStores', groupParameters);
+        }      
+      }
+
       $scope.deleteStore = function(){
         if(confirm("Are you sure?")){
-             $location.path('/deleteStore/' + $scope.store.id);    
-        }         
+          if($stateParams.groupId == undefined){
+             $state.go(
+              'deleteStore', 
+              {
+                'id': $stateParams.id
+              }
+            );
+          }else{
+            groupParameters['id'] = $stateParams.id;
+            $state.go('groupDeleteStore', groupParameters);
+          } 
+        }        
       }  
 
 	    $scope.submitForm = function() {
@@ -119,20 +192,89 @@
                     })
                     .$promise;                  
                 }
-                $state.go('Stores'); 
+                $scope.Stores(); 
               });
           });          
 	    };
   }])
   .controller('AllStoresController', [
-    '$scope', 'Store', '$rootScope', function($scope, Store, $rootScope) {
-      $scope.stores = Store
+    '$stateParams', '$scope', 'Store', '$rootScope', '$state',  
+    function($stateParams, $scope, Store, $rootScope, $state) {
+
+      $scope.groupName = $stateParams.groupName;
+
+      var userId, groupId;
+      if($stateParams.groupId == undefined){
+        userId = $rootScope.currentUser.id;
+        groupId = "";
+      }else{
+        userId = $stateParams.ownerId;
+        groupId = $stateParams.groupId;
+      }
+
+      $scope.stores = Store     
             .find({
               filter: {
                 order: 'name ASC',
-                where: {customerId: $rootScope.currentUser.id}
+                where: {and: [
+                  {customerId: userId},
+                  {groupId: groupId}
+                ]}
               }
             });
+
+      $scope.viewGroup = function(){
+        if($stateParams.groupId != undefined){
+             $state.go('viewGroup', {'id': $stateParams.groupId});
+        }        
+      }
+ 
+      $scope.editStore = function(storeId){
+        $scope.actionStore('editStore', 'groupEditStore', storeId);  
+      }
+
+      $scope.deleteStore = function(storeId){
+        if(confirm("Are you sure?")){
+          $scope.actionStore('deleteStore', 'groupDeleteStore', storeId);  
+        }         
+      } 
+
+      $scope.actionStore = function(action, groupAction, storeId){
+        if($stateParams.groupId == undefined){
+           $state.go(
+            action, 
+            {
+              'id': storeId
+            }
+          );
+        }else{
+           $state.go(
+            groupAction, 
+            {
+              'id': storeId, 
+              'groupId': $stateParams.groupId, 
+              'groupName':  $stateParams.groupName,
+              'ownerId': $stateParams.ownerId
+            }
+          );  
+        } 
+      }          
+
+      $scope.addStore = function(){
+        if($stateParams.groupId == undefined){
+          $state.go('addStore');
+        }else{
+             $state.go(
+              'groupAddStore', 
+              {
+                'groupId':    $stateParams.groupId, 
+                'groupName':  $stateParams.groupName,
+                'ownerId':    $stateParams.ownerId
+              }
+            );
+        }
+      }
+
   }])
   .controller('DeleteStoreController', ['$scope', 'Store', '$state', '$stateParams', 
       function($scope, Store, $state, $stateParams) {
@@ -145,7 +287,18 @@
           .destroyById({ id: $stateParams.id })
           .$promise
           .then(function(){
-            $state.go('Stores'); 
+            if($stateParams.groupId == undefined){
+              $state.go('Stores');
+            }else{
+               $state.go(
+                'groupStores', 
+                {
+                  'groupId': $stateParams.groupId, 
+                  'groupName': $stateParams.groupName, 
+                  'ownerId': $stateParams.ownerId
+                }
+              );
+            } 
           });          
       });      
     }        

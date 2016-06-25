@@ -18,6 +18,13 @@
       "id": false,
       "required": false,
       "index": false
+    },
+    "groupId": {
+      "type": "string",
+      "id": false,
+      "required": false,
+      "index": false,
+      "default": ""
     }
   },
   "validations": [],

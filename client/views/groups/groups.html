@@ -35,7 +35,11 @@
 		 	Receipt limitation: {{group.grouptype.limitedReceipt}} / 
 
 		    <i class="glyphicon glyphicon-eye-open pull-right text-success" 
+		    	style="padding-left:10px" 
 		    	ui-sref="viewGroup({id: group.id})" title="View"></i>
+		    <i class="glyphicon glyphicon-list-alt pull-right text-info" 
+		    	style="padding-right:10px" 
+		    	ng-click="groupReceipts(group.id, group.ownerId, group.name)" title="Receipts"></i>		    	
 	  	</span>
 	  	<span ng-hide="groupsinmember" class="list-group-item">No group as a member.</span>
 	  	</div>

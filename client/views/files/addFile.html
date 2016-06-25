@@ -5,7 +5,7 @@
 
         <img ng-src="{{image}}"> </img>
 
-            <h3>Upload Receipt</h3>
+            <h3>{{groupName}} Upload Receipt</h3>
 
             <div ng-show="uploader.isHTML5">
                 <!-- 3. nv-file-over | nv-file-over="className" -->
@@ -134,8 +134,10 @@
                             }}
                         </strong>
                         </a>
+                        <!--
                         <br>
                         <a href="/api/containers/{{filepath}}/thumb/download/{{file.name}}"></a>
+                        -->
                     </td>
                     <td>
                     </td>

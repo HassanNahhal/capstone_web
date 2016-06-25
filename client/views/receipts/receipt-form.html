@@ -1,4 +1,4 @@
-<h1>{{ action }} Receipt</h1>
+<h1>{{ action }} {{groupName}} Receipt</h1>
 <hr>
 <form name="receiptForm" novalidate>
  	<div class="form-group" >
@@ -108,13 +108,13 @@
 					ng-disabled="isDisabled">{{ action }} Receipt</button>
 			</div>
 			<div  class="col-sm-2">
-				<button class="btn btn-default"  ui-sref="Receipts">Receipts</button>
+				<button class="btn btn-default"  ng-click="Receipts()">Receipts</button>
 			</div>
 			<div ng-show="receipt.id" class="col-sm-2">
-				<button class="btn btn-default" ui-sref="viewReceipt({id: receipt.id})">View Receipt</button>
+				<button class="btn btn-default" ng-click="viewReceipt()">View Receipt</button>
 			</div>				
 			<div ng-show="receipt.id" class="col-sm-2">
-				<button class="btn btn-danger" ng-click="delReceipt()">Delete Receipt</button>
+				<button class="btn btn-danger" ng-click="deleteReceipt()">Delete Receipt</button>
 			</div>						
 		</div>
 	</div>		

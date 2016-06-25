@@ -91,64 +91,17 @@
       });   
     };
   }])  
-  .controller('AllGroupsController', ['$scope', 'Group', 'Customer', 
+  .controller('AllGroupsController', ['$state', '$scope', 'Group', 'Customer', 
     '$rootScope', 'Notification', 'CustomerGroup', 
-    function($scope, Group, Customer, $rootScope, Notification, CustomerGroup) { 
+    function($state, $scope, Group, Customer, $rootScope, Notification, CustomerGroup) { 
       
       var userId = $rootScope.currentUser.id;
       $scope.isDisabled = true;
       $scope.groupsinmember;
       $scope.groups;
       $scope.notifications;
-      // Find Group whose owner is current logged in user
-      Customer
-        .findById({
-          id: userId,
-          filter: {
-            include: {
-              relation: 'groups',
-              scope: {
-                //order: 'createdAt DESC', 
-                fields: ['id', 'name', 'ownerId'],
-                include: 'grouptype'
-                //, where: {ownerId: userId}                
-              }
-            }
-          }
-        })
-        .$promise
-        .then(function(customer){
-          console.log("customer-groups: ", customer);
-          if(customer.groups.length > 0){
-            var isOwner = false;
-            var groups = [];
-            var memberInGroups = [];
-            for(var i = 0 ; i < customer.groups.length ; i++){
-              if(customer.groups[i].ownerId == userId){
-                isOwner = true;
-                groups.push(customer.groups[i]);
-                //$scope.groups.push(customer.groups[i]);
-              }else{
-                memberInGroups.push(customer.groups[i]);
-                //$scope.groupsinmember.push(customer.groups[i]);
-              }
-            }
-            if(groups.length > 0){
-              $scope.groups = groups;
-            }
-            if(memberInGroups.length > 0){
-              $scope.groupsinmember = memberInGroups;
-            }
-            //console.log("owner groups: ", $scope.groups);
-            //console.log("member groups: ", $scope.groupsinmember);
-            if(isOwner){
-              $scope.isDisabled = true;
-            }else{
-              $scope.isDisabled = false;
-            }            
-          }else{
-            $scope.isDisabled = false;
-          } // if(customer.groups.length > 0){
+      $scope.requestleaveFromMember;
+      $scope.noticeLeaveByOnwer;
 
           // Find invitation notification
           Notification.find({
@@ -185,9 +138,68 @@
                 }
               });
             }
-          });
+          }); // Notification.find({
+
+      // Find Group whose owner is current logged in user
+      Customer
+        .findById({
+          id: userId,
+          filter: {
+            include: {
+              relation: 'groups',
+              scope: {
+                //order: 'createdAt DESC', 
+                fields: ['id', 'name', 'ownerId'],
+                include: 'grouptype'
+                //, where: {ownerId: userId}                
+              }
+            }
+          }
+        })
+        .$promise
+        .then(function(customer){
+          console.log("customer-groups: ", customer);
+          if(customer.groups.length > 0){
+            var isOwner = false;
+            var groups = [];
+            var memberInGroups = [];
+            var requestleaveFromMember = [];
+            var noticeLeaveByOnwer = [];            
+            for(var i = 0 ; i < customer.groups.length ; i++){
+              if(customer.groups[i].ownerId == userId){
+                isOwner = true;
+
+                groups.push(customer.groups[i]);
+                //$scope.groups.push(customer.groups[i]);
+              }else{
+                memberInGroups.push(customer.groups[i]);
+                //$scope.groupsinmember.push(customer.groups[i]);
+              }
+            }
+            if(groups.length > 0){
+              $scope.groups = groups;
+            }
+            if(memberInGroups.length > 0){
+              $scope.groupsinmember = memberInGroups;
+            }
+            //console.log("owner groups: ", $scope.groups);
+            //console.log("member groups: ", $scope.groupsinmember);
+            if(isOwner){
+              $scope.isDisabled = true;
+            }else{
+              $scope.isDisabled = false;
+            }            
+          }else{
+            $scope.isDisabled = false;
+          } // if(customer.groups.length > 0){
+
 
         });  //.then(function(customer){
+
+      $scope.groupReceipts = function(groupId, ownerId, groupName){
+        //alert("groupId: " + groupId);
+        $state.go('groupReceipts', {'groupId': groupId, 'ownerId': ownerId, 'groupName': groupName});
+      }
         
       $scope.acceptJoin = function(notificationId){
         if(confirm("Are you join this group?")){
@@ -290,7 +302,9 @@
         })
         .$promise
         .then(function(group){
+
           $scope.group = group;
+          console.log("$scope.group: ", $scope.group);
           //if current user is the owner of group
           //enable invite member and show the member list of group        
           if(group.ownerId == userId){
@@ -305,14 +319,39 @@
             for(var i = 0 ; i < group.customers.length ; i++){
               if(group.customers[i].id != userId){
                 $scope.members.push(group.customers[i]);
+                if(group.ownerId == group.customers[i].id){
+                  $scope.group.ownerEmail = group.customers[i].email;
+                }
               }
             }         
           }
         });
 
-        $scope.leaveGroup = function(){
+        $scope.leaveGroup = function(flashMessageId){
           if(confirm("Are you sure?")){
 
+
+
+            Notification
+            .create({
+              senderId:           $rootScope.currentUser.id,
+              senderEmail:        $rootScope.currentUser.email,
+              receiverId:         $scope.group.ownerId,
+              receiverEmail:      $scope.group.ownerEmail,
+              groupId:            $scope.group.id,
+              removeFromMember:   true
+            })
+            .$promise
+            .then(function(notification){
+              $scope.showMessage(flashMessageId);
+              window.setTimeout(function(){
+                $state.go('Groups');
+              }, 3500);                    
+            });   
+        
+
+
+            /*
             CustomerGroup
               .find({
                 filter: {
@@ -333,9 +372,18 @@
                     });
                 }
               });  // .then(function(customergroup){
+            */
 
           } // if(confirm("Are you sure?" + groupId)){
         }
+
+
+        $scope.showMessage = function(flashMessage){
+          $(flashMessage).addClass("in"); 
+          window.setTimeout(function(){
+            $(flashMessage).removeClass("in"); 
+          }, 3300);          
+        }         
         
   }])  
   .controller('EditGroupController', ['$scope', 'Group', '$stateParams', 

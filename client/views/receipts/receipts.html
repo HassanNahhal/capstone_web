@@ -1,11 +1,15 @@
-<h1>Receipt list</h1>
+<h1>{{groupName}} Receipts</h1>
 <hr>
 <div class="list-group">
-	<span class="list-group-item" ng-repeat="receipt in receipts" ui-sref="viewReceipt({id: receipt.id})">
+	<span class="list-group-item" ng-repeat="receipt in receipts">
 	 	{{receipt.store.name}} / 
 	 	Total: $ {{ receipt.total }} / 
 	 	#Items: {{receipt.numberOfItem}} / 
 	 	{{receipt.comment}}
+
+	 	<i class="glyphicon glyphicon-eye-open pull-right text-primary" 
+	 		style="padding-right:10px" 
+	 		ng-click="viewReceipt(receipt.id)" title="View"></i> 	 	
 	 	<!--
 	    <i class="glyphicon glyphicon-remove pull-right text-danger" 
 	    	ui-sref="deleteReceipt({id: receipt.id})"></i>	 	
@@ -15,6 +19,15 @@
 	 	-->
   	</span>
 </div>
-<div>
-	<button class="btn btn-default" ui-sref="addReceipt">Add Receipt</button>
+<div class="col-sm-3">
+	<button class="btn btn-default" ng-click="addReceipt()">Add Receipt</button>
+</div>
+<div ng-show="groupName" class="col-sm-5">
+	<button class="btn btn-default" ng-click="groupAddFile()">Group Files</button>		
+
+	<button class="btn btn-default" ng-click="groupChart()">Group Charts</button>
+</div>
+<div ng-show="groupName" class="col-sm-4">
+	<button class="btn btn-default" ng-click="viewGroup()">View Group</button>
+	<button class="btn btn-default" ui-sref="Groups">Groups</button>
 </div>

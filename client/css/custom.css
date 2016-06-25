@@ -254,6 +254,7 @@ footer nav ul li{
 #removeMember,
 #acceptInvitation,
 #removeInvitation,
+#requestLeave,
 #refuseInvitation,
 #invitationSuccess {
   position: fixed;
@@ -261,7 +262,6 @@ footer nav ul li{
   left: 35%;
   width: 60%;
   margin-right:5%;
-  z-index: 9999;
 }
 
 #memberlist {

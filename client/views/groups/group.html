@@ -39,18 +39,110 @@
 	</div> 
 	<hr>
 	<div class="row">
-		<div class="col-sm-offset-3 col-sm-3">
+		<div class="col-sm-3">
 			<button class="btn btn-default"  ui-sref="Groups">Groups</button>
 		</div>
-		<div  ng-show="isEnabled" class="col-sm-offset-3 col-sm-3">
+		<div ng-show="isEnabled" class="col-sm-3">
 			<button class="btn btn-default" 
 				ui-sref="editGroup({id: group.id})">Edit Group</button>			
 		</div>	
-		<div  ng-show="isLeave" class="col-sm-offset-3 col-sm-3">
-			<button class="btn btn-danger" ng-click="leaveGroup()">
+		<div ng-show="isLeave" class="col-sm-6">
+			<button class="btn btn-default" 
+				ui-sref="groupReceipts({
+				groupId: group.id, 
+				ownerId: group.ownerId, 
+				groupName: group.name})">Group Receipts</button>			
+
+			<button class="btn btn-default" 
+				ui-sref="groupAddFile({
+				groupId: group.id, 
+				ownerId: group.ownerId, 
+				groupName: group.name})">Group Files</button>			
+
+			<button class="btn btn-default" 
+				ui-sref="groupChart({
+				groupId: group.id, 
+				ownerId: group.ownerId, 
+				groupName: group.name})">Group Charts</button>			
+		</div>						
+		<div ng-show="isLeave" class="col-sm-3">
+			<button class="btn btn-danger" ng-click="leaveGroup('#requestLeave')">
 				Leave Group
 			</button>			
 		</div>			
 	</div>
-
+	<div class="row" ng-show="isEnabled">
+	    <div class="col-sm-12 text-center">
+	    <hr style="margin-bottom:15px;">
+	    </div>
+        <div class="col-sm-12 text-center">
+            <div class="list-group list-group-horizontal">
+                <a ui-sref="groupReceipts({
+                groupId: group.id, 
+                ownerId: group.ownerId, 
+                groupName: group.name})" 
+                	class="list-group-item">Group Receipts</a>
+                <a ui-sref="groupAddFile({
+                groupId: group.id, 
+                ownerId: group.ownerId, 
+                groupName: group.name})" 
+                	class="list-group-item">Group File</a>
+                <a ui-sref="groupChart({
+                groupId: group.id, 
+                ownerId: group.ownerId, 
+                groupName: group.name})" 
+                	class="list-group-item">Group Chart</a>                	                	
+                <a ui-sref="groupCategories({
+                groupId: group.id, 
+                ownerId: group.ownerId, 
+                groupName: group.name})" 
+                	class="list-group-item">Group Categories</a>
+                <a ui-sref="groupStores({
+                groupId: group.id, 
+                ownerId: group.ownerId, 
+                groupName: group.name})" 
+                	class="list-group-item">Group Stores</a>
+                <a ui-sref="groupTags({
+                groupId: group.id, 
+                ownerId: group.ownerId, 
+                groupName: group.name})"
+                 	class="list-group-item">Group Tags</a>
+            </div>
+        </div>								
+	</div>
+	<!-- flash message -->
+	<div id="requestLeave" class="alert alert-info fade">
+    	<a href="" class="close" data-dismiss="alert">&times;</a>
+    	<i class="glyphicon glyphicon-info-sign text-info"></i>
+    	<strong>Note: </strong>Request for leaving group has been sent successfully.
+	</div>
+	<!-- flash message -->
 </form>
+
+<!-- Group menu button style -->
+<style>
+.list-group-horizontal .list-group-item {
+    display: inline-block;	
+	margin-bottom: 0;
+	margin-left:-4px;
+	margin-right: 0;
+	padding-top:7px;
+	padding-bottom:7px;
+	padding-left:10px;
+	padding-right:10px;
+}
+.list-group-horizontal .list-group-item:first-child {
+	border-top-right-radius:0;
+	border-bottom-left-radius:4px;
+}
+.list-group-horizontal .list-group-item:last-child {
+	border-top-right-radius:4px;
+	border-bottom-left-radius:0;
+}
+.list-group-horizontal .list-group-item:hover,
+.list-group-horizontal .list-group-item:focus {
+  background-color: #e0e0e0;
+  border-color: #ccc;
+}
+</style>
+<!-- Group menu button style -->

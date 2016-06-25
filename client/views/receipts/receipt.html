@@ -1,4 +1,4 @@
-<h1>View Receipt</h1>
+<h1>{{groupName}} Receipt</h1>
 <hr>
 
  		<div class="row">
@@ -68,16 +68,20 @@
 		  	</div>
 		</div>
 		<hr>
+		<!-- button -->
 		<div class="row">
 			<div  class="col-sm-offset-2 col-sm-2">
-				<button class="btn btn-default"  ui-sref="Receipts">Receipts</button>
+				<button class="btn btn-default"  ng-click="Receipts()">Receipts</button>
 			</div>
 			<div  class="col-sm-2">
-				<button class="btn btn-default" ui-sref="editReceipt({id: receipt.id})">Edit Receipt</button>
-			</div>	
+				<button class="btn btn-default" ng-click="editReceipt()">Edit Receipt</button>
+			</div>
+			<!--	
 			<div ng-show="receipt.id" class="col-sm-offset-2 col-sm-4">
 				<button class="btn btn-danger" ng-click="delReceipt()">Delete Receipt</button>
-			</div>						
+			</div>	
+			-->					
 		</div>
+		<!-- button -->
 	
 

@@ -3,19 +3,116 @@
  angular
   .module('app')
   .controller('AllReceiptsController', [
-  	'$scope', 'Receipt', '$rootScope',   
-     function($scope, Receipt, $rootScope) {
+  	'$scope', 'Receipt', '$rootScope', '$stateParams', '$state', 
+     function($scope, Receipt, $rootScope, $stateParams, $state) {
 
-      var userId = $rootScope.currentUser.id;
+      $scope.ownerId = $stateParams.ownerId;
+      $scope.groupId = $stateParams.groupId;
+      $scope.groupName = $stateParams.groupName;
 
-	    $scope.receipts = Receipt.find({
+      var userId, groupId;
+      if($stateParams.groupId == undefined){
+        userId = $rootScope.currentUser.id;
+        groupId = "";
+      }else{
+        userId = $stateParams.ownerId;
+        groupId = $stateParams.groupId;
+      }
+
+      $scope.receipts = Receipt.find({
         filter: {
           order: 'date DESC', 
           include: ['store', 'customer'],
-          where: {customerId: userId}
+          where: {and: [
+            {customerId: userId},
+            {groupId: groupId},
+          ]}
         }
-      });
-      
+      });  
+
+      $scope.viewGroup = function(){
+        if($stateParams.groupId != undefined){
+             $state.go('viewGroup', {'id': $stateParams.groupId});
+        }        
+      }
+
+      var groupParameters;
+      if($stateParams.groupId != undefined){
+        groupParameters = {
+              'groupId': $stateParams.groupId, 
+              'groupName': $stateParams.groupName, 
+              'ownerId': $stateParams.ownerId
+            };
+      } 
+  
+      $scope.groupAddFile = function(){
+        if($stateParams.groupId != undefined){
+             $state.go('groupAddFile', groupParameters);
+        }        
+      }
+ 
+      $scope.groupChart = function(){
+        if($stateParams.groupId != undefined){
+             $state.go('groupChart', groupParameters);
+        }        
+      }            
+
+      $scope.addReceipt = function(){
+        if($stateParams.groupId == undefined){
+          $state.go('addReceipt');
+        }else{
+             $state.go(
+              'groupAddReceipt', groupParameters);
+        }
+      }       
+
+      $scope.viewReceipt = function(receiptId){
+        if($stateParams.groupId == undefined){
+          $state.go('viewReceipt', {'id': receiptId});
+        }else{
+             $state.go(
+              'groupViewReceipt', 
+              {
+                'id':         receiptId, 
+                'groupId':    $stateParams.groupId, 
+                'groupName':  $stateParams.groupName,
+                'ownerId':    $stateParams.ownerId
+              }
+            );
+        }        
+      }
+
+      $scope.actionReceipt = function(action, groupAction, receiptId){
+        if($stateParams.groupId == undefined){
+           $state.go(
+            action, 
+            {
+              'id': receiptId
+            }
+          );
+        }else{
+           $state.go(
+            groupAction, 
+            {
+              'id': receiptId, 
+              'groupId': $stateParams.groupId, 
+              'groupName':  $stateParams.groupName,
+              'ownerId': $stateParams.ownerId
+            }
+          );  
+        } 
+      }
+ 
+      $scope.editCategory = function(receiptId){
+        $scope.actionReceipt('editReceipt', 'groupEditReceipt', receiptId);  
+      }
+
+      $scope.deleteCategory = function(receiptId){
+        if(confirm("Are you sure?")){
+          $scope.actionReceipt('deleteReceipt', 'groupDeleteReceipt', receiptId);  
+        }         
+      }
+
   }])
   .controller('DeleteReceiptController', ['$scope', 'Receipt', '$state',
       '$stateParams',  
@@ -33,10 +130,23 @@
             .destroyById({ id: $stateParams.id })
             .$promise
             .then(function() {
-                $state.go('Receipts');        
+              //$state.go('Receipts'); 
+              if($stateParams.groupId == undefined){
+                $state.go('Receipts');
+              }else{
+                $state.go(
+                  'groupReceipts', 
+                  {
+                    'groupId':    $stateParams.groupId, 
+                    'groupName':  $stateParams.groupName,
+                    'ownerId':    $stateParams.ownerId
+                  }
+                );
+              }
             });          
         });
     });
+
   }])
   .controller('ViewReceiptController', ['$scope', 'Receipt', '$state',
       '$stateParams', 'Store', 'Item', 'ReceiptItem', 'Category', 
@@ -50,7 +160,18 @@
     $scope.receipt = {};
     $scope.tags = [];  
     $scope.selectedTags=[];
-    $scope.selTagCount;   
+    $scope.selTagCount;  
+
+    var groupName = $stateParams.groupName; 
+
+    var userId, groupId;
+    if($stateParams.groupId == undefined){
+      userId = $rootScope.currentUser.id;
+      groupId = "";
+    }else{
+      userId = $stateParams.ownerId;
+      groupId = $stateParams.groupId;
+    }  
 
     Store
       .find({
@@ -61,7 +182,10 @@
         },
         filter: {
           order: 'name ASC',
-          where: {customerId: $rootScope.currentUser.id}
+          where: {and: [
+            {customerId: userId},
+            {groupId: groupId}
+          ]}
         }        
       })
       .$promise
@@ -74,13 +198,19 @@
               {
                 relation: 'items',
                 scope:{
-                  where: {customerId: $rootScope.currentUser.id}                  
+                  where: {and: [
+                    {customerId: userId},
+                    {groupId: groupId}
+                  ]}                 
                 }
               },
               {
                 relation: 'tags',
                 scope:{
-                  where: {customerId: $rootScope.currentUser.id}                  
+                  where: {and: [
+                    {customerId: userId},
+                    {groupId: groupId}
+                  ]}                
                 }
               }              
             ]
@@ -108,7 +238,10 @@
           Tag.find({
               filter: {
                 order: 'name ASC',
-                where: {customerId: $rootScope.currentUser.id}
+                where: {and: [
+                  {customerId: userId},
+                  {groupId: groupId}
+                ]}
               }
             })
             .$promise
@@ -135,30 +268,64 @@
       ReceiptService.getCategoriesBySelectedStore($scope.selectedStore.id, null);
     } 
     */
+    $scope.Receipts = function(){
+      if($stateParams.groupId == undefined){
+        $state.go('Receipts');
+      }else{
+           $state.go(
+            'groupReceipts', 
+            {
+              'groupId':    $stateParams.groupId, 
+              'groupName':  $stateParams.groupName,
+              'ownerId':    $stateParams.ownerId
+            }
+          );
+      }        
+    } 
+
+    $scope.editReceipt = function(){
+      if($stateParams.groupId == undefined){
+        $state.go('editReceipt', {'id': $stateParams.id});
+      }else{
+         $state.go(
+          'groupEditReceipt', 
+          {
+            'id':         $stateParams.id, 
+            'groupId':    $stateParams.groupId, 
+            'groupName':  $stateParams.groupName,
+            'ownerId':    $stateParams.ownerId
+          }
+        );
+      }        
+    }    
 
     // Get the Store's categories using Controller's function (but duplicated)
     $scope.getStoreCategories = function(storeId, categoryId){      
       if(storeId === null){
         storeId = $scope.selectedStore.id;
-        //console.log("changeStoreId: ", storeId);
       }
       Store.findById({ 
         id: storeId,
         fields: {
           id: true,
           name: true
-        },            
-        include: {
-          relation: 'categories',
-          scope:{
-            where: {customerId: $rootScope.currentUser.id}                  
-          }
-        }
+        }, 
+        filter: {
+          include: {
+            relation: 'categories',
+            scope:{
+              where: {and: [
+                {customerId: userId},
+                {groupId: groupId}
+              ]}                 
+            }
+          }         
+        }           
+
       })
       .$promise
       .then(function(store){
         var categories = $scope.categories = store.categories;
-        //console.log("store.categories: ", store.categories);
         if(store.categories.length > 0 && categoryId != null){
             var selectedCategoryIndex = categories.map(function(category){ 
               return category.id;
@@ -170,13 +337,6 @@
 
     $scope.countSelectedTag = function(){
       $scope.selTagCount=$scope.selectedTags.length + " selected";
-    }
-
-    // Delete selected receipt
-    $scope.delReceipt = function(){
-      if(confirm("Are you sure?")){
-           $location.path('/deleteReceipt/' + $scope.receipt.id);    
-      }    
     }
       
   }])  
@@ -195,13 +355,27 @@
     $scope.delDisabled = true;
     $scope.tags = [];  
     $scope.selectedTags=[];
-    $scope.selTagCount;   
+    $scope.selTagCount;  
+
+    $scope.groupName = $stateParams.groupName;
+
+    var userId, groupId;
+    if($stateParams.groupId == undefined){
+      userId = $rootScope.currentUser.id;
+      groupId = "";
+    }else{
+      userId = $stateParams.ownerId;
+      groupId = $stateParams.groupId;
+    }     
 
     Store
       .find({
         filter: {
           order: 'name ASC',
-          where: {customerId: $rootScope.currentUser.id}
+          where: {and: [
+            {customerId: userId},
+            {groupId: groupId}
+          ]}
         }
       })
       .$promise
@@ -215,13 +389,19 @@
               {
                 relation: 'items',
                 scope:{
-                  where: {customerId: $rootScope.currentUser.id}                  
+                  where: {and: [
+                    {customerId: userId},
+                    {groupId: groupId}
+                  ]}                  
                 }
               },
               {
                 relation: 'tags',
                 scope:{
-                  where: {customerId: $rootScope.currentUser.id}                  
+                  where: {and: [
+                    {customerId: userId},
+                    {groupId: groupId}
+                  ]}                   
                 }
               }              
             ]
@@ -251,7 +431,10 @@
           Tag.find({
             filter: {
               order: 'name ASC',
-              where: {customerId: $rootScope.currentUser.id}
+              where: {and: [
+                {customerId: userId},
+                {groupId: groupId}
+              ]} 
             }            
           })
             .$promise
@@ -278,6 +461,36 @@
       ReceiptService.getCategoriesBySelectedStore($scope.selectedStore.id, null);
     } 
     */
+    $scope.Receipts = function(){
+      if($stateParams.groupId == undefined){
+        $state.go('Receipts');
+      }else{
+           $state.go(
+            'groupReceipts', 
+            {
+              'groupId':    $stateParams.groupId, 
+              'groupName':  $stateParams.groupName,
+              'ownerId':    $stateParams.ownerId
+            }
+          );
+      }        
+    }     
+
+    $scope.viewReceipt = function(){
+      if($stateParams.groupId == undefined){
+        $state.go('viewReceipt', {'id': $stateParams.id});
+      }else{
+           $state.go(
+            'groupViewReceipt', 
+            {
+              'id':         $stateParams.id, 
+              'groupId':    $stateParams.groupId, 
+              'groupName':  $stateParams.groupName,
+              'ownerId':    $stateParams.ownerId
+            }
+          );
+      }        
+    } 
 
     // Get the Store's categories using Controller's function (but duplicated)
     $scope.getStoreCategories = function(storeId, categoryId){      
@@ -295,7 +508,10 @@
           include: {
             relation: 'categories',
             scope:{
-              where: {customerId: $rootScope.currentUser.id}                  
+              where: {and: [
+                {customerId: userId},
+                {groupId: groupId}
+              ]}                   
             }
           }
         }
@@ -370,9 +586,22 @@
     }
 
     // Delete selected receipt
-    $scope.delReceipt = function(){
+    $scope.deleteReceipt = function(){
       if(confirm("Are you sure?")){
-           $location.path('/deleteReceipt/' + $scope.receipt.id);    
+
+        if($stateParams.groupId == undefined){
+          $state.go('deleteReceipt', {'id': $stateParams.id});
+        }else{
+             $state.go(
+              'groupDeleteReceipt', 
+              {
+                'id':         $stateParams.id, 
+                'groupId':    $stateParams.groupId, 
+                'groupName':  $stateParams.groupName,
+                'ownerId':    $stateParams.ownerId
+              }
+            );
+        }   
       }    
     }
 
@@ -397,9 +626,10 @@
               .create({
                 name: $scope.items[i].name,
                 price: $scope.items[i].price,
-                customerId: $rootScope.currentUser.id            
+                customerId: userId,
+                groupId: groupId
               }, function(item){
-                console.log('new related item id : ', item.id);
+                //console.log('new related item id : ', item.id);
                 ReceiptItem
                   .create({
                     receiptId: $scope.receipt.id,
@@ -423,17 +653,29 @@
                     .$promise;                  
                 }
             });
-            $state.go('Receipts');           
+            //$state.go('Receipts');  
+            if($stateParams.groupId == undefined){
+              $state.go('Receipts');
+            }else{
+              $state.go(
+                'groupReceipts', 
+                {
+                  'groupId':    $stateParams.groupId, 
+                  'groupName':  $stateParams.groupName,
+                  'ownerId':    $stateParams.ownerId
+                }
+              );
+            }
+
         }); 
       });
     };
   }])
   .controller('AddReceiptController', ['$scope', '$state', 'Receipt', 'Store', 
-      'Category', 'Item', 'ReceiptItem', 'Tag', 
-      'ReceiptTag', '$rootScope',  
-      function($scope, $state, Receipt, Store, Category, 
-        Item, ReceiptItem, Tag, ReceiptTag, 
-        $rootScope) {             
+    'Category', 'Item', 'ReceiptItem', 'Tag', 'ReceiptTag', '$rootScope', '$stateParams',  
+    function($scope, $state, Receipt, Store, Category, 
+      Item, ReceiptItem, Tag, ReceiptTag, 
+      $rootScope, $stateParams) {             
 
     $scope.action = 'Add';
     $scope.stores = [];
@@ -446,11 +688,25 @@
     $scope.selectedTags=[];
     $scope.selTagCount; 
 
+    $scope.groupName = $stateParams.groupName;
+
+    var userId, groupId;
+    if($stateParams.groupId == undefined){
+      userId = $rootScope.currentUser.id;
+      groupId = "";
+    }else{
+      userId = $stateParams.ownerId;
+      groupId = $stateParams.groupId;
+    }    
+
     Store
       .find({
         filter: {
           order: 'name ASC',
-          where: {customerId: $rootScope.currentUser.id}
+          where: {and: [
+            {customerId: userId},
+            {groupId: groupId}
+          ]}
         }
       })
       .$promise
@@ -462,7 +718,10 @@
         Tag.find({
             filter: {
               order: 'name ASC',
-              where: {customerId: $rootScope.currentUser.id}
+              where: {and: [
+                {customerId: userId},
+                {groupId: groupId}
+              ]}
             }
           })
           .$promise
@@ -483,7 +742,7 @@
     $scope.getStoreCategories = function(storeId, categoryId){
       if(storeId === null){
         storeId = $scope.selectedStore.id;
-        console.log("changeStore: ", storeId);
+        //console.log("changeStore: ", storeId);
       }      
       Store.findById({ 
         id: storeId,
@@ -495,7 +754,10 @@
           include: {
             relation: 'categories',
             scope:{
-              where: {customerId: $rootScope.currentUser.id}                  
+              where: {and: [
+                {customerId: userId},
+                {groupId: groupId}
+              ]}                 
             }
           }
         }
@@ -533,7 +795,7 @@
       if($scope.items.length > 0){ 
         $scope.delDisabled = false;
       };
-      this.changeItemPrice();
+       $scope.changeItemPrice();
     };
 
     $scope.spliceItem = function(){
@@ -544,7 +806,7 @@
         $scope.receipt.numberOfItem="" ;
         $scope.receipt.total="";         
       };
-      this.changeItemPrice();
+       $scope.changeItemPrice();
     };        
 
     $scope.changeItemPrice = function(){
@@ -572,8 +834,7 @@
     }
     $scope.submitForm = function() {
       $scope.receipt.date = $scope.receipt.date = $('#receiptdate input').prop('value');
-      //console.log("receipt.date: ", $scope.receipt.date);
-      var userId = $rootScope.currentUser.id;
+
       Receipt
         .create({
           comment: $scope.receipt.comment, 
@@ -582,6 +843,7 @@
           date: $scope.receipt.date,
           storeId: $scope.selectedStore.id,
           customerId: userId,
+          groupId: groupId,
           categoryId: $scope.selectedCategory.id
         }, function(receipt){           
           for(var i=0 ; i < $scope.items.length ; i++){
@@ -589,7 +851,8 @@
               .create({
                 name: $scope.items[i].name,
                 price: $scope.items[i].price,
-                customerId: userId               
+                customerId: userId,
+                groupId: groupId               
               }, function(item){
                 console.log('item id : ', item.id);
                 ReceiptItem
@@ -607,6 +870,18 @@
               }).$promise;              
           };            
       });
-      $state.go('Receipts');
+
+      if($stateParams.groupId == undefined){
+        $state.go('Receipts');
+      }else{
+        $state.go(
+          'groupReceipts', 
+          {
+            'groupId':    $stateParams.groupId, 
+            'groupName':  $stateParams.groupName,
+            'ownerId':    $stateParams.ownerId
+          }
+        );
+      }
     };        
   }]);  

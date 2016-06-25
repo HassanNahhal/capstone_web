@@ -8,9 +8,25 @@
  */
 angular.module('app')
   .controller('ChartCtrl', ['$scope', '$timeout', 'Receipt', '$rootScope', 
-    function ($scope, $timeout, Receipt, $rootScope) {
+    '$state', '$stateParams', 
+    function ($scope, $timeout, Receipt, $rootScope, $state, $stateParams) {
 
-    var userId = $rootScope.currentUser.id;
+    $scope.groupName = $stateParams.groupName;   
+
+    var userId, groupId;
+    if($stateParams.groupId == undefined){
+      userId = $rootScope.currentUser.id;
+      groupId = "";
+    }else{
+      userId = $stateParams.ownerId;
+      groupId = $stateParams.groupId;
+    } 
+
+      $scope.viewGroup = function(){
+        if($stateParams.groupId != undefined){
+             $state.go('viewGroup', {'id': $stateParams.groupId});
+        }        
+      }    
 
     var totals;
     var dates; 
@@ -81,7 +97,9 @@ angular.module('app')
         tag_donut_labels = [];
         tag_donut_data = [];  
         store_pie_labels = [];
-        store_pie_data = [];                              
+        store_pie_data = []; 
+
+        //{date: {gt: new Date('2015-12-31T00:00:00.000Z')}}                             
 
         Receipt.find({
             filter: {
@@ -98,9 +116,11 @@ angular.module('app')
                     }
                 ],                
                 where: {and: [
-                    {customerId: userId},
-                    {date: {gt: startDate}}
-                    //{date: {gt: new Date('2015-12-31T00:00:00.000Z')}}
+                    {date: {gt: startDate}},
+                    {and: [
+                        {customerId: userId},
+                        {groupId: groupId}
+                    ]}                  
                 ]}
             }
         })
@@ -157,13 +177,14 @@ angular.module('app')
                         }
                     ],                
                     where: {and: [
-                        {customerId: userId}, 
+                        {and: [
+                            {customerId: userId},
+                            {groupId: groupId}
+                        ]}, 
                         {and: [
                                 {date: {lt: endDate}},
                                 {date: {gt: startDate}}
-                            ]
-                        }                        
-                        //{date: {gt: new Date('2015-12-31T00:00:00.000Z')}}
+                        ]}                        
                     ]}
                 }
             })

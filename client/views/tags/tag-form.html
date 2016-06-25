@@ -1,4 +1,4 @@
-<h1>{{ action }} Tag</h1>
+<h1>{{ action }} {{groupName}} Tag</h1>
 <hr>
 <form name="tagForm" novalidate>
 	<div class="form-group" ng-class="{'has-error': tagForm.name.$invalid && tagForm.name.$dirty}">
@@ -16,10 +16,12 @@
 
 		<div class="row">
 			<div class="col-sm-3">
-					<button class="btn btn-primary" ng-disabled="tagForm.$invalid" ng-click="submitForm()">{{ action }} Tag</button>
+					<button class="btn btn-primary" 
+					ng-disabled="tagForm.$invalid" 
+					ng-click="submitForm()">{{ action }} Tag</button>
 			</div>
 			<div  class="col-sm-3">
-				<button class="btn btn-default"  ui-sref="Tags">Tags</button>
+				<button class="btn btn-default"  ng-click="Tags()">Tags</button>
 			</div>	
 			<div ng-show="tag.id" class="col-sm-offset-3 col-sm-3">
 				<button class="btn btn-danger" ng-disabled="tagForm.$invalid" ng-click="deleteTag()">Delete Tag</button>

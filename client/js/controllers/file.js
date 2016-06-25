@@ -4,31 +4,42 @@ angular
   .module('app')
   // The example of the full functionality
   .controller('UploadController',['$state', '$scope', 'FileUploader', 
-      '$rootScope', 'Container', 
-            function ($state, $scope, FileUploader, $rootScope, Container) {
+      '$rootScope', 'Container', '$stateParams', 
+            function ($state, $scope, FileUploader, $rootScope, Container, $stateParams) {
     'use strict';
 
       var userId = "";
       var repositoryPath = "";
+      var storageId = "";     
       
       if($rootScope.currentUser == undefined || $rootScope.currentUser == null){
         $state.go('forbidden');
       }else{
-        userId = $rootScope.currentUser.id;
-        repositoryPath = userId + '/'; 
+
+        $scope.groupName = $stateParams.groupName;
+
+        if($stateParams.groupId == undefined){
+          userId = $rootScope.currentUser.id;
+          storageId = userId;
+        }else{
+          userId = $stateParams.ownerId;
+          storageId = $stateParams.groupId;
+        }        
+
+        repositoryPath = storageId + '/'; 
 
         Container.getContainers(function(container){
           console.log("container: ", container);
           var isContainer = false;
           for(var i = 0; i < container.length; i++){
-            if(container[i].name == userId){
+            if(container[i].name == storageId){
               isContainer = true;
               break;
             }           
           }
           if(isContainer == false){
             Container.createContainer({
-              name: userId
+              name: storageId
             },function(data){
                 console.log("new container: ", data);
               }
@@ -104,17 +115,28 @@ angular
     // --------------------
     //console.info('uploader: ', uploader);
   }
-]).controller('FilesController',['$state', '$scope', '$http', '$rootScope', 
-    function ($state, $scope, $http, $rootScope) {
+]).controller('FilesController',['$state', '$scope', '$http', '$rootScope', '$stateParams', 
+    function ($state, $scope, $http, $rootScope, $stateParams) {
 
       var userId = "";
       var repositoryPath = "";
-      
+      var storageId = "";  
+
+     
       if($rootScope.currentUser == undefined || $rootScope.currentUser == null){
         $state.go('forbidden');
       }else{
-        userId = $rootScope.currentUser.id;
-        repositoryPath = userId + '/';      
+        $scope.groupName = $stateParams.groupName;
+
+        if($stateParams.groupId == undefined){
+          userId = $rootScope.currentUser.id;
+          storageId = userId;
+        }else{
+          userId = $stateParams.ownerId;
+          storageId = $stateParams.groupId;
+        } 
+
+        repositoryPath = storageId + '/';      
       }    
 
     $scope.load = function () {

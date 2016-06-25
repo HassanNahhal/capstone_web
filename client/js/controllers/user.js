@@ -23,7 +23,7 @@ angular
       function($scope, AuthService, $state) {
       AuthService.logout()
         .then(function() {
-          $state.go('Home');
+          $state.go('/');
       });
       //********* Below code is not correct, just for test of logout
       //which needed to modify with correct authentication

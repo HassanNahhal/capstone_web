@@ -1,4 +1,4 @@
-<h1>{{ action }} Category</h1>
+<h1>{{ action }} {{groupName}} Category</h1>
 <hr>
 <form name="categoryForm" novalidate>
 	<div class="form-group" ng-class="{'has-error': categoryForm.name.$invalid && categoryForm.name.$dirty}">
@@ -15,10 +15,12 @@
 		</div>     
 		<div class="row">
 			<div class="col-sm-3">
-			<button class="btn btn-primary" ng-disabled="categoryForm.$invalid" ng-click="submitForm()">{{ action }} Category</button>
+			<button class="btn btn-primary" 
+			ng-disabled="categoryForm.$invalid" 
+			ng-click="submitForm()">{{ action }} Category</button>
 			</div>
 			<div  class="col-sm-3">
-				<button class="btn btn-default"  ui-sref="Categories">Categories</button>
+				<button class="btn btn-default"  ng-click="Categories()">Categories</button>
 			</div>	
 			<div ng-show="category.id" class="col-sm-offset-3 col-sm-3">
 				<button class="btn btn-danger" ng-disabled="categoryForm.$invalid" ng-click="deleteCategory()">Delete Category</button>
