@@ -3,8 +3,8 @@
  angular
   .module('app')
   .controller('AddTagController', [
-    '$scope', 'Tag', '$state', '$rootScope', '$stateParams',
-     function($scope, Tag, $state, $rootScope, $stateParams) {
+    '$scope', 'Tag', '$state', '$rootScope', '$stateParams', 
+     function($scope, Tag, $state, $rootScope, $stateParams) {      
 
     $scope.groupName = $stateParams.groupName;
 
@@ -49,8 +49,8 @@
 
   }])  
   .controller('AllTagsController', [
-  	'$scope', 'Tag', '$rootScope', '$stateParams', '$state',  
-    function($scope, Tag, $rootScope, $stateParams, $state) {
+  	'$scope', 'Tag', '$rootScope', '$stateParams', '$state', 
+    function($scope, Tag, $rootScope, $stateParams, $state) {     
 
       $scope.groupName = $stateParams.groupName;
 

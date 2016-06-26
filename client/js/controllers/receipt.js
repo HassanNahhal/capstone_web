@@ -116,7 +116,7 @@
   }])
   .controller('DeleteReceiptController', ['$scope', 'Receipt', '$state',
       '$stateParams',  
-      function($scope, Receipt, $state, $stateParams) {
+      function($scope, Receipt, $state, $stateParams) {         
 
     Receipt.items.destroyAll(
       {id: $stateParams.id}, 
@@ -162,7 +162,7 @@
     $scope.selectedTags=[];
     $scope.selTagCount;  
 
-    var groupName = $stateParams.groupName; 
+    $scope.groupName = $stateParams.groupName;
 
     var userId, groupId;
     if($stateParams.groupId == undefined){

@@ -5,8 +5,9 @@
 
 angular
   .module('app')
-  .controller('AuthLoginController', ['$scope', 'AuthService', '$state',   
-      function($scope, AuthService, $state) {
+  .controller('AuthLoginController', ['$scope', 'AuthService', '$state', 
+      function($scope, AuthService, $state) {     
+
     $scope.user = {
       email: "aaa@gmail.com",
       password: "aaa"
@@ -24,16 +25,11 @@ angular
       AuthService.logout()
         .then(function() {
           $state.go('/');
-      });
-      //********* Below code is not correct, just for test of logout
-      //which needed to modify with correct authentication
-      //$rootScope.currentUser = null; 
-      //sessionStorage.removeItem('access_token');  
-      //$state.go('Home');   
-      //********* Above code is not correct, just for test of logout     
+      });     
   }])
-  .controller('SignUpController', ['$scope', 'AuthService', '$state', '$rootScope', 
-      function($scope, AuthService, $state, $rootScope) {
+  .controller('SignUpController', ['$scope', 'AuthService', '$state', '$rootScope',  
+      function($scope, AuthService, $state, $rootScope) {       
+
     $scope.user = {};
     $scope.register = function() {      
       AuthService.register($scope.user.email, $scope.user.password)
@@ -46,7 +42,8 @@ angular
   }])
   .controller('ProfileController', [
     '$scope', '$state', 'Customer', '$rootScope', 
-    function($scope, $state, Customer, $rootScope) {
+    function($scope, $state, Customer, $rootScope) {     
+
       console.log("currentUser: ", $rootScope.currentUser);
       if($rootScope.currentUser == null || $rootScope.currentUser == undefined){
         $state.go('forbidden');
@@ -56,8 +53,9 @@ angular
       }
   }])   
   // Admin Activities : admin codes are for Test, need to modify with correct authentication later
-  .controller('AddCustomerController', ['$scope', 'Customer',
-      '$state', function($scope, Customer, $state) {
+  .controller('AddCustomerController', ['$scope', 'Customer',  
+      '$state', function($scope, Customer, $state) {       
+
     $scope.action = 'Add';
     $scope.user = {};
 
@@ -74,8 +72,9 @@ angular
     };
   }])   
   .controller('AllCustomersController', [
-    '$scope', 'Customer', function($scope, Customer) {
-      $scope.users = Customer.find();
+    '$scope', 'Customer',  
+    function($scope, Customer) {    
+      $scope.users = Customer.find();    
   }])
   .controller('EditCustomerController', ['$scope', 'Customer', '$stateParams', '$state', 
       function($scope, Customer, $stateParams, $state) {

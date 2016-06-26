@@ -2,98 +2,9 @@
 
  angular
   .module('app')
-  .controller('AddGroupController', ['$scope', 'Group','$state', 
-    'CustomerGroup', 'Customer', '$rootScope', 'GroupType', 
-    function($scope, Group, $state, CustomerGroup, Customer, $rootScope, GroupType) {
-    $scope.action = 'Add';
-    $scope.group = {};
-    $scope.isDisabled = true;
-    var userId = $rootScope.currentUser.id;
-
-    // Find group whose owner is current user
-    Customer
-      .findById({
-        id: userId,
-        filter: {
-          include: {
-            relation: 'groups',
-            scope: {
-              order: 'createdAt DESC', 
-              fields: ['id', 'name', 'ownerId'],
-              include: 'grouptype',
-              where: {ownerId: userId}                
-            }
-          }
-        }
-      })
-      .$promise
-      .then(function(customer){
-        $scope.groups = customer.groups;
-        //console.log("customer-groups: ", customer);
-        if(customer.groups.length > 0){
-          $scope.isDisabled = true;
-          $state.go('Groups');
-        }else{
-          $scope.isDisabled = false;
-        }
-      });      
-
-    $scope.submitForm = function() {
-
-      // Get the default group limitation
-      // 5 members and 50 receipts
-      var defaultGroupTypeId = "";
-      GroupType
-      .find({
-        filter: {
-          where: {
-            and: [
-              {limitedMember: '5'}, 
-              {limitedReceipt: '50'}
-            ]
-          }
-        }
-      })
-      .$promise
-      .then(function(grouptype){
-        //console.log("grouptype: ", grouptype);
-        if(grouptype.length>0){
-          defaultGroupTypeId = grouptype[0].id;  
-        }  
-        //console.log("defaultGroupTypeId: ", defaultGroupTypeId);
-        // Create Group and also make relation with customer
-        Group
-          .create({
-            name: $scope.group.name,
-            ownerId: userId,
-            description: $scope.group.description,
-            type: "owner",
-            groupTypeId: defaultGroupTypeId           
-          }, function(group){
-            //console.log('group id : ', group.id);
-            CustomerGroup
-              .create({
-                customerId: userId,
-                groupId: group.id
-              })
-              .$promise
-              .then(function(){
-                  Customer.prototype$updateAttributes(
-                      { id: userId }, { groupId: group.id }
-                  )
-                  .$promise
-                  .then(function(){
-                    $state.go('Groups');
-                  })
-              });
-        });
-
-      });   
-    };
-  }])  
   .controller('AllGroupsController', ['$state', '$scope', 'Group', 'Customer', 
     '$rootScope', 'Notification', 'CustomerGroup', 
-    function($state, $scope, Group, Customer, $rootScope, Notification, CustomerGroup) { 
+    function($state, $scope, Group, Customer, $rootScope, Notification, CustomerGroup) {       
       
       var userId = $rootScope.currentUser.id;
       $scope.isDisabled = true;
@@ -202,7 +113,7 @@
       }
         
       $scope.acceptJoin = function(notificationId){
-        if(confirm("Are you join this group?")){
+        if(confirm("Are you joining this group?")){
             var index = $scope.notifications.map(function(notification){
               return notification.id;
             }).indexOf(notificationId);
@@ -280,7 +191,97 @@
         }, 4000);          
       } 
 
-  }])
+  }])  
+  .controller('AddGroupController', ['$scope', 'Group','$state', 
+    'CustomerGroup', 'Customer', '$rootScope', 'GroupType', 
+    function($scope, Group, $state, CustomerGroup, Customer, $rootScope, GroupType) {
+      
+    $scope.action = 'Add';
+    $scope.group = {};
+    $scope.isDisabled = true;
+    var userId = $rootScope.currentUser.id;
+
+    // Find group whose owner is current user
+    Customer
+      .findById({
+        id: userId,
+        filter: {
+          include: {
+            relation: 'groups',
+            scope: {
+              order: 'createdAt DESC', 
+              fields: ['id', 'name', 'ownerId'],
+              include: 'grouptype',
+              where: {ownerId: userId}                
+            }
+          }
+        }
+      })
+      .$promise
+      .then(function(customer){
+        $scope.groups = customer.groups;
+        //console.log("customer-groups: ", customer);
+        if(customer.groups.length > 0){
+          $scope.isDisabled = true;
+          $state.go('Groups');
+        }else{
+          $scope.isDisabled = false;
+        }
+      });      
+
+    $scope.submitForm = function() {
+
+      // Get the default group limitation
+      // 5 members and 50 receipts
+      var defaultGroupTypeId = "";
+      GroupType
+      .find({
+        filter: {
+          where: {
+            and: [
+              {limitedMember: '5'}, 
+              {limitedReceipt: '50'}
+            ]
+          }
+        }
+      })
+      .$promise
+      .then(function(grouptype){
+        //console.log("grouptype: ", grouptype);
+        if(grouptype.length>0){
+          defaultGroupTypeId = grouptype[0].id;  
+        }  
+        //console.log("defaultGroupTypeId: ", defaultGroupTypeId);
+        // Create Group and also make relation with customer
+        Group
+          .create({
+            name: $scope.group.name,
+            ownerId: userId,
+            description: $scope.group.description,
+            type: "owner",
+            groupTypeId: defaultGroupTypeId           
+          }, function(group){
+            //console.log('group id : ', group.id);
+            CustomerGroup
+              .create({
+                customerId: userId,
+                groupId: group.id
+              })
+              .$promise
+              .then(function(){
+                  Customer.prototype$updateAttributes(
+                      { id: userId }, { groupId: group.id }
+                  )
+                  .$promise
+                  .then(function(){
+                    $state.go('Groups');
+                  })
+              });
+        });
+
+      });   
+    };
+  }])  
   .controller('ViewGroupController', ['$scope', 'Group', 
       '$stateParams', '$state', '$rootScope', 'Customer', 'Notification', 
       'CustomerGroup', function($scope, Group, $stateParams, 

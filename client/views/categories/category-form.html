@@ -1,4 +1,7 @@
-<h1>{{ action }} {{groupName}} Category</h1>
+<div class="container">
+<section>
+<div class="container">
+<h1 class="page-title">{{ action }} {{groupName}} Category</h1>
 <hr>
 <form name="categoryForm" novalidate>
 	<div class="form-group" ng-class="{'has-error': categoryForm.name.$invalid && categoryForm.name.$dirty}">
@@ -28,4 +31,6 @@
 		</div> 
 	</div>		
 </form>
-<hr>
+</div>
+</section>
+</div>

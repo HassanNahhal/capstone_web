@@ -9,7 +9,7 @@
 angular.module('app')
   .controller('ChartCtrl', ['$scope', '$timeout', 'Receipt', '$rootScope', 
     '$state', '$stateParams', 
-    function ($scope, $timeout, Receipt, $rootScope, $state, $stateParams) {
+    function ($scope, $timeout, Receipt, $rootScope, $state, $stateParams) {      
 
     $scope.groupName = $stateParams.groupName;   
 

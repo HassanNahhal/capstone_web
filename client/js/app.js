@@ -19,11 +19,8 @@ angular
    $stateProvider  
 		.state('/', {
 			url: '/',
-			templateUrl: 'views/pages/home.html'
-		})   
-		.state('Home', {
-			url: '/Home',
-			templateUrl: 'views/pages/home.html'
+			templateUrl: 'views/pages/home.html',
+			controller: 'IndexController'
 		})
 		.state('About', {
 			url: '/About',
@@ -382,13 +379,17 @@ angular
    $urlRouterProvider.otherwise('/');
 
  }])
-.run(['$rootScope', '$state', function($rootScope, $state) {
+.run(['$rootScope', '$state', 'IntroHeaderService', function($rootScope, $state, IntroHeaderService) {
     $rootScope.$on('$stateChangeStart', function(event, next) {
     $rootScope.currentUser = JSON.parse(sessionStorage.getItem('access_token'));
-      // redirect to login page if not logged in
-      if (next.authenticate && !$rootScope.currentUser) {
-        event.preventDefault(); //prevent current page from loading
-        $state.go('forbidden');
-      }
+
+	    //Fix nav bar and hid the intro header
+	    IntroHeaderService.isIntroHeaderVisible(false);       
+
+		// redirect to login page if not logged in
+		if (next.authenticate && !$rootScope.currentUser) {
+		event.preventDefault(); //prevent current page from loading
+		$state.go('forbidden');
+		}
     });
  }]);

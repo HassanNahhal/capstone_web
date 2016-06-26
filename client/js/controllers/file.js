@@ -6,7 +6,6 @@ angular
   .controller('UploadController',['$state', '$scope', 'FileUploader', 
       '$rootScope', 'Container', '$stateParams', 
             function ($state, $scope, FileUploader, $rootScope, Container, $stateParams) {
-    'use strict';
 
       var userId = "";
       var repositoryPath = "";

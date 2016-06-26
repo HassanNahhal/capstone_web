@@ -4,6 +4,7 @@
   .module('app')
   .controller('AllItemsController', ['$scope', 'Item', '$rootScope', 
     function($scope, Item, $rootScope) {
+
 	    $scope.items = Item.find({
               filter: {
                 order: 'updatedAt DESC',

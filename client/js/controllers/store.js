@@ -4,7 +4,7 @@
   .module('app')
   .controller('AddStoreController', ['$scope', 'Store', 'Category', 
     '$state', 'StoreCategory', '$rootScope', '$stateParams', 
-    function($scope, Store, Category, $state, StoreCategory, $rootScope, $stateParams) {
+    function($scope, Store, Category, $state, StoreCategory, $rootScope, $stateParams) {      
 
     $scope.action = 'Add';
     $scope.categories = [];
@@ -76,8 +76,8 @@
     };
   }])  
   .controller('EditStoreController', ['$scope', 'Store', 'Category', 
-      '$stateParams', '$state', 'StoreCategory', '$location', '$rootScope', 
-      function($scope, Store, Category, $stateParams, $state, StoreCategory, $location, $rootScope) {
+      '$stateParams', '$state', 'StoreCategory', '$location', '$rootScope',  
+      function($scope, Store, Category, $stateParams, $state, StoreCategory, $location, $rootScope) {      
 
     $scope.action = 'Edit';
     $scope.categories = [];
@@ -198,8 +198,8 @@
 	    };
   }])
   .controller('AllStoresController', [
-    '$stateParams', '$scope', 'Store', '$rootScope', '$state',  
-    function($stateParams, $scope, Store, $rootScope, $state) {
+    '$stateParams', '$scope', 'Store', '$rootScope', '$state', 
+    function($stateParams, $scope, Store, $rootScope, $state) {       
 
       $scope.groupName = $stateParams.groupName;
 
@@ -276,8 +276,8 @@
       }
 
   }])
-  .controller('DeleteStoreController', ['$scope', 'Store', '$state', '$stateParams', 
-      function($scope, Store, $state, $stateParams) {
+  .controller('DeleteStoreController', ['$scope', 'Store', '$state', '$stateParams',  
+      function($scope, Store, $state, $stateParams) {       
 
     $scope.submitForm = function(){
      Store.categories.destroyAll(

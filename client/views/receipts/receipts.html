@@ -1,4 +1,7 @@
-<h1>{{groupName}} Receipts</h1>
+<div class="container">
+<section>
+<div class="container">
+<h1 class="page-title">{{groupName}} Receipts</h1>
 <hr>
 <div class="list-group">
 	<span class="list-group-item" ng-repeat="receipt in receipts">
@@ -30,4 +33,7 @@
 <div ng-show="groupName" class="col-sm-4">
 	<button class="btn btn-default" ng-click="viewGroup()">View Group</button>
 	<button class="btn btn-default" ui-sref="Groups">Groups</button>
+</div>
+</div>
+</section>
 </div>
