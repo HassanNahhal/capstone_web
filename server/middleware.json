@@ -13,6 +13,11 @@
         "maxAge": 86400
       }
     },
+    "morgan": {
+      "params": [
+        "combined"
+      ]
+    },
     "helmet#xssFilter": {},
     "helmet#frameguard": {
       "params": [
