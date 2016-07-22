@@ -1,14 +1,14 @@
-# Capstone Project Web Application
+# Receipt Keeper
+## Mobile Solutions Capstone Project - Web Application
+### Date: August 2016
 
-** In order to test this, download my branch and it has to be installed as below
+-	LoopBack (Back-end: based on NodeJs)
+-	AngularJs (Front-end)
+-	MongoDB, Heroku
+-	JavaScript, JQuery, BootStrap, HTML5, CSS3
+-	Font Awesome, Google Font, Chart
 
-** each installation Version
-- npm : 2.15.6
-- node : 0.12.14
-- python : 2.7.11
-
-- npm install
-- npm install loopback-connector-mongodb --save
-- npm install -g bower
-- bower install angular angular-resource angular-ui-router bootstrap
-- lb-ng server/server.js client/js/services/lb-services.js
+![Build Status](https://github.com/Skim0082/receiptkeeper/blob/master/receiptkeeper01.png)
+![Build Status](https://github.com/Skim0082/receiptkeeper/blob/master/receiptkeeper02.png)
+![Build Status](https://github.com/Skim0082/receiptkeeper/blob/master/receiptkeeper03.png)
+![Build Status](https://github.com/Skim0082/receiptkeeper/blob/master/receiptkeeper04.png)
