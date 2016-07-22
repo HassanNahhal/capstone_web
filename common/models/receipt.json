@@ -30,8 +30,14 @@
     },
     "imageFilePath": {
       "type": "string",
+      "default": "",
       "required": false
     },
+    "payment": {
+      "type": "string",
+      "default": "",
+      "required": false
+    },    
     "categoryId": {
       "type": "string",
       "id": false,

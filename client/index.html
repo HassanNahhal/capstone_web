@@ -43,8 +43,7 @@
         color: white;
         text-transform: uppercase;
         letter-spacing: -1px;
-        padding-top: 15px;
-               
+        padding-top: 15px;               
       }
       .nav-logo:hover,
       .nva-logo:focus,
@@ -52,12 +51,11 @@
       .nav-logo:link {
         color: white;
         text-decoration: none; 
-      } 
-
+      }         
     </style>    
     <script src="vendor/angular/angular.min.js"></script>
-    <script src="vendor/angular-file-upload/angular-file-upload.min.js"></script>
-
+    <script src="vendor/angular-file-upload/angular-file-upload.min.js"></script>   
+    <link rel="stylesheet" href="vendor/jqcloud2/dist/jqcloud.min.css"> 
  </head>
 <body ng-app="app" id="page-top">
 
@@ -70,7 +68,7 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </a>
-          <a class="navbar-brand page-scroll nav-logo" href="{{currentUser?'/':'#page-top';}}">
+          <a class="navbar-brand page-scroll nav-logo" href="#page-top">
             <i class="glyphicon glyphicon-list-alt" style="font-size: 0.9em;margin-right:5px;"></i>
             RECEIPT KEEPER
           </a>      
@@ -79,80 +77,42 @@
 
       <div class="navbar-collapse collapse">
         <ul class="nav navbar-nav navbar-right">
-          <li ng-hide="currentUser">
+
+          <li class="staticNavMenu" ng-hide="currentUser">
             <a class="page-scroll" href="#services">
               <i class="glyphicon glyphicon-blackboard"></i>
               Services
             </a>
           </li>  
-          <li ng-hide="currentUser">
+          <li class="staticNavMenu" ng-hide="currentUser">
             <a class="page-scroll" href="#Tech">
               <i class="glyphicon glyphicon-briefcase"></i>
               Tech.
             </a>
           </li> 
-          <li ng-hide="currentUser">
+          <li class="staticNavMenu" ng-hide="currentUser">
             <a class="page-scroll" href="#Process">
               <i class="glyphicon glyphicon-tasks"></i>
               Process
             </a>
           </li>          
-          <li ng-hide="currentUser">
+          <li class="staticNavMenu" ng-hide="currentUser">
             <a class="page-scroll" href="#team">
               <i class="fa fa-users" aria-hidden="true"></i>
               Team
             </a>
-          </li>                               
-          <li ng-hide="currentUser">
-            <a href="/#/Signup">
-              <i class="glyphicon glyphicon-edit"></i>
-              Sign Up
-            </a>
-          </li>         
-          <li ng-hide="currentUser">
-            <a href="/#/Login">
+          </li>  
+          <li ng-hide="currentUser" ng-controller="ModalLoginCtrl">
+            <a>
               <i class="glyphicon glyphicon-user"></i>
-              Log In
+              <span ng-click="open()" style="cursor:pointer;">Log In</span>
             </a>
           </li>         
-          <li ng-show="currentUser" class="dropdown">
-            <a href="" class="dropdown-toggle" data-toggle="dropdown">
-              <i class="glyphicon glyphicon-inbox"></i>
-              Config <b class="caret"></b>
-            </a>
-            <ul class="dropdown-menu">
-              <li>
-                <a href="/#/Items">
-                  <i class="glyphicon glyphicon-cd"></i>
-                  Item
-                </a>
-              </li>
-              <li>
-                <a href="/#/Tags">
-                  <i class="glyphicon glyphicon-tag"></i>
-                  Tag
-                  </a>
-              </li>
-              <li class="divider"></li>
-              <li>
-                <a href="/#/Stores">
-                  <i class="glyphicon glyphicon-shopping-cart"></i>
-                  Store
-                </a>
-              </li>           
-              <li>
-                <a href="/#/Categories">
-                  <i class="glyphicon glyphicon-duplicate"></i>
-                  Category
-                </a>
-              </li> 
-            </ul>
-          </li>
           <li ng-show="currentUser">
             <a href="/#/chart">
               <i class="fa fa-bar-chart" aria-hidden="true"></i>
               <!--<i class="glyphicon glyphicon-equalizer"></i> -->
-              Chart
+              Charts
             </a>
           </li>   
           <!--      
@@ -162,58 +122,92 @@
               Admin
             </a>
           </li>
-          -->       
+          -->  
+          <li ng-show="currentUser">
+            <a href="/#/Receipts">
+              <i class="fa fa-barcode" aria-hidden="true"></i>  
+              Receipts
+            </a>
+          </li>
+          <li ng-show="currentUser">
+            <a href="/#/Groups">
+              <i class="glyphicon glyphicon-blackboard"></i> 
+              Group
+            </a>
+          </li>  
+          <li ng-show="currentUser" class="dropdown">
+            <a href="" class="dropdown-toggle" data-toggle="dropdown">
+              <i class="glyphicon glyphicon-inbox"></i>
+              Config <b class="caret"></b>
+            </a>
+            <ul class="dropdown-menu">
+              <!--
+              <li>
+                <a href="/#/Items">
+                  <i class="glyphicon glyphicon-cd"></i>
+                  Item
+                </a>
+              </li>
+              -->          
+              <li>
+                <a href="/#/Categories">
+                  <i class="glyphicon glyphicon-duplicate"></i>
+                  Categories
+                </a>
+              </li> 
+              <li>
+                <a href="/#/Stores">
+                  <i class="glyphicon glyphicon-shopping-cart"></i>
+                  Stores
+                </a>
+              </li>  
+              <li class="divider"></li>                            
+              <li>
+                <a href="/#/Tags">
+                  <i class="glyphicon glyphicon-tag"></i>
+                  Tags
+                  </a>
+              </li>
+            </ul>
+          </li>
           <li ng-show="currentUser" class="dropdown">
             <a href="" class="dropdown-toggle" data-toggle="dropdown">
               <i class="glyphicon glyphicon-user"></i>
               User
               <b class="caret"></b>
             </a>
-            <ul class="dropdown-menu">
-              <li ng-show="currentUser">
-                <a href="/#/Receipts">
-                  <i class="glyphicon glyphicon-usd"></i> 
-                  Receipts
-                </a>
-              </li>
-              <li ng-show="currentUser" class="divider"></li>
+            <ul class="dropdown-menu">  
+              <!--           
               <li ng-show="currentUser">
                 <a href="/#/Profile">
                   <i class="glyphicon glyphicon-king"></i> 
                   Profile
                 </a>
               </li>
-              <li ng-show="currentUser">
-                <a href="/#/Groups">
-                  <i class="glyphicon glyphicon-blackboard"></i> 
-                  Group
-                </a>
-              </li>  
+              -->
               <li ng-show="currentUser">
                 <a href="/#/Dashboard">
                   <i class="glyphicon glyphicon-dashboard"></i> 
                   Dashboard
                 </a>
               </li>  
+              <!--
               <li ng-show="currentUser">
                 <a href="/#/addFile">
                   <i class="glyphicon glyphicon-open"></i>
                   File
                 </a>
-              </li>                                              
+              </li>  
+   
+              <li ng-show="currentUser" class="divider"></li>
               <li ng-show="currentUser">
                 <a href="">
                   <i class="glyphicon glyphicon-cog"></i>
                   Settings
                 </a>
               </li>
-              <li class="divider"></li>
-              <li ng-hide="currentUser">
-                <a rel="nofollow" href="/#/Login">
-                  <i class="glyphicon glyphicon-log-in"></i> 
-                  Log in
-                </a>
-              </li>
+              -->              
+              <li class="divider"></li>           
               <li ng-show="currentUser">
                 <a rel="nofollow" href="/#/Logout">
                   <i class="glyphicon glyphicon-log-out"></i> 
@@ -227,39 +221,74 @@
     </div>
   </nav>
 
+
+<!--<div class="ribbon" ng-show="currentUser"><a>MSD Capstone Project</a></div>-->
+
 <!-- Header -->
 <header>
   <div class="container">
       <div class="intro-text">
           <div class="intro-lead-in">Welcome To Receipt Keeper!</div>
-          <div class="intro-heading">It's Nice To Meet You</div>
+          <div class="intro-heading">Manage your receipts easier</div>
           <a href="#services" class="page-scroll btn btn-xl">Learn More</a>
       </div>
   </div>
 </header>
 
-<!--
- <div class="container">   
- </div>
--->
 <div ui-view></div> 
 
-<!--
-  <div class="container">
-    <footer class="footer">
-      <small>
-        The <a href="https://github.com/infomat/capstone_web">Spring/Summer 2016 Capstone Project</a>
-        <a href="https://receiptkeeper.herokuapp.com/"> - Receipt Keeper</a>
-      </small>
-      <nav>
-        <ul>
-          <li><a href="/#/About">About</a></li>
-          <li><a href="/#/Contact">Contact</a></li>
-        </ul>
-      </nav>
-    </footer>
-  </div>
--->
+<!-- Login Modal Window -->
+<div ng-controller="ModalLoginCtrl">
+    <script type="text/ng-template" id="ModalLogin.html">
+        <div class="modal-header">
+            <h1 class="page-title text-center">
+              <i class="fa fa-sign-in" aria-hidden="true"></i>
+              Log In
+            </h1>
+        </div>
+        <div class="modal-body">
+            <div style="margin:25px;">
+            <form name="loginForm">
+              <div class="form-group" 
+                  ng-class="{'has-error': (loginForm.email.$invalid && loginForm.email.$dirty) ||
+                            (loginForm.password.$invalid && loginForm.password.$dirty) }">
+
+                <div class="row">
+                <label for="email">Email</label>
+                <input class="form-control" type="email" required 
+                    ng-model="user.email" name="email" placeholder="Email">
+                <span class="has-error control-label" ng-show="loginForm.email.$invalid && loginForm.email.$dirty">
+                  Email is required.
+                </span>      
+                </div>
+                <div class="row">
+                <label for="password">Password</label>      
+                <input class="form-control" type="password" required 
+                    ng-model="user.password" name="password" placeholder="Password"> 
+                <span class="has-error control-label" ng-show="loginForm.password.$invalid && loginForm.password.$dirty">
+                  Password is required.
+                </span>  
+                </div>       
+             
+              </div>
+              <div class="modal-footer">
+                <button class="btn btn-primary" ng-disabled="loginForm.$invalid" ng-click="login()">Log In</button>
+                <button class="btn btn-warning" ng-click="cancel()">Cancel</button>
+              </div>
+            </form> 
+              <p>New user? 
+                <a ><span ng-click="signup()" style="cursor:pointer;">Sign up here!</span></a> 
+              </p>
+            </div>
+        </div>
+    </script>
+</div>
+<!-- Login Modal Window -->
+<div id="loginErrorMessage" class="alert alert-danger fade">
+  <a href="" class="close" data-dismiss="alert"></a>
+  <i class="glyphicon glyphicon-info-sign text-danger"></i>
+  <strong>Note:</strong> Email or passowrd is invalid.
+</div>
 
   <div id="footwrap">
     <div class="container">
@@ -280,10 +309,10 @@
         <div class="col-sm-3">
           <h5>SOURCE LINKS</h5>
           <p>
-            <a href="https://github.com/infomat/capstone_web">
+            <a href="https://github.com/infomat/capstone_web" target="_blank">
               <i class="fa fa-github-square fa-3x" aria-hidden="true"></i>
             </a>
-            <a href="https://github.com/infomat/capstone_android">
+            <a href="https://github.com/infomat/capstone_android" target="_blank">
               <i class="fa fa-android fa-3x" aria-hidden="true"></i>
             </a>
           </p>
@@ -295,27 +324,22 @@
   <div id="bottom-line">
     <div class="container">
       <p>Spring/Summer 2016 Capstone Project by <a href="https://github.com/infomat/capstone_web">Group 2 of Mobile Solutions Development </a></p>
-    
     </div>
-  </div>
- 
-  <script src="vendor/jquery/dist/jquery.js"></script>
-  <script src="vendor/bootstrap/dist/js/bootstrap.js"></script>
-  <script src="vendor/angular/angular.js"></script>  
+  </div> 
 
+  <script src="vendor/jquery/dist/jquery.js"></script>    
+  <script src="vendor/bootstrap/dist/js/bootstrap.js"></script>  
+  <script src="vendor/angular/angular.js"></script>  
   <script src="vendor/angular-resource/angular-resource.js"></script>
-  <script src="vendor/angular-ui-router/release/angular-ui-router.js"></script>
-  
+  <script src="vendor/angular-ui-router/release/angular-ui-router.js"></script>  
   <!-- date picker -->
   <script type="text/javascript" src="vendor/moment/min/moment.min.js"></script>
   <script type="text/javascript" src="vendor/eonasdan-bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js"></script>
   <link rel="stylesheet" href="vendor/eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.min.css" />
-
   <script src="js/app.js"></script>
   <script src="js/services/lb-services.js"></script> 
   <script src="js/services/auth.js"></script>
   <script src="js/services/intro-header.js"></script>
-
   <script src="js/controllers/index.js"></script>
   <script src="js/controllers/store.js"></script>
   <script src="js/controllers/receipt.js"></script>
@@ -325,20 +349,30 @@
   <script src="js/controllers/tag.js"></script>
   <script src="js/controllers/group.js"></script>
   <script src="js/controllers/category.js"></script>
-
+  <script src="js/controllers/dashboard.js"></script>
   <script src="vendor/json3/lib/json3.min.js"></script>
   <script src="vendor/oclazyload/dist/ocLazyLoad.min.js"></script>
   <script src="vendor/angular-loading-bar/build/loading-bar.min.js"></script>
-  <script src="vendor/angular-bootstrap/ui-bootstrap-tpls.min.js"></script>  
+  <script src="vendor/angular-bootstrap/ui-bootstrap-tpls.min.js"></script>
   <script src="vendor/Chart.js/Chart.min.js"></script>
-
   <!-- Plugin JavaScript -->
   <script src="js/assets/jquery.easing.min.js"></script>
   <script src="js/assets/classie.js"></script>
   <script src="js/assets/cbpAnimatedHeader.js"></script>  
   <!-- Custom Theme JavaScript -->
   <script src="js/assets/custom1.js"></script>
+  <!-- JQCloud -->
+  <!--<script src="vendor/jqcloud2/dist/jqcloud.min.js"></script>-->
+  <script src="vendor/jqcloud2/src/jqcloud.js"></script>
+  <!-- Combo Chart using High Chart -->
+  <script src="js/assets/highcharts.js"></script>
+  <script src="js/assets/exporting.js"></script>  
 
+  <!-- jsPDF -->
+  <script src="js/assets/jspdf.min.js"></script>  
+  
+  <!-- Collection of public function across controllers  -->
+  <script src="js/services/receipt-services.js"></script> 
 
  </body>
 </html>

@@ -5,40 +5,83 @@
 
 angular
   .module('app')
-  .controller('AuthLoginController', ['$scope', 'AuthService', '$state', 
-      function($scope, AuthService, $state) {     
+  .controller('AuthLoginController', ['$scope', 'AuthService', '$state', '$rootScope', 
+      function($scope, AuthService, $state, $rootScope) {    
+
+    //if(!$('.staticNavSigup').is(":visible")){
+    //  $('.staticNavSigup').show();       
+    //}        
 
     $scope.user = {
-      email: "aaa@gmail.com",
+      email: "joe@gmail.com",
       password: "aaa"
     };
+
+    var flashMessage;
+
     $scope.login = function() {
       AuthService.login($scope.user.email, $scope.user.password)
         .then(function() {
           //Check the invalid user, and giving a message will need
-          $state.go('Dashboard');
+          flashMessage = '#loginErrorMessage';
+          if($rootScope.currentUser == undefined){
+            $scope.showMessage(flashMessage); 
+          }
+        }, function(err){
+          console.log("Error of login at Login page: ", err);
         });
     };
+
+    $scope.showMessage = function(flashMessage){
+      $(flashMessage).addClass("in"); 
+      window.setTimeout(function(){
+        $(flashMessage).removeClass("in"); 
+      }, 3000);        
+    }     
   }])
   .controller('AuthLogoutController', ['$scope', 'AuthService', '$state', 
       function($scope, AuthService, $state) {
+        
       AuthService.logout()
-        .then(function() {
+        .then(function() {          
           $state.go('/');
       });     
   }])
-  .controller('SignUpController', ['$scope', 'AuthService', '$state', '$rootScope',  
-      function($scope, AuthService, $state, $rootScope) {       
+  .controller('SignUpController', ['$scope', 'AuthService', '$state', '$rootScope', 'Customer', 
+      function($scope, AuthService, $state, $rootScope, Customer) {
 
     $scope.user = {};
-    $scope.register = function() {      
-      AuthService.register($scope.user.email, $scope.user.password)
-        .then(function() {
-          //below code is temporary for test need to adopt athentication correctly later
-          //$rootScope.currentUser = user;
-          //$state.transitionTo('Profile');
-        });
+    var flashMessage;
+    $scope.register = function() {
+
+      Customer.find({
+        filter:{
+          fields: {email: true},
+          where: {email: $scope.user.email}          
+        }
+      })
+      .$promise
+      .then(function(user){
+        if(user.length > 0){
+          flashMessage = '#signUpErrorMessage';
+          $scope.showMessage(flashMessage); 
+          console.log("Already exist user", user);
+        }else{
+          AuthService.register($scope.user.email, $scope.user.password)
+            .then(function(user) {
+              console.log("SignUp user: ", user);
+            });          
+        }
+      });    
     };
+
+    $scope.showMessage = function(flashMessage){
+      $(flashMessage).addClass("in"); 
+      window.setTimeout(function(){
+        $(flashMessage).removeClass("in"); 
+      }, 3000);        
+    };
+
   }])
   .controller('ProfileController', [
     '$scope', '$state', 'Customer', '$rootScope', 

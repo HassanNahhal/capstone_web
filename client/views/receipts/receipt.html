@@ -1,91 +1,259 @@
 <div class="container">
 <section>
 <div class="container">
-<h1 class="page-title">{{groupName? groupName + ' r': 'R'}}eceipt details</h1>
+<h1 class="page-title">
+	<i class="fa fa-wpforms" aria-hidden="true"></i>
+	{{groupName? groupName + ' r': 'R'}}eceipt details
+</h1>
 <hr>
-<div class="row">
-	<label class="col-sm-2 control-label">Store name</label>
-	<div class="col-sm-4">
-		{{selectedStore.name}}
-	</div>
-	<label class="col-sm-2 control-label" style="text-align:right;">Category</label>
-	<div class="col-sm-4">
-		{{selectedCategory.name}}
-	</div>		  	
-</div>
-<!-- date picker -->
-<div class="row">
-	<label class="col-sm-2 control-label">Date</label>
-    <div class='col-sm-4'>
-    	{{(receipt.date).substring(0,10)}}
-    </div>
-	<div class="col-sm-6">
-		
-	</div>
-	<div class="col-sm-offset-2 col-sm-10">
-	<hr style="margin-top:0">
-	</div>
-</div>	  	
-<div ng-repeat="item in items">
-	<div class="row">
-	  	<label class="col-sm-2 control-label">Item name</label>
-	  	<div class="col-sm-4">
-	  		{{item.name}}
-	    </div>
 
-	    <label class="col-sm-2 control-label" style="text-align:right;">Item price</label>
-	    <div class="col-sm-4">
-	    	{{item.price}}
-	    </div>
-    </div>
-</div>
+<style>
+div.tabcontent{
+	background-color:white ;
+	padding : 30px 40px 60px 40px;
+	border: 1px solid #ddd;
+	border-radius: 4px;
+}
+div.tabcontent .row{
+	 margin-top: 10px;
+	 margin-bottom: 10px;
+}
+.fade.in{
+	opacity: 1;
+}
+.modal-backdrop.in {
+    opacity: .5 !important;
+}
+.modal-backdrop.fade {
+    opacity: 0  !important;
+}
+</style>
+<!-- Start Receipt View -->
+<div>
+    <div class="tabcontent" >
+		<div class="row">
+			<label class="col-sm-2 control-label">Store name</label>
+			<div class="col-sm-4">
+				{{selectedStore.name}}
+			</div>
+			<label class="col-sm-2 control-label" style="text-align:right;">Category</label>
+			<div class="col-sm-4">
+				{{selectedCategory.name}}
+			</div>		  	
+		</div>
+		<!-- date picker -->
+		<div class="row">
+			<label class="col-sm-2 control-label">Date</label>
+		    <div class='col-sm-4'>
+		    	{{(receipt.date).substring(0,10)}}
+		    </div>
+			<label class="col-sm-2 control-label" style="text-align:right;"># Item(s)</label>
+			<div class="col-sm-4">
+				{{receipt.numberOfItem}}    
+			</div>
+			<div class="col-sm-offset-2 col-sm-10">
 
-<div class="row">
-	<label class="col-sm-2 control-label">Total Price</label>
-	<div class="col-sm-4">
-		{{receipt.total}}
-	</div>
-	<label class="col-sm-2 control-label" style="text-align:right;"># Items</label>
-	<div class="col-sm-4">
-		{{receipt.numberOfItem}}    
-	</div>
-</div>
-<div class="row">
-	<div class="col-sm-offset-2 col-sm-10">
-	<hr style="margin-top:0">
-	</div>		
-	<label class="col-sm-2 control-label">Comment</label>
-	<div class="col-sm-4" style="white-space: pre-line;">
-		{{receipt.comment}} 
-	</div>
+			</div>
+		</div>	  	
+		<div ng-repeat="item in items">
+			<div class="row">
+			  	<label class="col-sm-2 control-label">Item name</label>
+			  	<div class="col-sm-4">
+			  		{{item.name}}
+			    </div>
 
-	<div class="col-sm-2 control-label" style="text-align:right;">
-  	<label>Tag</label>
-  	<br><span style="text-align:center;">{{selTagCount}}</span>
-  	</div>
-  	<div class="col-sm-4">
-  		<ul>
-  			<li ng-repeat="tag in selectedTags">{{tag.name}}</li>
-  		</ul>
-  	</div>
+			    <label class="col-sm-2 control-label" style="text-align:right;">Item price</label>
+			    <div class="col-sm-4">
+			    	${{commaSeparateNumber(item.price)}}
+			    </div>
+		    </div>
+		</div>
+		<div class="row">
+			<label class="col-sm-2 control-label">Total Price</label>
+			<div class="col-sm-4">
+				${{commaSeparateNumber(receipt.total)}}
+			</div>
+		  	<label class="col-sm-2 control-label" style="text-align:right;">Tag(s)</label>		  	
+		  	<div class="col-sm-4" ng-controller="ModalTagReceiptsCtrl">
+				<span class="gh-tag" 
+		  				ng-repeat="tag in selectedTags" 
+		  				ng-click="open(tag.id, userId, groupId, groupName)">{{tag.name}}</span>&nbsp;
+		  	</div>
+		</div>
+		<div class="row">
+			<div class="col-sm-offset-2 col-sm-10">
+
+			</div>		
+			<label class="col-sm-2 control-label">Comment</label>
+			<div class="col-sm-10" style="white-space: pre-line;">
+				{{receipt.comment}} 
+			</div>		
+		</div>
+	</div>
 </div>
+<!-- END Receipt View -->
 <hr>
 <!-- button -->
 <div class="row">
-	<div  class="col-sm-offset-2 col-sm-2">
-		<button class="btn btn-default"  ng-click="Receipts()">Receipts</button>
+	<div  class="col-sm-2">
+		<button class="btn btn-default"  ng-click="backToPage()">
+			<i class="glyphicon glyphicon-circle-arrow-left" aria-hidden="true"></i> 
+			Back
+		</button>
+	</div>
+	<div  class="col-sm-offset-1 col-sm-3">
+		<button type="button" class="btn btn-default" 
+			ng-show="receipt.imageFilePath" 
+			data-toggle="modal" 
+			data-target="#receiptPhotoModal">
+				<i class="fa fa-file-image-o" aria-hidden="true"></i>
+				Receipt Photo
+		</button>	
 	</div>
 	<div  class="col-sm-2">
-		<button class="btn btn-default" ng-click="editReceipt()">Edit Receipt</button>
+		<button class="btn btn-default"  ng-click="Receipts()">
+			<i class="fa fa-files-o" aria-hidden="true"></i>
+			Receipts
+		</button>
 	</div>
-	<!--	
-	<div ng-show="receipt.id" class="col-sm-offset-2 col-sm-4">
-		<button class="btn btn-danger" ng-click="delReceipt()">Delete Receipt</button>
-	</div>	
-	-->					
+	<div  class="col-sm-4">
+		<button class="btn btn-default pull-right" ng-click="editReceipt()">
+			<i class="glyphicon glyphicon-edit"></i> 
+			Edit Receipt
+		</button>
+	</div>				
 </div>
 <!-- button -->
 </div>
 </section>
 </div>
+<!-- Tag Receipts Modal Window -->
+<div ng-controller="ModalTagReceiptsCtrl">
+    <script type="text/ng-template" id="ModalTagReceipts.html">
+        <div class="modal-header">
+            <h1 class="page-title text-center">
+              <i class="fa fa-tag" aria-hidden="true"></i>
+              Receipts in Tag
+            </h1>
+        </div>
+        <div class="modal-body">
+            <div style="margin:25px;">
+
+		        <div class="row">
+		            <div class="col-sm-12">
+		                <div class="panel panel-default">
+		                    <div class="panel-heading">
+		                        <strong>Receipts in '{{tagname}}'</strong>
+		                    </div>
+		                    <div class="panel-body">
+
+	<div class="row">
+		<label class="col-sm-1 control-label text-right">Search</label>
+		<div class="col-sm-3">			
+			<input ng-model="searchText" id="search" class="form-control" placeholder="Search text">
+		</div>
+	</div>
+	<div class="table-responsive">
+		<table class="table table-hover">
+			<thead>
+				<tr style="background:#ffffff;">
+					<th style="display:none;">ID</th>
+					<!--<th style="text-align: center; ">Store</th>-->
+					<th class="sortable" 
+						style="text-align: center; "
+						ng-repeat="(key,value) in tablehead" 
+					    ng-class="selectedCls(key)" 
+					    ng-click="changeSorting(key)">{{value}}</th>
+					<th colspan="2">Comment</th>
+				</tr>
+			</thead>
+			<tbody>
+		    <tr ng-repeat="receipt in receipts | orderBy : sort.descending + sort.column | receiptFilter:searchText | startFrom:currentPage*pageSize | limitTo:pageSize">
+		        <td style="display:none;">{{receipt.id}}</td>
+		        <td style="margin-left:15px;">{{receipt.store.name}}</td>
+		        <td style="text-align: center; ">${{commaSeparateNumber(receipt.total)}}</td>
+		        <td style="text-align: center; ">{{receipt.numberOfItem}}</td>
+		        <td style="text-align: center; ">{{(receipt.date).substring(0, 10)}}</td>
+		        <td>
+		        	{{receipt.comment}}
+				 	<i class="glyphicon glyphicon-search pull-right text-primary" 
+				 		style="padding-right:10px" 
+				 		ng-click="viewReceipt(receipt.id)" tooltip-html-unsafe="View Details"></i>
+		        </td>
+		    </tr>
+		    </tbody>
+		</table>
+
+	</div>
+	<div style="margin-bottom:20px;">
+	<div class="row">
+		<div class="col-sm-2">
+			<select ng-model="pageSize" 
+				id="pageSize" 
+				class="form-control" 
+				style="width:80px;"
+				ng-change="changePageSize()"
+				ng-options="unit for unit in pageUnits">
+			</select>
+		</div>
+		<div class="col-sm-4">
+			<ul class="list-group list-group-horizontal">
+				<button  class="btn btn-primary" ng-disabled="currentPage == 0"  ng-click="currentPage=currentPage-1">Previous</button>
+				<button  class="btn btn-primary" ng-disabled="currentPage >= getData().length/pageSize - 1" ng-click="currentPage=currentPage+1">Next</button>
+			</ul>
+		</div>
+		<div class="col-sm-6 text-center">
+			<pre>Selected page: {{currentPage+1}}/{{numberOfPages()==0? 1:numberOfPages();}}</pre>
+		</div>
+	</div>
+
+
+		                    </div>
+		                </div>
+		            </div>
+		        </div>
+
+            </div>
+        </div>
+		<div class="modal-footer">
+		<button class="btn btn-warning" ng-click="close()">Close</button>
+		</div>        
+    </script>
+</div>
+<!-- Tag Receipts Modal Window -->
+<!-- modal test -->
+<div class="container">
+  <!-- Modal -->
+  <div class="modal fade" id="receiptPhotoModal" role="dialog">
+    <div class="modal-dialog">    
+      <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+            <h1 class="page-title text-center">
+              <i class="fa fa-file-image-o" aria-hidden="true"></i>
+              Receipt Photo
+            </h1>          
+        </div>
+        <div class="modal-body text-center">
+        	<!-- Receipt Photo -->
+			<div class="row" ng-show="receipt.imageFilePath">
+				<div class="col-sm-12">
+				</div>
+				<div class="col-sm-12">
+					<img ng-src="{{receipt.imageFilePath}}" 
+						style="width:100%; height: auto; max-width:500px;" />
+				</div>
+			</div>
+			<!-- Receipt Photo -->
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-warning" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+      <!-- Modal content-->
+    </div>
+  </div>  
+</div>
+<!-- modal test -->
 

@@ -1,8 +1,12 @@
 body {
- padding-top:50px;
+ padding-top:0;
+ margin:0;
 }
 
 .glyphicon-remove, 
+.glyphicon-search, 
+.glyphicon-zoom-in,
+.glyphicon-user,
 .glyphicon-pencil, 
 .glyphicon-eye-open, 
 .glyphicon-ok,
@@ -49,6 +53,22 @@ canvas {
     border: 1px solid #c3c3c3;
     height: 100px;
     margin: 6px 0 0 6px;
+    padding:7px;
+}
+
+#line,
+#doughnut,
+#doughnut1,
+#base,
+#pie,
+#bar,
+#area,
+#radar,
+#polararea {
+  background-color: #ffffff;
+  border:none;
+  box-shadow: none;
+  -webkit-box-shadow: none;
 }
 
 @charset "UTF-8";

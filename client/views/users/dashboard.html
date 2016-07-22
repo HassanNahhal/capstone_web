@@ -1,81 +1,270 @@
+<style>
+    .fade.in{
+        opacity: 1;
+    }
+    .modal-backdrop.in {
+        opacity: .5 !important;
+    }
+    .modal-backdrop.fade {
+        opacity: 0  !important;
+    }
+</style>
 <div class="container">
 <section>
 <div class="container">
 <div class="row">
     <div class="col-lg-12">
-        <h1 class="page-title">Dashboard</h1>
+        <h1 class="page-title">
+            <i class="glyphicon glyphicon-dashboard"></i> 
+            Dashboard
+        </h1>
         <hr>
     </div>
     <!-- /.col-lg-12 -->
 </div>
-<div class="row">
-    <div class="col-lg-3 col-md-6 ng-isolate-scope" number="6" comments="New comments!" colour="primary" type="comments">
-        <div class="panel panel-green">
-            <div class="panel-heading">
-                <div class="row">
-                    <div class="col-xs-3"> <i class="fa fa-comments fa-5x"></i> </div>
-                    <div class="col-xs-9 text-right">
-                        <div class="huge ng-binding">6</div>
-                        <div class="ng-binding">New comments!</div>
-                    </div>
+<!-- Tag Cloud -->
+<div class="row ng-scope" ng-show="tagcloud">
+    <div class="col-sm-12">
+        <div class="panel panel-info">
+            <div class="panel-heading"> 
+                <strong>Tags Cloud</strong>
+            </div>
+            <!-- .panel-heading -->
+            <div style="margin:15px;">
+                <button class="btn btn-sm btn-info" id="update-tagcloud">Narrow down</button>
+                <div id="tagcloud" class="jqcloud panel-body" style="width:100%; height:300px; max-width:500px;margin:0 auto;">
                 </div>
             </div>
-            <a href="#">
-                <div class="panel-footer"> <span class="pull-left">View Details</span> <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
-                    <div class="clearfix"></div>
-                </div>
-            </a>
+            <!-- .panel-body -->
         </div>
+        <!-- /.panel -->
     </div>
-    <div class="col-lg-3 col-md-6 ng-isolate-scope" number="12" comments="New tasks!" colour="primary" type="user">
+    <!-- /.col-lg-12 -->
+</div>
+<!-- Tag Cloud -->
+<div class="row">
+    <div ng-controller="DashboardUserController" 
+        class="col-lg-3 col-md-6 col-sm-6 ng-isolate-scope" 
+        colour="primary">
         <div class="panel panel-primary">
             <div class="panel-heading">
                 <div class="row">
                     <div class="col-xs-3"> <i class="fa fa-user fa-5x"></i> </div>
                     <div class="col-xs-9 text-right">
-                        <div class="huge ng-binding">12</div>
-                        <div class="ng-binding">New tasks!</div>
+                        <div class="huge ng-binding">{{username}}</div>
+                        <div class="ng-binding">Profile</div>
                     </div>
                 </div>
             </div>
-            <a href="#">
-                <div class="panel-footer"> <span class="pull-left">View Details</span> <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
+            <div class="panel-body" ng-show="showProfile">
+                <div class="col-sm-4">
+                    <div class="row text-center" style="margin-bottom:10px;" ng-controller="ModalUserPohtoFileCtrl">
+                        <img ng-click="open(userId)" id="userPhoto" 
+                            src="images/assets/default-user01.png" 
+                            class="member-img img-circle" alt="profile photo" 
+                            style="cursor:pointer;margin: 0 auto;width:100%;height:auto;max-width:150px;min-width:80px;">
+                    </div>
+                </div>
+                <div class="col-sm-8">
+                    <ul class="list-group" style="margin-bottom:5px;">
+                        <li class="list-group-item" style="border:0;padding-bottom:0;">
+                            <label class="control-label" style="color:#4e4e4e">User Name:</label>
+                            <span>{{customer.username}}</span>
+                        </li>
+                        <li class="list-group-item" style="border:0;padding-bottom:0;">
+                            <label class="control-label" style="color:#4e4e4e">First Name:</label>
+                            <span>{{customer.firstName}}</span>
+                        </li>
+                        <li class="list-group-item" style="border:0;">
+                            <label class="control-label" style="color:#4e4e4e">Last Name:</label>
+                            <span>{{customer.lastName}}</span>
+                        </li>                        
+                    </ul>
+                </div>
+                <div class="col-sm-12">
+                    <span ng-show="customer.groupName">
+                        <label class="control-label" style="color:#4e4e4e">
+                            Group Name:
+                        </label>
+                        <span>{{customer.groupName}}</span>   
+                    </span>             
+                    <div
+                        class="pull-right" 
+                        style="margin-right:5px;margin-top:10px;">
+                        <button class="btn btn-primary"  
+                            ng-click="editCustomer(userId, customer.username, customer.firstName, customer.lastName)">
+                            <i class="glyphicon glyphicon-edit" aria-hidden="true"></i> 
+                            Edit
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <a>            
+            <div class="panel-footer" style="cursor:pointer;" ng-click="openUser()"> 
+                <span class="pull-left">{{email}}</span> 
+                <span class="pull-right">
+                    <i class="fa fa-arrow-circle-right"></i>
+                </span>
+                <div class="clearfix"></div>
+            </div>
+            </a>
+        </div>
+    </div>
+
+    <div class="col-lg-3 col-md-6 col-sm-6 ng-isolate-scope" 
+        colour="yellow">
+            <div class="panel panel-green">
+            <div class="panel-heading">
+                <div class="row">
+                    <div class="col-xs-3"> <i class="fa fa-wpforms fa-5x"></i> </div>
+                    <div class="col-xs-9 text-right">
+                        <div class="huge ng-binding">{{recentReceiptsCount}}</div>
+                        <div class="ng-binding">Recent receipts</div>
+                    </div>
+                </div>
+            </div>
+            <div class="panel-body" ng-show="showReceipts">
+                <div class="list-group">
+                    <div class="list-group-item" 
+                        ng-repeat="recentReceipt in recentReceipts"
+                        ng-if="$index < recentReceiptsCount">
+                        <a style="text-decoration:none;">
+                        <span><strong>{{recentReceipt.storeName}}</strong></span> 
+                        <span>/ ${{commaSeparateNumber(recentReceipt.total)}}</span>
+                        <span>/ {{(recentReceipt.date).substring(5,10)}}</span>
+                        <i class="glyphicon glyphicon-search pull-right" 
+                            style="padding-right:10px" 
+                            ng-click="viewReceipt(recentReceipt.id)" tooltip-html-unsafe="View Details"></i>                        
+                        </a>
+                    </div>
+                </div> 
+            </div>           
+            <a >
+                <div class="panel-footer" style="cursor:pointer;" ng-click="showRecentReceipts()"> 
+                    <span class="pull-left">View Receipts</span> 
+                    <span class="pull-right">
+                        <i class="fa fa-arrow-circle-right"></i>
+                    </span>
                     <div class="clearfix"></div>
                 </div>
             </a>
         </div>
     </div>
-    <div class="col-lg-3 col-md-6 ng-isolate-scope" number="18" comments="New orders!" colour="yellow" type="shopping-cart">
+
+    <div class="col-lg-3 col-md-6 col-sm-6 ng-isolate-scope" colour="primary">
         <div class="panel panel-yellow">
             <div class="panel-heading">
                 <div class="row">
-                    <div class="col-xs-3"> <i class="fa fa-shopping-cart fa-5x"></i> </div>
+                    <div class="col-xs-3"> <i class="fa fa-comments fa-5x"></i></i> </div>
                     <div class="col-xs-9 text-right">
-                        <div class="huge ng-binding">18</div>
-                        <div class="ng-binding">New orders!</div>
+                        <div class="huge ng-binding">{{notificationCount}}</div>
+                        <div class="ng-binding">Notification!</div>
                     </div>
                 </div>
             </div>
-            <a href="#">
-                <div class="panel-footer"> <span class="pull-left">View Details</span> <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
+            <div class="panel-body" ng-show="showNotification">           
+
+                <div class="list-group" ng-show="notifications">
+                    <div class="list-group-item" style="background-color:#eee;color:#757575;"><strong>Receive invitation as a member </strong></div>
+                    <div class="list-group-item" 
+                        ng-repeat="notification in notifications"
+                        ng-if="$index < notifications.length">
+                        <a style="text-decoration:none;">
+                        <i class="glyphicon glyphicon-bell" style="margin-right:10px;" ></i>
+                        <span><strong>{{notification.group.name}} </strong></span> 
+                        <span>({{notification.senderEmail}})</span>
+                        <i class="glyphicon glyphicon-search pull-right" 
+                            style="padding-right:10px" 
+                            ng-click="viewGroups()" tooltip-html-unsafe="view Details"></i>                        
+                        </a>
+                    </div>
+                </div>             
+               
+                <div class="list-group" ng-show="ownerNotifications">
+                    <div class="list-group-item" style="background-color:#eee;color:#757575;"><strong>Send invitation as a member </strong></div>
+                    <div class="list-group-item" 
+                        ng-repeat="notification in ownerNotifications"
+                        ng-if="$index < ownerNotifications.length">
+                        <a style="text-decoration:none;">
+                        <i class="glyphicon glyphicon-bell" style="margin-right:10px;" ></i>
+                        <span>({{notification.display}})</span>
+                        <i class="glyphicon glyphicon-search pull-right" 
+                            style="padding-right:10px" 
+                            ng-click="viewEditGroup(notification.groupId)" tooltip-html-unsafe="view Details"></i>                        
+                        </a>
+                    </div>
+                </div> 
+
+            </div>              
+            <a >
+                <div class="panel-footer" style="cursor:pointer;" 
+                    ng-click="openNotification()"> 
+                    <span class="pull-left">View Details</span> 
+                    <span class="pull-right">
+                        <i class="fa fa-arrow-circle-right"></i>
+                    </span>
                     <div class="clearfix"></div>
                 </div>
             </a>
         </div>
     </div>
-    <div class="col-lg-3 col-md-6 ng-isolate-scope" number="24" comments="Support tickets!" colour="red" type="support">
+
+    <div class="col-lg-3 col-md-6 col-sm-6 ng-isolate-scope" colour="red">
         <div class="panel panel-red">
             <div class="panel-heading">
                 <div class="row">
-                    <div class="col-xs-3"> <i class="fa fa-support fa-5x"></i> </div>
+                    <div class="col-xs-3"> <i class="fa fa-users fa-5x" aria-hidden="true"></i> </div>
                     <div class="col-xs-9 text-right">
-                        <div class="huge ng-binding">24</div>
-                        <div class="ng-binding">Support tickets!</div>
+                        <div class="huge ng-binding">{{recentGroupReceiptsCount}}</div>
+                        <div class="ng-binding">Recent woks!</div>
                     </div>
                 </div>
             </div>
-            <a href="#">
-                <div class="panel-footer"> <span class="pull-left">View Details</span> <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
+            <div class="panel-body" ng-show="groupReceipts">
+                <div class="list-group" ng-show="ownerGroupRecentReceipts">
+                    <div class="list-group-item" style="background-color:#eee;color:#757575;">
+                        <strong>Owner : {{ownerGroup.groupName}}</strong>
+                    </div>                
+                    <div class="list-group-item text-default" 
+                        ng-repeat="recentReceipt in ownerGroupRecentReceipts"
+                        ng-if="$index < ownerGroupRecentReceipts.length">
+                        <a style="text-decoration:none;">
+                        <span><strong>{{recentReceipt.storeName}}</strong></span> 
+                        <span>/ ${{commaSeparateNumber(recentReceipt.total)}}</span>
+                        <span>/ {{(recentReceipt.date).substring(5, 10)}}</span>
+                        <i class="glyphicon glyphicon-search pull-right" 
+                            style="padding-right:10px" 
+                            ng-click="viewGroupReceipt(recentReceipt.id, ownerGroup.groupId, ownerGroup.groupName, ownerGroup.ownerId)" tooltip-html-unsafe="View Details"></i>                        
+                        </a>
+                    </div>
+                </div> 
+
+                <div class="list-group" ng-show="memberGroupRecentReceipts">
+                    <div class="list-group-item" style="background-color:#eee;color:#757575;">
+                        <strong>Member : {{memberGroup.groupName}}</strong>
+                    </div>                
+                    <div class="list-group-item text-default" 
+                        ng-repeat="recentReceipt in memberGroupRecentReceipts"
+                        ng-if="$index < memberGroupRecentReceipts.length">
+                        <a style="text-decoration:none;">
+                        <span><strong>{{recentReceipt.storeName}}</strong></span> 
+                        <span>/ ${{commaSeparateNumber(recentReceipt.total)}}</span>
+                        <span>/ {{(recentReceipt.date).substring(5, 10)}}</span>
+                        <i class="glyphicon glyphicon-search pull-right" 
+                            style="padding-right:10px" 
+                            ng-click="viewGroupReceipt(recentReceipt.id, memberGroup.groupId, memberGroup.groupName, memberGroup.ownerId)" tooltip-html-unsafe="View Details"></i>                        
+                        </a>
+                    </div>
+                </div>  
+
+                
+            </div>              
+            <a >
+                <div class="panel-footer" style="cursor:pointer;" ng-click="showRecentGroupReceipts()"> 
+                    <span class="pull-left">Group Receipts</span> 
+                    <span class="pull-right">
+                        <i class="fa fa-arrow-circle-right"></i>
+                    </span>
                     <div class="clearfix"></div>
                 </div>
             </a>
@@ -83,97 +272,275 @@
     </div>
 </div>
 
-<div class="row">
-    <div class="col-lg-8">
-        <div class="panel panel-default">
-            <div class="panel-heading"> <i class="fa fa-clock-o fa-fw"></i> Responsive Timeline </div>
-            <!-- /.panel-heading -->
-            <div class="panel-body">
-
-                <div class="row ng-scope">
-                    <div class="col-lg-12">
-                        <div class="panel panel-default">
-                            <div class="panel-heading"> Collapsible Accordion Panel Group </div>
-                            <!-- .panel-heading -->
-                            <div class="panel-body">
-
-                                Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-
-                            </div>
-                            <!-- .panel-body -->
-                        </div>
-                        <!-- /.panel -->
-                    </div>
-                    <!-- /.col-lg-12 -->
-                </div>
-
-                <div class="row ng-scope">
-                    <div class="col-lg-4">
-                        <div class="panel panel-green">
-                            <div class="panel-heading"> Green Panel </div>
-                            <div class="panel-body">
-                                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum tincidunt est vitae ultrices accumsan. Aliquam ornare lacus adipiscing, posuere lectus et, fringilla augue.</p>
-                            </div>
-                            <div class="panel-footer"> Panel Footer </div>
-                        </div>
-                        <!-- /.col-lg-4 -->
-                    </div>
-                    <div class="col-lg-4">
-                        <div class="panel panel-yellow">
-                            <div class="panel-heading"> Yellow Panel </div>
-                            <div class="panel-body">
-                                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum tincidunt est vitae ultrices accumsan. Aliquam ornare lacus adipiscing, posuere lectus et, fringilla augue.</p>
-                            </div>
-                            <div class="panel-footer"> Panel Footer </div>
-                        </div>
-                        <!-- /.col-lg-4 -->
-                    </div>
-                    <div class="col-lg-4">
-                        <div class="panel panel-red">
-                            <div class="panel-heading"> Red Panel </div>
-                            <div class="panel-body">
-                                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum tincidunt est vitae ultrices accumsan. Aliquam ornare lacus adipiscing, posuere lectus et, fringilla augue.</p>
-                            </div>
-                            <div class="panel-footer"> Panel Footer </div>
-                        </div>
-                        <!-- /.col-lg-4 -->
-                    </div>
-                </div>
-
-
-
-            </div>
-            <!-- /.panel-body -->
+<!-- Combo chart using Hight Chart Open Source for non comercial -->
+<div class="row ng-scope" ng-init="combChart()">
+  <div class="col-sm-12">
+      <div class="panel panel-success">
+        <div class="panel-heading"> <i class="fa fa-tasks fa-fw"></i>
+            2015 June - days of the week Consumption
         </div>
-        <!-- /.panel -->
-    </div>
-    <!-- /.col-lg-8 -->
-    <div class="col-lg-4">
-        <div class="panel panel-default">
-            <div class="panel-heading"> <i class="fa fa-bell fa-fw"></i> Notifications Panel </div>
-            <!-- /.panel-heading -->
-            <div class="panel-body">
-                <div class="list-group">
-                    <a href="#" class="list-group-item"> <i class="fa fa-comment fa-fw"></i> New Comment <span class="pull-right text-muted small"><em>4 minutes ago</em> </span> </a>
-                    <a href="#" class="list-group-item"> <i class="fa fa-twitter fa-fw"></i> 3 New Followers <span class="pull-right text-muted small"><em>12 minutes ago</em> </span> </a>
-                    <a href="#" class="list-group-item"> <i class="fa fa-envelope fa-fw"></i> Message Sent <span class="pull-right text-muted small"><em>27 minutes ago</em> </span> </a>
-                    <a href="#" class="list-group-item"> <i class="fa fa-tasks fa-fw"></i> New Task <span class="pull-right text-muted small"><em>43 minutes ago</em> </span> </a>
-                    <a href="#" class="list-group-item"> <i class="fa fa-upload fa-fw"></i> Server Rebooted <span class="pull-right text-muted small"><em>11:32 AM</em> </span> </a>
-                    <a href="#" class="list-group-item"> <i class="fa fa-bolt fa-fw"></i> Server Crashed! <span class="pull-right text-muted small"><em>11:13 AM</em> </span> </a>
-                    <a href="#" class="list-group-item"> <i class="fa fa-warning fa-fw"></i> Server Not Responding <span class="pull-right text-muted small"><em>10:57 AM</em> </span> </a>
-                    <a href="#" class="list-group-item"> <i class="fa fa-shopping-cart fa-fw"></i> New Order Placed <span class="pull-right text-muted small"><em>9:49 AM</em> </span> </a>
-                    <a href="#" class="list-group-item"> <i class="fa fa-money fa-fw"></i> Payment Received <span class="pull-right text-muted small"><em>Yesterday</em> </span> </a>
-                </div>
-                <!-- /.list-group --><a href="/#/Receipts" class="btn btn-default btn-block">View All Receipt</a>
+        <div class="panel-body">
+            <div id="container1" style="min-width: 310px; height: 400px; margin: 0 auto">                        
             </div>
-            <!-- /.panel-body -->
         </div>
-        <!-- /.panel -->
-
-        <!-- /.panel .chat-panel -->
-    </div>
-    <!-- /.col-lg-4 -->
+      </div>
+  </div>
 </div>
+<!-- Combo chart using Hight Chart Open Source for non comercial -->  
+
+
 </div>
 </section>
 </div>
+
+<!-- Edit Customer Modal Window -->
+<div ng-controller="DashboardUserController">
+    <script type="text/ng-template" id="ModalEditCustomer.html">
+        <div class="modal-header">
+            <h1 class="page-title text-center">
+              <i class="fa fa-edit" aria-hidden="true"></i>
+              Edit Profile
+            </h1>
+        </div>
+        <div class="modal-body">
+            <div style="margin:25px;">
+
+                <div class="row">
+                    <div class="col-sm-12">
+                        <div class="panel panel-primary">
+                            <div class="panel-heading">
+                                Edit Customer profile
+                            </div>
+                            <div class="panel-body">
+
+                              <form  name="customerEditForm" ng-submit="register()">
+                                  <div class="form-group" 
+                                      ng-class="{'has-error': (customerEditForm.username.$invalid && customerEditForm.username.$dirty) }">
+                                    <div class="row">
+                                        <label class="col-xs-3 text-right" for="username">User Name</label>
+                                        <div class="col-xs-8">
+                                            <input class="form-control" type="text" required 
+                                                ng-model="customer.username" name="username" placeholder="User Name">
+                                            <span class="has-error control-label" ng-show="customerEditForm.username.$invalid && customerEditForm.username.$dirty">
+                                              User Name is required.
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <label class="col-xs-3 text-right" for="firstName">First Name</label>
+                                        <div class="col-xs-8">      
+                                            <input class="form-control" type="text"  
+                                                ng-model="customer.firstName" name="firstName" placeholder="First Name">  
+                                        </div>
+                                    </div>       
+                                    <div class="row">
+                                        <label class="col-xs-3 text-right" for="lastName">Last Name</label>
+                                        <div class="col-xs-8">
+                                            <input class="form-control" type="text"  
+                                                ng-model="customer.lastName" name="lastName" placeholder="Last Name"> 
+                                        </div>
+                                    </div>      
+                                  </div>
+                              </form>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button class="btn btn-primary" ng-disabled="customerEditForm.$invalid" ng-click="submit()">
+                <i class="glyphicon glyphicon-edit" aria-hidden="true"></i>
+                Edit
+            </button>
+            <button class="btn btn-warning" ng-click="cancel()">Cancel</button>
+        </div>        
+    </script>
+</div>
+<!-- Edit Customer Modal Window -->
+<!-- Receipts File Upload Modal Window -->
+<div ng-controller="ModalUserPohtoFileCtrl" uploader="uploader">
+    <script type="text/ng-template" id="ModalUserPohtoFile.html">
+        <div class="modal-header">
+            <h1 class="page-title text-center">
+              <i class="fa fa-file-image-o" aria-hidden="true"></i> 
+              Upload Photo
+            </h1>
+        </div>
+        <div class="modal-body" style="padding-bottom:0;">
+            <div style="margin-top:0;margin-bottom:0;margin-left:10px;margin-right:10px;">
+                <div class="row">
+                    <div class="col-sm-12">
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                <strong>Photo File</strong>                              
+                            </div>
+                            <div class="panel-body">
+                                <!-- file upload -->
+                                <table class="table">
+                                    <thead>
+                                    <tr>
+                                        <th>Name</th>
+                                        <th ng-show="uploader.isHTML5">Progress</th>
+                                        <th>Status</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr ng-repeat="item in uploader.queue">
+                                        <td>
+                                            <strong>{{ item.file.name }}</strong>
+                                            <div ng-show="uploader.isHTML5" ng-thumb="{ file: item._file, height: 100 }"></div>
+                                            <span style="margin-left:10px;">{{item.file.size/1024/1024|number:2 }} MB</span>
+                                        </td>
+                                        <td ng-show="uploader.isHTML5">
+                                            <div class="progress" style="margin-bottom: 0;">
+                                                <div class="progress-bar" role="progressbar"
+                                                     ng-style="{ 'width': item.progress + '%' }"></div>
+                                            </div>
+                                        </td>
+                                        <td class="text-center">
+                                            <span ng-show="item.isSuccess"><i
+                                                    class="glyphicon glyphicon-ok"></i></span>
+                                            <span ng-show="item.isCancel"><i
+                                                    class="glyphicon glyphicon-ban-circle"></i></span>
+                                            <span ng-show="item.isError"><i
+                                                    class="glyphicon glyphicon-remove"></i></span>
+                                        </td>
+                                        <td nowrap>
+                                            <button type="button" class="btn btn-success btn-xs"
+                                                    ng-click="item.upload()"
+                                                    ng-disabled="item.isReady || item.isUploading || item.isSuccess">
+                                                <span class="glyphicon glyphicon-upload"></span>
+                                                Upload
+                                            </button>
+                                            <button type="button" class="btn btn-danger btn-xs"
+                                                    ng-click="item.remove()">
+                                                <span class="glyphicon glyphicon-trash"></span>
+                                                Remove
+                                            </button>
+                                        </td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                                <!-- file upload -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+        <div class="modal-footer">
+        <!-- The fileinput-button span is used to style the file input field as button -->
+        <div>
+            <span style="margin-left:10px;"
+                class="btn btn-primary fileinput-button pull-left" 
+                ng-class="{disabled: disabled}">
+                <i class="glyphicon glyphicon-plus"></i>
+                <span>Add Photo...</span>
+                <input nv-file-select uploader="uploader" type="file" ng-disabled="disabled"/>
+            </span> 
+        </div>      
+        <button class="btn btn-warning" ng-click="close()" style="margin-right:10px;">Close</button>
+        </div>        
+    </script>
+</div>
+<!-- Receipts File Upload Modal Window -->
+
+<!-- Tag Receipts Modal Window -->
+<div ng-controller="ModalDashboardTagReceiptsCtrl" id="dashboardTagController">
+    <script type="text/ng-template" id="ModalTagReceipts.html">
+        <div class="modal-header">
+            <h1 class="page-title text-center">
+              <i class="fa fa-tag" aria-hidden="true"></i>
+              Receipts in Tag
+            </h1>
+        </div>
+        <div class="modal-body">
+            <div style="margin:25px;">
+
+                <div class="row">
+                    <div class="col-sm-12">
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                <strong>Receipts in '{{tagname}}'</strong>
+                            </div>
+                            <div class="panel-body">
+                                <!-- Receipts in Tag of Table -->
+                                <div class="row">
+                                    <label class="col-sm-1 control-label text-right">Search</label>
+                                    <div class="col-sm-3">          
+                                        <input ng-model="searchText" id="search" class="form-control" placeholder="Search text">
+                                    </div>
+                                </div>
+                                <div class="table-responsive">
+                                    <table class="table table-hover">
+                                        <thead>
+                                            <tr style="background:#ffffff;">
+                                                <th style="display:none;">ID</th>
+                                                <!--<th style="text-align: center; ">Store</th>-->
+                                                <th class="sortable" 
+                                                    style="text-align: center; "
+                                                    ng-repeat="(key,value) in tablehead" 
+                                                    ng-class="selectedCls(key)" 
+                                                    ng-click="changeSorting(key)">{{value}}</th>
+                                                <th colspan="2">Comment</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                        <tr ng-repeat="receipt in receipts | orderBy : sort.descending + sort.column | receiptFilter:searchText | startFrom:currentPage*pageSize | limitTo:pageSize">
+                                            <td style="display:none;">{{receipt.id}}</td>
+                                            <td style="margin-left:15px;">{{receipt.store.name}}</td>
+                                            <td style="text-align: center; ">${{commaSeparateNumber(receipt.total)}}</td>
+                                            <td style="text-align: center; ">{{receipt.numberOfItem}}</td>
+                                            <td style="text-align: center; ">{{(receipt.date).substring(0, 10)}}</td>
+                                            <td>
+                                                {{receipt.comment}}
+                                                <i class="glyphicon glyphicon-search pull-right text-primary" 
+                                                    style="padding-right:10px" 
+                                                    ng-click="viewReceipt(receipt.id)" tooltip-html-unsafe="View Details"></i>
+                                            </td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+
+                                </div>
+                                <div style="margin-bottom:20px;">
+                                <div class="row">
+                                    <div class="col-sm-2">
+                                        <select ng-model="pageSize" 
+                                            id="pageSize" 
+                                            class="form-control" 
+                                            style="width:80px;"
+                                            ng-change="changePageSize()"
+                                            ng-options="unit for unit in pageUnits">
+                                        </select>
+                                    </div>
+                                    <div class="col-sm-4">
+                                        <ul class="list-group list-group-horizontal">
+                                            <button  class="btn btn-primary" ng-disabled="currentPage == 0"  ng-click="currentPage=currentPage-1">Previous</button>
+                                            <button  class="btn btn-primary" ng-disabled="currentPage >= getData().length/pageSize - 1" ng-click="currentPage=currentPage+1">Next</button>
+                                        </ul>
+                                    </div>
+                                    <div class="col-sm-6 text-center">
+                                        <pre>Selected page: {{currentPage+1}}/{{numberOfPages()==0? 1:numberOfPages();}}</pre>
+                                    </div>
+                                </div>
+                                <!-- Receipts in Tag of Table -->
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+        <div class="modal-footer">
+        <button class="btn btn-warning" ng-click="close()">Close</button>
+        </div>        
+    </script>
+</div>
+<!-- Tag Receipts Modal Window -->

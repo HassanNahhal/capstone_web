@@ -30,7 +30,20 @@ angular
           }
         }); 
     };
+
+    function publicRemoveSpaceInString(str){
+      return str.replace(/\s+/g, '');
+    };
+
+    function publicShowMessage(flashMessage){
+      $(flashMessage).addClass("in"); 
+      window.setTimeout(function(){
+        $(flashMessage).removeClass("in"); 
+      }, 3000);        
+    };    
     return {
-      getCategoriesBySelectedStore: getCategoriesBySelectedStore
+      getCategoriesBySelectedStore: getCategoriesBySelectedStore,
+      publicShowMessage: publicShowMessage,
+      publicRemoveSpaceInString: publicRemoveSpaceInString
     };
   }]);

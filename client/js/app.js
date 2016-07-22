@@ -6,7 +6,8 @@ angular
     'lbServices',
     'angularFileUpload',
     'oc.lazyLoad',
-    'angular-loading-bar'
+    'angular-loading-bar',
+    'ui.bootstrap'
  ])
  .config(['$stateProvider', '$urlRouterProvider', '$ocLazyLoadProvider', function(
  	$stateProvider, $urlRouterProvider, $ocLazyLoadProvider) {
@@ -203,7 +204,7 @@ angular
 		})
 		.state('groupAddReceipt', {
 			url: '/groupAddReceipt/:groupId/:ownerId/:groupName',
-			templateUrl: 'views/receipts/receipt-form.html',
+			templateUrl: 'views/receipts/receipt-add.html',
 			controller: 'AddReceiptController',
 			authenticate: true
 		})			
@@ -232,7 +233,7 @@ angular
 		})		
 		.state('addReceipt', {
 			url: '/addReceipt',
-			templateUrl: 'views/receipts/receipt-form.html',
+			templateUrl: 'views/receipts/receipt-add.html',
 			controller: 'AddReceiptController',
 			authenticate: true
 		})		
@@ -329,6 +330,7 @@ angular
 		.state('Dashboard', {
 			url: '/Dashboard',
 			templateUrl: 'views/users/dashboard.html', 
+			controller: 'DashboardController', 
 			authenticate: true
 		})      	 					
 		.state('forbidden', {

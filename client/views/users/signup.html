@@ -1,9 +1,12 @@
 <div class="container">
 <section>
 <div class="container">
-<h1 class="page-title">Sign up</h1>
+<h1 class="page-title">
+  <i class="fa fa-user-plus" aria-hidden="true"></i>
+  Sign up
+</h1>
 <hr>
-<div class="row">
+<div class="row" style="margin:20px;">
   <div class="col-md-6 col-md-offset-3">
   <form  name="signupForm" ng-submit="register()">
       <div class="form-group" 
@@ -34,4 +37,9 @@
 </div>
 </div>
 </section>
+</div>
+<div id="signUpErrorMessage" class="alert alert-danger fade">
+  <a href="" class="close" data-dismiss="alert"></a>
+  <i class="glyphicon glyphicon-info-sign text-danger"></i>
+  <strong>Note:</strong> {{user.email}} already exist.
 </div>

@@ -3,8 +3,8 @@
  angular
   .module('app')
   .controller('AddStoreController', ['$scope', 'Store', 'Category', 
-    '$state', 'StoreCategory', '$rootScope', '$stateParams', 
-    function($scope, Store, Category, $state, StoreCategory, $rootScope, $stateParams) {      
+    '$state', 'StoreCategory', '$rootScope', '$stateParams', 'ReceiptService', 
+    function($scope, Store, Category, $state, StoreCategory, $rootScope, $stateParams, ReceiptService) {      
 
     $scope.action = 'Add';
     $scope.categories = [];
@@ -21,7 +21,19 @@
     }else{
       userId = $stateParams.ownerId;
       groupId = $stateParams.groupId;
-    }  
+    } 
+
+    $scope.storesName = Store.find({
+      filter: {
+        fields: { "id": true, "name": true},
+        order: 'name ASC',
+          where: {and: [
+            {customerId: userId},
+            {groupId: groupId}
+          ]}
+      }
+    }); 
+    //console.log("$scope.storesName: ",$scope.storesName);    
 
     Category
       .find({
@@ -57,27 +69,64 @@
       $scope.selCategoryCount=$scope.selectedCategory.length + " selected";
     } 
 
+    $scope.checkValues = function(){
+
+      if($scope.selectedCategory.length < 1){
+        ReceiptService.publicShowMessage('#invalidCategoryMessage'); 
+        return false;        
+      }
+      return true;            
+    } //$scope.checkValues = function(){     
+
+    $scope.showMessage = function(flashMessage){
+      $(flashMessage).addClass("in"); 
+      window.setTimeout(function(){
+        $(flashMessage).removeClass("in"); 
+      }, 3000);        
+    }
+
     $scope.submitForm = function() {
-      Store
-        .create({
-          name: $scope.store.name,
-          customerId: userId,
-          groupId: groupId
-        }, function(store) {
-          for(var i = 0 ; i < $scope.selectedCategory.length ; i++){
-            StoreCategory
-              .create({
-                storeId: store.id,
-                categoryId: $scope.selectedCategory[i].id
-              }).$promise;              
-          }
-          $scope.Stores();
-        });
-    };
+      if($scope.checkValues()){
+        var newStoreName = (($scope.store.name).trim()).toLowerCase();
+        var storeName;
+        var isNewStoreName = false;
+        if($scope.storesName.length > 0){
+          var isExist = false;
+          for(var i = 0 ; i < $scope.storesName.length ; i++){
+            storeName = (($scope.storesName[i].name).trim()).toLowerCase();
+            if(storeName == newStoreName){
+              ReceiptService.publicShowMessage('#addStoreErrorMessage');
+              isExist = true;
+              break;
+            }
+          } // for(var i = 0 ; i < $scope.tags.length ; i++){
+          isNewStoreName = !isExist;
+        }else{
+          isNewStoreName = true;
+        } // if($scope.tags.length > 0){
+        if(isNewStoreName){
+          Store
+            .create({
+              name: ($scope.store.name).trim(),
+              customerId: userId,
+              groupId: groupId
+            }, function(store) {
+              for(var i = 0 ; i < $scope.selectedCategory.length ; i++){
+                StoreCategory
+                  .create({
+                    storeId: store.id,
+                    categoryId: $scope.selectedCategory[i].id
+                  }).$promise;              
+              }
+              $scope.Stores();
+            });          
+        } // if(isNewStoreName){
+      } // if($scope.checkValues()){
+    };  // $scope.submitForm = function() {
   }])  
   .controller('EditStoreController', ['$scope', 'Store', 'Category', 
-      '$stateParams', '$state', 'StoreCategory', '$location', '$rootScope',  
-      function($scope, Store, Category, $stateParams, $state, StoreCategory, $location, $rootScope) {      
+      '$stateParams', '$state', 'StoreCategory', '$location', '$rootScope', 'ReceiptService',   
+      function($scope, Store, Category, $stateParams, $state, StoreCategory, $location, $rootScope, ReceiptService) {      
 
     $scope.action = 'Edit';
     $scope.categories = [];
@@ -125,7 +174,7 @@
           })
           .$promise
           .then(function(store){
-            console.log("store.categories: ", store.categories);
+            //console.log("store.categories: ", store.categories);
             $scope.store = store;
             $scope.store.name = store.name;
             if(store.categories.length > 0){
@@ -163,43 +212,85 @@
 
       $scope.deleteStore = function(){
         if(confirm("Are you sure?")){
-          if($stateParams.groupId == undefined){
-             $state.go(
-              'deleteStore', 
-              {
-                'id': $stateParams.id
+            Store.findById({
+              id: $stateParams.id,
+              filter: {   
+                fields: {
+                  id: true
+                },          
+                include:{
+                  relation: 'receipts',
+                  scope: {
+                    fields: {
+                      id: true
+                    },
+                  }
+                }
               }
-            );
-          }else{
-            groupParameters['id'] = $stateParams.id;
-            $state.go('groupDeleteStore', groupParameters);
-          } 
-        }        
-      }  
+            })
+            .$promise
+            .then(function(store){
+              //console.log("store: ", store);
+              if(store.receipts.length > 0){
+                ReceiptService.publicShowMessage('#deleteStoreErrorMessage');
+              }else if(store.receipts.length === 0){
+                if($stateParams.groupId == undefined){
+                   $state.go(
+                    'deleteStore', 
+                    {
+                      'id': $stateParams.id
+                    }
+                  );
+                }else{
+                  groupParameters['id'] = $stateParams.id;
+                  $state.go('groupDeleteStore', groupParameters);
+                } // if($stateParams.groupId == undefined){
+              } //else if(tag.receipts.length === 0){
+            }); // Tag.findById({
+        } // if(confirm("Are you sure?")){    
+      }  // $scope.deleteStore = function(){
+
+      $scope.checkValues = function(){
+
+        if($scope.selectedCategory.length < 1){
+          $scope.showMessage('#invalidCategoryMessage'); 
+          return false;        
+        }
+        return true;            
+      } //$scope.checkValues = function(){     
+
+      $scope.showMessage = function(flashMessage){
+        $(flashMessage).addClass("in"); 
+        window.setTimeout(function(){
+          $(flashMessage).removeClass("in"); 
+        }, 3000);        
+      }
 
 	    $scope.submitForm = function() {
-        $scope.store
-          .$save()
-          .then(function(){
-            Store.categories.destroyAll(
-              {id: $stateParams.id},
-              function(res){
-                for(var i = 0 ; i < $scope.selectedCategory.length ; i++){
-                  StoreCategory
-                    .create({
-                      storeId: $scope.store.id,
-                      categoryId: $scope.selectedCategory[i].id
-                    })
-                    .$promise;                  
-                }
-                $scope.Stores(); 
-              });
-          });          
+        if($scope.checkValues()){          
+          $scope.store
+            .$save()
+            .then(function(){
+              Store.categories.destroyAll(
+                {id: $stateParams.id},
+                function(res){
+                  for(var i = 0 ; i < $scope.selectedCategory.length ; i++){
+                    StoreCategory
+                      .create({
+                        storeId: $scope.store.id,
+                        categoryId: $scope.selectedCategory[i].id
+                      })
+                      .$promise;                  
+                  }
+                  $scope.Stores(); 
+                });
+            });          
+        } // if($scope.checkValues()){ 
 	    };
   }])
   .controller('AllStoresController', [
-    '$stateParams', '$scope', 'Store', '$rootScope', '$state', 
-    function($stateParams, $scope, Store, $rootScope, $state) {       
+    '$stateParams', '$scope', 'Store', '$rootScope', '$state', 'ReceiptService', 
+    function($stateParams, $scope, Store, $rootScope, $state, ReceiptService) {       
 
       $scope.groupName = $stateParams.groupName;
 
@@ -230,14 +321,73 @@
       }
  
       $scope.editStore = function(storeId){
-        $scope.actionStore('editStore', 'groupEditStore', storeId);  
+        if($stateParams.groupId == undefined){
+           $state.go(
+            'editStore', 
+            {
+              'id': storeId
+            }
+          );
+        }else{
+           $state.go(
+            'groupEditStore', 
+            {
+              'id': storeId, 
+              'groupId': $stateParams.groupId, 
+              'groupName':  $stateParams.groupName,
+              'ownerId': $stateParams.ownerId
+            }
+          );  
+        } // if($stateParams.groupId == undefined){         
       }
 
       $scope.deleteStore = function(storeId){
         if(confirm("Are you sure?")){
-          $scope.actionStore('deleteStore', 'groupDeleteStore', storeId);  
-        }         
-      } 
+          Store.findById({
+            id: storeId,
+            filter: {   
+              fields: {
+                id: true
+              },          
+              include:{
+                relation: 'receipts',
+                scope: {
+                  fields: {
+                    id: true
+                  },
+                }
+              }
+            }
+          })
+          .$promise
+          .then(function(store){
+            //console.log("store: ", store);
+            if(store.receipts.length > 0){
+              ReceiptService.publicShowMessage('#deleteStoreErrorMessage');
+            }else if(store.receipts.length === 0){
+              if($stateParams.groupId == undefined){
+                 $state.go(
+                  'deleteStore', 
+                  {
+                    'id': storeId
+                  }
+                );
+              }else{
+                 $state.go(
+                  'groupDeleteStore', 
+                  {
+                    'id': storeId, 
+                    'groupId': $stateParams.groupId, 
+                    'groupName':  $stateParams.groupName,
+                    'ownerId': $stateParams.ownerId
+                  }
+                );  
+              } // if($stateParams.groupId == undefined){
+            } //else if(tag.receipts.length === 0){
+          }); // Tag.findById({
+          //$scope.actionStore('deleteStore', 'groupDeleteStore', storeId);            
+        } // if(confirm("Are you sure?")){      
+      } // $scope.deleteStore = function(storeId){
 
       $scope.actionStore = function(action, groupAction, storeId){
         if($stateParams.groupId == undefined){
@@ -257,7 +407,7 @@
               'ownerId': $stateParams.ownerId
             }
           );  
-        } 
+        } // if($stateParams.groupId == undefined){ 
       }          
 
       $scope.addStore = function(){

@@ -1,7 +1,10 @@
 <div class="container">
 <section>
 <div class="container">
-<h1 class="page-title">Group list</h1>
+<h1 class="page-title">
+	<i class="glyphicon glyphicon-blackboard"></i> 
+	Group
+</h1>
 <hr style="margin-top:5px;">
 <!-- Group as a owner -->
 <div class="list-group">
@@ -13,13 +16,16 @@
 		 	Member limitation: {{group.grouptype.limitedMember}} / 
 		 	Receipt limitation: {{group.grouptype.limitedReceipt}} / 
 
-		    <i class="glyphicon glyphicon-eye-open pull-right text-success" 
-		    	style="padding-left:10px" 
-		    	ui-sref="viewGroup({id: group.id})" title="View"></i>	
+		    <i class="glyphicon glyphicon-search pull-right text-success" 
+		    	style="margin-left:10px" 
+		    	ui-sref="viewGroup({id: group.id})" tooltip-html-unsafe="View Details"></i>	
 		    
 		 	<i class="glyphicon glyphicon-pencil pull-right text-primary" 
-		 		style="padding-right:10px" 
-		 		ui-sref="editGroup({id: group.id})" title="Edit"></i> 
+		 		style="margin-right:10px;margin-left:10px;" 
+		 		ui-sref="editGroup({id: group.id})" tooltip-html-unsafe="Edit"></i> 
+		    <i class="glyphicon glyphicon-list-alt pull-right text-info" 
+		    	style="margin-right:10px" 
+		    	ng-click="groupReceipts(group.id, group.ownerId, group.name)" tooltip-html-unsafe="Receipts"></i>		 		
 	  	</span>
 	  	<span ng-hide="groups" class="list-group-item">No group you own.</span>
 	  	</div>
@@ -37,12 +43,19 @@
 		 	Member limitation: {{group.grouptype.limitedMember}} / 
 		 	Receipt limitation: {{group.grouptype.limitedReceipt}} / 
 
-		    <i class="glyphicon glyphicon-eye-open pull-right text-success" 
-		    	style="padding-left:10px" 
-		    	ui-sref="viewGroup({id: group.id})" title="View"></i>
+		    <i class="glyphicon glyphicon-remove pull-right text-danger" 
+		    	style="margin-left:10px" 
+		    	ng-show="group.leaveGroup" 
+		    	ng-click="leaveGroup('#requestLeave', group.id, group.ownerId)" tooltip-html-unsafe="Leave Group"></i>
+		    <i class="glyphicon glyphicon-search pull-right text-success" 
+		    	style="margin-left:10px;margin-right:15px;" 
+		    	ng-show="group.leaveGroup" 
+		    	ui-sref="viewGroup({id: group.id})" tooltip-html-unsafe="View Details"></i>
 		    <i class="glyphicon glyphicon-list-alt pull-right text-info" 
-		    	style="padding-right:10px" 
-		    	ng-click="groupReceipts(group.id, group.ownerId, group.name)" title="Receipts"></i>		    	
+		    	style="margin-right:10px" 
+		    	ng-show="group.leaveGroup" 
+		    	ng-click="groupReceipts(group.id, group.ownerId, group.name)" tooltip-html-unsafe="Receipts"></i>		    
+		    <span class="text-danger pull-right" ng-hide="group.leaveGroup">(request leave)</span>	
 	  	</span>
 	  	<span ng-hide="groupsinmember" class="list-group-item">No group as a member.</span>
 	  	</div>
@@ -64,17 +77,17 @@
 		 			Invitation for a group ({{notification.senderEmail}})
 		 			{{!notification.seen && notification.left ? " (re-invite)" : ""}}
 				    <i class="glyphicon glyphicon-ban-circle pull-right text-danger" 
-				    	style="margin-right:10px;margin-left:10px;" 
+				    	style="margin-right:10px;margin-left:20px;" 
 				    	ng-click="refuseJoin(notification.id)" 
-				    	title="Refuse invitation"></i>			 			
-				    <i class="glyphicon glyphicon-eye-open pull-right text-success" 
+				    	tooltip-html-unsafe="Refuse invitation"></i>			 			
+				    <i class="glyphicon glyphicon-zoom-in pull-right text-success" 
 				    	style="margin-left:10px;margin-right:10px;"
 				    	ng-click="showDetails =! showDetails" 
-				    	title="View group"></i>
+				    	tooltip-html-unsafe="View Summary"></i>
 				    <i class="glyphicon glyphicon-ok pull-right text-primary" 
 				    	style="margin-right:10px;" 
 				    	ng-click="acceptJoin(notification.id)" 
-				    	title="Accept invitation"></i>	
+				    	tooltip-html-unsafe="Accept invitation"></i>	
 
 			  	</span>
 			  	<div class="invitation-desc" ng-show="showDetails">
@@ -97,6 +110,16 @@
 	  	</div>
   	</div>
 </div>
+<div class="row">
+<div class="col-sm-offset-3 col-sm-3">
+	<button class="btn btn-default"  ng-click="backToPage()">
+		<i class="glyphicon glyphicon-circle-arrow-left" aria-hidden="true"></i> 
+		Back
+	</button>
+</div>
+</div>
+
+
 <script type="text/javascript">
 	$(document).ready(function(){
 	    $(".close").click(function(){
@@ -105,12 +128,12 @@
 	});		    		
 </script>
 <div id="acceptInvitation" class="alert alert-info fade">
-	<a href="" class="close" data-dismiss="alert">&times;</a>
+	<a href="" class="close" data-dismiss="alert"></a>
 	<i class="glyphicon glyphicon-info-sign text-info"></i>
 	<strong>Note:</strong> You have joined in selected group.
 </div>	
 <div id="refuseInvitation" class="alert alert-info fade">
-	<a href="" class="close" data-dismiss="alert">&times;</a>
+	<a href="" class="close" data-dismiss="alert"></a>
 	<i class="glyphicon glyphicon-info-sign text-info"></i>
 	<strong>Note:</strong> You have refused to join in group.
 </div>	
@@ -122,4 +145,9 @@
 </div>
 </div>
 </section>
+</div>
+<div id="requestLeave" class="alert alert-info fade">
+	<a href="" class="close" data-dismiss="alert"></a>
+	<i class="glyphicon glyphicon-info-sign text-info"></i>
+	<strong>Note: </strong>Request for leaving group has been sent successfully.
 </div>

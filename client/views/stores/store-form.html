@@ -1,7 +1,10 @@
 <div class="container">
 <section>
 <div class="container">
-<h1 class="page-title">{{ action }} {{groupName}} Store</h1>
+<h1 class="page-title">
+	<i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+	{{ action }} {{groupName}} Store
+</h1>
 <hr>
 <form name="storeForm" novalidate >
   <div class="form-group" ng-class="{'has-error': storeForm.name.$invalid && storeForm.name.$dirty}">
@@ -30,12 +33,7 @@
 	  	<div class="col-sm-4">
 	  		<select multiple size=15 ng-multiple="true" ng-click="countSelectedCategory()"
 	  			ng-model="selectedCategory" class="form-control" 
-	  			ng-options="category as category.name for category in categories"></select>
-	  			
-	  			<!--<multiselect ng-model="selectedCategory" id="selectCategories" 
-	  				show-search="true" show-select-all="true" show-unselect-all="true"
-	  				options="options2" id-prop="id" display-prop="name"></multiselect>
-	  				<span>{{options2}}</span>-->	  			
+	  			ng-options="category as category.name for category in categories"></select>	  			
 	  	</div>
 
 	</div>
@@ -58,4 +56,19 @@
 </form>
 </div>
 </section>
+</div>
+<div id="invalidCategoryMessage" class="alert alert-danger fade">
+  <a href="" class="close" data-dismiss="alert"></a>
+  <i class="glyphicon glyphicon-info-sign text-danger"></i>
+  <strong>Note:</strong> Category is required.
+</div>
+<div id="addStoreErrorMessage" class="alert alert-danger fade">
+  <a href="" class="close" data-dismiss="alert"></a>
+  <i class="glyphicon glyphicon-info-sign text-danger"></i>
+  <strong>Note:</strong> Store name already exists.
+</div>
+<div id="deleteStoreErrorMessage" class="alert alert-danger fade">
+  <a href="" class="close" data-dismiss="alert"></a>
+  <i class="glyphicon glyphicon-info-sign text-danger"></i>
+  <strong>Note:</strong> Store is already used by Receipt(s).
 </div>

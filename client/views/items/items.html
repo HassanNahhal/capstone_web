@@ -1,16 +1,19 @@
 <div class="container">
 <section>
 <div class="container">
-<h1 class="page-title">Item list</h1>
+<h1 class="page-title">
+	<i class="glyphicon glyphicon-cd"></i> 
+	Items
+</h1>
 <hr>
 <div class="list-group">
 	<span class="list-group-item" ng-repeat="item in items">
 	 	Item Name: {{item.name}} / Item Price : $ {{ item.price }} &nbsp; &nbsp; 
 	    <i class="glyphicon glyphicon-remove pull-right text-danger" 
-	    	ui-sref="deleteItem({id: item.id})"></i>	 	
+	    	ui-sref="deleteItem({id: item.id})" tooltip-html-unsafe="Delete"></i>	 	
 	 	<i class="glyphicon glyphicon-pencil pull-right text-primary" 
 	 		style="cursor: pointer; padding-right:20px" 
-	 		ui-sref="editItem({id: item.id})"></i> 
+	 		ui-sref="editItem({id: item.id})" tooltip-html-unsafe="Edit"></i> 
   	</span>
 </div>
 <div>

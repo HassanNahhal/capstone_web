@@ -1,16 +1,19 @@
 <div class="container">
 <section>
 <div class="container">
-<h1 class="page-title">{{groupName}} Tag</h1>
+<h1 class="page-title">
+	<i class="glyphicon glyphicon-tag"></i> 
+	{{groupName}} Tags
+</h1>
 <hr>
 <div class="list-group">
 	<span class="list-group-item" ng-repeat="tag in tags">
 	 	{{tag.name}}&nbsp; &nbsp; 
 	    <i class="glyphicon glyphicon-remove pull-right text-danger" 
-	    	ng-click="deleteTag(tag.id)" title="Delete"></i>	 	
+	    	ng-click="deleteTag(tag.id)" tooltip-html-unsafe="Delete"></i>	 	
 	 	<i class="glyphicon glyphicon-pencil pull-right text-primary" 
 	 		style="padding-right:20px" 
-	 		ng-click="editTag(tag.id)" title="Edit"></i> 
+	 		ng-click="editTag(tag.id)" tooltip-html-unsafe="Edit"></i> 
   	</span>
 </div>
 <div class="row">
@@ -23,4 +26,9 @@
 </div>
 </div>
 </section>
+</div>
+<div id="deleteTagErrorMessage" class="alert alert-danger fade">
+  <a href="" class="close" data-dismiss="alert"></a>
+  <i class="glyphicon glyphicon-info-sign text-danger"></i>
+  <strong>Note:</strong> Tag is already used by Receipt(s).
 </div>

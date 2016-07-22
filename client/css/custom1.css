@@ -1,6 +1,6 @@
 body {
     overflow-x: hidden;
-    font-family: "Roboto Slab", "Helvetica Neue", Helvetica, Arial, sans-serif
+    /*font-family: "Roboto Slab", "Helvetica Neue", Helvetica, Arial, sans-serif*/
 }
 
 .text-muted {
@@ -113,7 +113,7 @@ fieldset[disabled] .btn-xl.active {
 }
 
 .navbar-default .navbar-brand {
-    color: #fed136;
+    /*color: #fed136;*/
     /*font-family: "Kaushan Script", "Helvetica Neue", Helvetica, Arial, cursive*/
 }
 
@@ -121,7 +121,8 @@ fieldset[disabled] .btn-xl.active {
 .navbar-default .navbar-brand:focus,
 .navbar-default .navbar-brand:active,
 .navbar-default .navbar-brand.active {
-    color: #fec503
+    color: #fec503;
+    outline: 0;
 }
 /*
 .navbar-default .navbar-collapse {
@@ -224,7 +225,7 @@ header .intro-text .intro-lead-in {
 
 header .intro-text .intro-heading {
     font-family: Montserrat, "Helvetica Neue", Helvetica, Arial, sans-serif;
-    text-transform: uppercase;
+    /*text-transform: uppercase;*/
     font-weight: 700;
     font-size: 50px;
     line-height: 50px;
@@ -245,7 +246,7 @@ header .intro-text .intro-heading {
     }
     header .intro-text .intro-heading {
         font-family: Montserrat, "Helvetica Neue", Helvetica, Arial, sans-serif;
-        text-transform: uppercase;
+        /*text-transform: uppercase;*/
         font-weight: 700;
         font-size: 75px;
         line-height: 75px;
@@ -406,6 +407,38 @@ font-family: 'Proza Libre', sans-serif;
     margin-bottom: 0
 }
 
+@media (min-width:300px) {
+    .timeline:before {
+        left: 50%
+    }
+    .timeline>li {
+        margin-bottom: 80px;
+        min-height: 80px
+    }
+    .timeline>li .timeline-panel {
+        width: 41%;
+        float: right;
+        padding: 0 10px 10px 20px;
+        text-align: left;
+    }
+    .timeline>li .timeline-image {
+        width: 80px;
+        height: 80px;
+        left: 50%;
+        margin-left: -40px
+    }
+    .timeline>li .timeline-image h4 {
+        font-size: 12px;
+        margin-top: 14px;
+        line-height: 15px
+    }
+    .timeline>li.timeline-inverted>.timeline-panel {
+        float: right;
+        text-align: left;
+        padding: 0 10px 10px 20px
+    }
+}
+
 @media (min-width:768px) {
     .timeline:before {
         left: 50%
@@ -417,14 +450,14 @@ font-family: 'Proza Libre', sans-serif;
     .timeline>li .timeline-panel {
         width: 41%;
         float: left;
-        padding: 0 20px 20px 30px;
+        padding: 0 20px 15px 10px;
         text-align: right
     }
     .timeline>li .timeline-image {
         width: 100px;
         height: 100px;
         left: 50%;
-        margin-left: -50px
+        margin-left: -52px
     }
     .timeline>li .timeline-image h4 {
         font-size: 13px;
@@ -434,7 +467,7 @@ font-family: 'Proza Libre', sans-serif;
     .timeline>li.timeline-inverted>.timeline-panel {
         float: right;
         text-align: left;
-        padding: 0 30px 20px 20px
+        padding: 0 30px 20px 10px
     }
 }
 
@@ -443,12 +476,12 @@ font-family: 'Proza Libre', sans-serif;
         min-height: 150px
     }
     .timeline>li .timeline-panel {
-        padding: 0 20px 20px
+        padding: 0 30px 20px 20px
     }
     .timeline>li .timeline-image {
         width: 150px;
         height: 150px;
-        margin-left: -75px
+        margin-left: -77px
     }
     .timeline>li .timeline-image h4 {
         font-size: 18px;
@@ -456,7 +489,7 @@ font-family: 'Proza Libre', sans-serif;
         line-height: 26px
     }
     .timeline>li.timeline-inverted>.timeline-panel {
-        padding: 0 20px 20px
+        padding: 0 50px 30px 20px
     }
 }
 
@@ -465,18 +498,18 @@ font-family: 'Proza Libre', sans-serif;
         min-height: 170px
     }
     .timeline>li .timeline-panel {
-        padding: 0 20px 20px 100px
+        padding: 0 30px 20px 100px
     }
     .timeline>li .timeline-image {
-        width: 170px;
-        height: 170px;
-        margin-left: -85px
+        width: 200px;
+        height: 200px;
+        margin-left: -100px
     }
     .timeline>li .timeline-image h4 {
         margin-top: 40px
     }
     .timeline>li.timeline-inverted>.timeline-panel {
-        padding: 0 100px 20px 20px
+        padding: 0 70px 30px 20px
     }
 }
 
@@ -625,7 +658,7 @@ ul.social-buttons li a:active {
 
 ::selection {
     text-shadow: none;
-    background: #fed136
+    background: #eee
 }
 
 img::selection {
@@ -637,5 +670,5 @@ img::-moz-selection {
 }
 
 body {
-    webkit-tap-highlight-color: #fed136
+    /*webkit-tap-highlight-color: #fed136*/
 }

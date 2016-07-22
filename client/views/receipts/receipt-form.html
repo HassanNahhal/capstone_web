@@ -1,127 +1,271 @@
 <div class="container">
 <section>
 <div class="container">
-<h1 class="page-title">{{ action }} {{groupName}} receipt</h1>
+<h1 class="page-title">
+	<i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+	{{ action }} {{groupName}} receipt
+</h1>
 <hr>
-<form name="receiptForm" novalidate>
- 	<div class="form-group" >
- 		<div class="row">
-		  	<label class="col-sm-2 control-label">Store name</label>
-		  	<div class="col-sm-4">
-		  		<select  class="form-control" 
-		  			ng-change="getStoreCategories(null, null)"   
-		  			ng-model="selectedStore" 
-		  			ng-options="store as store.name for store in stores">
-	  				<option value="" disabled selected hidden>Plase Choose...</option>
-	  			</select>
-		  	</div>
-		  	<label class="col-sm-2 control-label" style="text-align:right;">Category</label>
-		  	<div class="col-sm-4">
-		  		<select  class="form-control" 
-		  			ng-model="selectedCategory" 
-		  			ng-options="category as category.name for category in categories">
-	  				<option value="" disabled selected hidden>Plase Choose...</option>
-	  			</select>
-		  	</div>		  	
-	  	</div>
-		<!-- date picker -->
-	    <div class="row">
-	    	<label class="col-sm-2 control-label">Date</label>
-	        <div class='col-sm-4'>
-	            <div class="form-group">
-	                <div class='input-group date' id='receiptdate'>
-	                    <input type='text' class="form-control" ng-model="receipt.date">
-	                    <span class="input-group-addon">
-	                        <span class="glyphicon glyphicon-calendar" ng-click="openCalendar()"></span>
-	                    </span>
-	                </div>
-	            </div>
-	        </div>
-			<div class="col-sm-offset-2 col-sm-2">
-				<button class="btn btn-default" ng-click="newItem()">Add Item</button>
-			</div>
-			<div class="col-sm-2">
-				<button class="btn btn-warning" ng-click="spliceItem()" ng-disabled="delDisabled">Del Item</button>
-			</div>			
+	<div class="col-sm-11">
+		<form name="receiptForm" novalidate>
+		 	<div class="form-group" >
+		 		<div class="row">
+				  	<label class="col-sm-2 control-label">Store name</label>
+				  	<div class="col-sm-4">
+				  		<select  class="form-control" 
+				  			ng-change="getStoreCategories(null, null)"   
+				  			ng-model="selectedStore" 
+				  			ng-options="store as store.name for store in stores">
+			  				<option value="" disabled selected hidden>Plase Choose...</option>
+			  			</select>
+				  	</div>
+				  	<label class="col-sm-2 control-label" style="text-align:right;">Category</label>
+				  	<div class="col-sm-4">
+				  		<select  class="form-control" 
+				  			ng-model="selectedCategory" 
+				  			ng-options="category as category.name for category in categories">
+			  				<option value="" disabled selected hidden>Plase Choose...</option>
+			  			</select>
+				  	</div>		  	
+			  	</div>
+				<!-- date picker -->
+			    <div class="row">
+			    	<label class="col-sm-2 control-label">Date</label>
+			        <div class='col-sm-4'>
+			            <div class="form-group">
+			                <div class='input-group date' id='receiptdate'>
+			                    <input type='text' class="form-control" ng-model="receipt.date">
+			                    <span class="input-group-addon">
+			                        <span class="glyphicon glyphicon-calendar" ng-click="openCalendar()"></span>
+			                    </span>
+			                </div>
+			            </div>
+			        </div>
+					<div class="col-sm-offset-2 col-sm-2">
+						<button class="btn btn-default" ng-click="newItem()">Add Item</button>
+					</div>
+					<div class="col-sm-2">
+						<button class="btn btn-warning" ng-click="spliceItem()" ng-disabled="delDisabled">Del Item</button>
+					</div>			
 
-			<div class="col-sm-offset-2 col-sm-10">
-			<hr style="margin-top:0">
-			</div>
-		</div>	  	
-		<div ng-repeat="item in items">
-			<div class="row">
-			  	<label class="col-sm-2 control-label">Item name</label>
-			  	<div class="col-sm-4">
-				    <input type="text" class="form-control" 
-				    	ame="itemname" placeholder="Item name" ng-model="item.name">
-			    </div>
+					<div class="col-sm-offset-2 col-sm-10">
+					<hr style="margin-top:0">
+					</div>
+				</div>	  	
+				<div ng-repeat="item in items">
+					<div class="row">
+					  	<label class="col-sm-2 control-label">Item name</label>
+					  	<div class="col-sm-4">
+						    <input type="text" class="form-control" 
+						    	ame="itemname" placeholder="Item name" ng-model="item.name">
+					    </div>
 
-			    <label class="col-sm-2 control-label" style="text-align:right;">Item price</label>
-			    <div class="col-sm-4">
-			    	<div class="input-group">
-			    	<div class="input-group-addon">$</div>
-			    	<input type="number" class="form-control" ng-change="changeItemPrice()" 
-			    		name="itemprice" placeholder="Item price" ng-model="item.price">
-			    	</div>
-			    </div>
-		    </div>
-		</div>
-
-		<div class="row">
-			<label class="col-sm-2 control-label">Total Price</label>
-			<div class="col-sm-4">
-		    	<div class="input-group">
-			    	<div class="input-group-addon">$</div>
-					<input type="number" class="form-control" name="total" 
-						placeholder="Total Price" ng-change="changeTotal()"  
-						ng-model="receipt.total">  
+					    <label class="col-sm-2 control-label" style="text-align:right;">Item price</label>
+					    <div class="col-sm-4">
+					    	<div class="input-group">
+					    	<div class="input-group-addon">$</div>
+					    	<input type="number" class="form-control" ng-change="changeItemPrice()" 
+					    		name="itemprice" placeholder="Item price" ng-model="item.price">
+					    	</div>
+					    </div>
+				    </div>
 				</div>
-			</div>
-			<label class="col-sm-2 control-label" style="text-align:right;"># Items</label>
-			<div class="col-sm-4">
-				<input type="number" class="form-control" name="numberOfItem" 
-					placeholder="Number of item" 
-					ng-model="receipt.numberOfItem">      
-			</div>
-		</div>
-		<div class="row">
-			<div class="col-sm-offset-2 col-sm-10">
-			<hr style="margin-top:0">
+
+				<div class="row">
+					<label class="col-sm-2 control-label">Total Price</label>
+					<div class="col-sm-4">
+				    	<div class="input-group">
+					    	<div class="input-group-addon">$</div>
+							<input type="number" class="form-control" name="total" 
+								placeholder="Total Price" ng-change="changeTotal()"  
+								ng-model="receipt.total">  
+						</div>
+					</div>
+					<label class="col-sm-2 control-label" style="text-align:right;">#Item(s)</label>
+					<div class="col-sm-4">
+						<input type="number" class="form-control" name="numberOfItem" 
+							placeholder="Number of item" 
+							ng-model="receipt.numberOfItem">      
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-sm-offset-2 col-sm-10">
+					<hr style="margin-top:0">
+					</div>		
+					<label class="col-sm-2 control-label">Comment</label>
+					<div class="col-sm-4">
+						<textarea class="form-control" name="comment" rows="4" maxlength="140" 
+							placeholder="Comment" ng-model="receipt.comment"></textarea> 
+					</div>
+
+					<div class="col-sm-2 control-label" style="text-align:right;">
+				  	<label>Tag(s)</label>
+				  	<br><span style="text-align:center;">{{selTagCount}}</span>
+				  	</div>
+				  	<div class="col-sm-4">
+				  		<select multiple size=5 ng-multiple="true" ng-click="countSelectedTag()"
+				  			ng-model="selectedTags" class="form-control" 
+				  			ng-options="tag as tag.name for tag in tags"></select>
+				  	</div>
+
+				</div>
+				<div class="row" ng-show="receipt.imageFilePath">
+					<div class="row">
+						<div class="col-sm-offset-2 col-sm-10">
+							<hr style="margin-top:0">
+						</div>	
+						<div class="col-sm-2" style="margin-left:15px;">
+							<label control-label" style="margin-bottom:15px;">Receipt Photo</label>
+							<button class="btn btn-default" ng-click="removePhoto()">Remove</button>
+						</div>	
+						
+						<div class="col-sm-8" style="margin-left:15px;margin-bottom:15px;">
+							<img ng-src="{{receipt.imageFilePath}}" style="margin:0 auto;width:100%; height: auto; max-width:600px;" />
+						</div>
+					</div>
+				</div>
+				<hr>
+				<div class="row">
+					<div ng-show="receipt.id" class="col-sm-2">
+						<button class="btn btn-default"  
+							ng-click="open(receiptId, groupId, groupName, ownerId)">Upload</button>
+					</div>				
+					<div  class="col-sm-2">
+						<button class="btn btn-primary"  ng-click="submitForm()"
+							ng-disabled="isDisabled">{{ action }} Receipt</button>
+					</div>
+					<div  class="col-sm-2">
+						<button class="btn btn-default"  ng-click="Receipts()">Receipts</button>
+					</div>
+					<div ng-show="receipt.id" class="col-sm-3">
+						<button class="btn btn-default" ng-click="viewReceipt()">
+							<i class="glyphicon glyphicon-circle-arrow-left" aria-hidden="true"></i> 
+							View Receipt
+						</button>
+					</div>				
+					<div ng-show="receipt.id" class="col-sm-3">
+						<button class="btn btn-danger pull-right" ng-click="deleteReceipt()">Delete Receipt</button>
+					</div>						
+				</div>
 			</div>		
-			<label class="col-sm-2 control-label">Comment</label>
-			<div class="col-sm-4">
-				<textarea class="form-control" name="comment" rows="4" maxlength="140" 
-					placeholder="Comment" ng-model="receipt.comment"></textarea> 
-			</div>
+		</form>
+	</div>
 
-			<div class="col-sm-2 control-label" style="text-align:right;">
-		  	<label>Tag</label>
-		  	<br><span style="text-align:center;">{{selTagCount}}</span>
-		  	</div>
-		  	<div class="col-sm-4">
-		  		<select multiple size=5 ng-multiple="true" ng-click="countSelectedTag()"
-		  			ng-model="selectedTags" class="form-control" 
-		  			ng-options="tag as tag.name for tag in tags"></select>
-		  	</div>
-
-		</div>
-		<div class="row">
-			<div  class="col-sm-offset-2 col-sm-2">
-				<button class="btn btn-primary"  ng-click="submitForm()"
-					ng-disabled="isDisabled">{{ action }} Receipt</button>
-			</div>
-			<div  class="col-sm-2">
-				<button class="btn btn-default"  ng-click="Receipts()">Receipts</button>
-			</div>
-			<div ng-show="receipt.id" class="col-sm-2">
-				<button class="btn btn-default" ng-click="viewReceipt()">View Receipt</button>
-			</div>				
-			<div ng-show="receipt.id" class="col-sm-2">
-				<button class="btn btn-danger" ng-click="deleteReceipt()">Delete Receipt</button>
-			</div>						
-		</div>
-	</div>		
-</form>
 </div>
 </section>
+</div>
+
+<!-- Receipts File Upload Modal Window -->
+<div ng-controller="EditReceiptController" uploader="uploader">
+    <script type="text/ng-template" id="ModalReceiptFile.html">
+        <div class="modal-header">
+            <h1 class="page-title text-center">
+              <i class="fa fa-file-image-o" aria-hidden="true"></i> 
+              Upload Receipts
+            </h1>
+        </div>
+        <div class="modal-body" style="padding-bottom:0;">
+            <div style="margin-top:0;margin-bottom:0;margin-left:10px;margin-right:10px;">
+		        <div class="row">
+		            <div class="col-sm-12">
+		                <div class="panel panel-default">
+		                    <div class="panel-heading">
+		                        <strong>Receipts File</strong>		                        
+		                    </div>
+		                    <div class="panel-body">
+						        <!-- file upload -->
+					            <table class="table">
+					                <thead>
+					                <tr>
+					                    <th>Name</th>
+					                    <th ng-show="uploader.isHTML5">Progress</th>
+					                    <th>Status</th>
+					                    <th>Actions</th>
+					                </tr>
+					                </thead>
+					                <tbody>
+					                <tr ng-repeat="item in uploader.queue">
+					                    <td>
+					                        <strong>{{ item.file.name }}</strong>
+					                        <div ng-show="uploader.isHTML5" ng-thumb="{ file: item._file, height: 100 }"></div>
+					                        <span style="margin-left:10px;">{{item.file.size/1024/1024|number:2 }} MB</span>
+					                    </td>
+					                    <td ng-show="uploader.isHTML5">
+					                        <div class="progress" style="margin-bottom: 0;">
+					                            <div class="progress-bar" role="progressbar"
+					                                 ng-style="{ 'width': item.progress + '%' }"></div>
+					                        </div>
+					                    </td>
+					                    <td class="text-center">
+					                        <span ng-show="item.isSuccess"><i
+					                                class="glyphicon glyphicon-ok"></i></span>
+					                        <span ng-show="item.isCancel"><i
+					                                class="glyphicon glyphicon-ban-circle"></i></span>
+					                        <span ng-show="item.isError"><i
+					                                class="glyphicon glyphicon-remove"></i></span>
+					                    </td>
+					                    <td nowrap>
+					                        <button type="button" class="btn btn-success btn-xs"
+					                                ng-click="item.upload()"
+					                                ng-disabled="item.isReady || item.isUploading || item.isSuccess">
+					                            <span class="glyphicon glyphicon-upload"></span>
+					                            Upload
+					                        </button>
+					                        <button type="button" class="btn btn-danger btn-xs"
+					                                ng-click="item.remove()">
+					                            <span class="glyphicon glyphicon-trash"></span>
+					                            Remove
+					                        </button>
+					                    </td>
+					                </tr>
+					                </tbody>
+					            </table>
+					           	<!-- file upload -->
+		                    </div>
+		                </div>
+		            </div>
+		        </div>
+
+            </div>
+        </div>
+		<div class="modal-footer">
+        <!-- The fileinput-button span is used to style the file input field as button -->
+        <div>
+            <span style="margin-left:10px;"
+            	class="btn btn-primary fileinput-button pull-left" 
+            	ng-class="{disabled: disabled}">
+                <i class="glyphicon glyphicon-plus"></i>
+                <span>Add Receipt...</span>
+                <input nv-file-select uploader="uploader" type="file" ng-disabled="disabled"/>
+            </span> 
+        </div>		
+		<button class="btn btn-warning" ng-click="close()" style="margin-right:10px;">Close</button>
+		</div>        
+    </script>
+</div>
+<!-- Receipts File Upload Modal Window -->
+<div id="invalidCategoryMessage" class="alert alert-danger fade">
+  <a href="" class="close" data-dismiss="alert"></a>
+  <i class="glyphicon glyphicon-info-sign text-danger"></i>
+  <strong>Note:</strong> Category is required.
+</div>
+<div id="invalidStoreMessage" class="alert alert-danger fade">
+  <a href="" class="close" data-dismiss="alert"></a>
+  <i class="glyphicon glyphicon-info-sign text-danger"></i>
+  <strong>Note:</strong> Store is required.
+</div>
+<div id="invalidDateMessage" class="alert alert-danger fade">
+  <a href="" class="close" data-dismiss="alert"></a>
+  <i class="glyphicon glyphicon-info-sign text-danger"></i>
+  <strong>Note:</strong> Date is required.
+</div>
+<div id="invalidNoItemMessage" class="alert alert-danger fade">
+  <a href="" class="close" data-dismiss="alert"></a>
+  <i class="glyphicon glyphicon-info-sign text-danger"></i>
+  <strong>Note:</strong> #Items is required.
+</div>
+<div id="invalidTotalMessage" class="alert alert-danger fade">
+  <a href="" class="close" data-dismiss="alert"></a>
+  <i class="glyphicon glyphicon-info-sign text-danger"></i>
+  <strong>Note:</strong> Total Price is required.
 </div>

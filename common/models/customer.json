@@ -10,10 +10,12 @@
   },
   "properties": {
     "firstName": {
-      "type": "string"
+      "type": "string",
+      "default": ""
     },
     "lastName": {
-      "type": "string"
+      "type": "string",
+      "default": ""
     },
     "dateOfBirth": {
       "type": "date"
@@ -21,6 +23,10 @@
     "gender": {
       "type": "number"
     },
+    "photoFilePath": {
+      "type": "string",
+      "default": ""
+    },    
     "groupId": {
       "type": "string",
       "id": false,
