@@ -1,124 +1,174 @@
+<style>
+	div.tabcontent{
+		background-color:white ;
+		padding : 30px 40px 20px 40px;
+		border: 1px solid #ddd;
+		border-radius: 4px;
+	}
+	div.tabcontent .row{
+		 margin-top: 10px;
+		 margin-bottom: 10px;
+	}
+	span.list-group-item:hover{
+		background-color:#f5f5f5; 
+	}
+	.list-group-item:first-child {
+	    border-top-left-radius: 0;
+	    border-top-right-radius: 0;
+	}
+	.list-group-item {
+	    position: relative;
+	    display: block;
+	    padding: 10px 15px;
+	    margin-bottom: -1px;
+	    border-top: 1px solid #ddd;
+	    border-bottom: 1px solid #ddd;
+	    border-left: none;
+	    border-right: none;
+	}		
+</style>
 <div class="container">
 <section>
 <div class="container">
 <h1 class="page-title">
-	<i class="glyphicon glyphicon-blackboard"></i> 
-	Group
+	<i class="fa fa-users" aria-hidden="true"></i> 
+	Groups
 </h1>
 <hr style="margin-top:5px;">
 <!-- Group as a owner -->
-<div class="list-group">
-	<div class="row">
-		<label class="col-sm-3 control-label">Group as owner</label>
-		<div class="col-sm-9">
-		<span class="list-group-item" ng-repeat="group in groups">
-		 	{{group.name}} / 
-		 	Member limitation: {{group.grouptype.limitedMember}} / 
-		 	Receipt limitation: {{group.grouptype.limitedReceipt}} / 
-
-		    <i class="glyphicon glyphicon-search pull-right text-success" 
-		    	style="margin-left:10px" 
-		    	ui-sref="viewGroup({id: group.id})" tooltip-html-unsafe="View Details"></i>	
-		    
-		 	<i class="glyphicon glyphicon-pencil pull-right text-primary" 
-		 		style="margin-right:10px;margin-left:10px;" 
-		 		ui-sref="editGroup({id: group.id})" tooltip-html-unsafe="Edit"></i> 
-		    <i class="glyphicon glyphicon-list-alt pull-right text-info" 
-		    	style="margin-right:10px" 
-		    	ng-click="groupReceipts(group.id, group.ownerId, group.name)" tooltip-html-unsafe="Receipts"></i>		 		
-	  	</span>
-	  	<span ng-hide="groups" class="list-group-item">No group you own.</span>
-	  	</div>
-  	</div>  	
-</div>
-<!-- Group as a owner -->
-
-<!-- Group as a member -->
-<div class="list-group">
-	<div class="row">
-		<label class="col-sm-3 control-label">Group as member</label>
-		<div class="col-sm-9">
-		<span class="list-group-item" ng-repeat="group in groupsinmember">
-		 	{{group.name}} / 
-		 	Member limitation: {{group.grouptype.limitedMember}} / 
-		 	Receipt limitation: {{group.grouptype.limitedReceipt}} / 
-
-		    <i class="glyphicon glyphicon-remove pull-right text-danger" 
-		    	style="margin-left:10px" 
-		    	ng-show="group.leaveGroup" 
-		    	ng-click="leaveGroup('#requestLeave', group.id, group.ownerId)" tooltip-html-unsafe="Leave Group"></i>
-		    <i class="glyphicon glyphicon-search pull-right text-success" 
-		    	style="margin-left:10px;margin-right:15px;" 
-		    	ng-show="group.leaveGroup" 
-		    	ui-sref="viewGroup({id: group.id})" tooltip-html-unsafe="View Details"></i>
-		    <i class="glyphicon glyphicon-list-alt pull-right text-info" 
-		    	style="margin-right:10px" 
-		    	ng-show="group.leaveGroup" 
-		    	ng-click="groupReceipts(group.id, group.ownerId, group.name)" tooltip-html-unsafe="Receipts"></i>		    
-		    <span class="text-danger pull-right" ng-hide="group.leaveGroup">(request leave)</span>	
-	  	</span>
-	  	<span ng-hide="groupsinmember" class="list-group-item">No group as a member.</span>
-	  	</div>
-  	</div>
-</div>
-<!-- Group as a member -->
-
-<!-- Notification List  -->
-<div class="list-group" ng-show="notifications">
-	<div class="row">
-	<hr class="col-sm-offset-3 col-sm-3" style="margin-top:5px;margin-bottom10px;">
+<div class="row" style="margin-bottom:20px;">
+	<div class="col-sm-3">
+		<button class="btn btn-default"  ng-click="backToPage()">
+			<i class="glyphicon glyphicon-circle-arrow-left" aria-hidden="true"></i> 
+			Back
+		</button>
 	</div>
-	<div class="row">
-		<label class="col-sm-3 control-label">Notification</label>
-		<div class="col-sm-9">
-			<div ng-repeat="notification in notifications">
-				<span class="list-group-item text-info">
-					<i class="glyphicon glyphicon-bell" style="margin-right:10px;" ></i>
-		 			Invitation for a group ({{notification.senderEmail}})
-		 			{{!notification.seen && notification.left ? " (re-invite)" : ""}}
-				    <i class="glyphicon glyphicon-ban-circle pull-right text-danger" 
-				    	style="margin-right:10px;margin-left:20px;" 
-				    	ng-click="refuseJoin(notification.id)" 
-				    	tooltip-html-unsafe="Refuse invitation"></i>			 			
-				    <i class="glyphicon glyphicon-zoom-in pull-right text-success" 
-				    	style="margin-left:10px;margin-right:10px;"
-				    	ng-click="showDetails =! showDetails" 
-				    	tooltip-html-unsafe="View Summary"></i>
-				    <i class="glyphicon glyphicon-ok pull-right text-primary" 
-				    	style="margin-right:10px;" 
-				    	ng-click="acceptJoin(notification.id)" 
-				    	tooltip-html-unsafe="Accept invitation"></i>	
+</div>	
+<div>
+<div class="tabcontent">
+<div class="row">
 
-			  	</span>
-			  	<div class="invitation-desc" ng-show="showDetails">
-			  		<ul>
-			  			<li>
-			  				<strong>Group name: </strong> 
-			  				{{notification.group.name}}
-			  			</li>
-			  			<li>
-			  				<strong>Group owner: </strong>
-			  				{{notification.senderEmail}}
-			  			</li>
-			  			<li>
-			  				<strong>Group description: </strong>
-			  				{{notification.group.description}}
-			  			</li>
-			  		</ul>
+	<div class="list-group">
+		<div class="row">
+			<label class="col-sm-3 control-label">Group as owner</label>
+			<div class="col-sm-9">
+			<span class="list-group-item" ng-repeat="group in groups">
+			 	{{group.name}} 
+
+			 	<i class="glyphicon glyphicon-pencil pull-right text-warning" 
+			 		style="margin-left:10px;" 
+			 		ui-sref="editGroup({id: group.id})" tooltip-html-unsafe="Edit"></i> 
+			    <i class="glyphicon glyphicon-search pull-right text-primary" 
+			    	style="margin-left:10px;margin-right:10px;" 
+			    	ui-sref="viewGroup({id: group.id})" tooltip-html-unsafe="View Details"></i>				    
+			    <i class="glyphicon glyphicon-list-alt pull-right" 
+			    	style="margin-right:10px" 
+			    	ng-click="groupReceipts(group.id, group.ownerId, group.name)" tooltip-html-unsafe="Receipts"></i>	 		
+		  	</span>
+		  	<span ng-hide="groups" class="list-group-item">No group you own.</span>
+		  	</div>
+	  	</div>  	
+	</div>
+	<!-- Group as a owner -->
+
+	<!-- Group as a member -->
+	<div class="list-group">
+		<div class="row">
+			<label class="col-sm-3 control-label">Group as member</label>
+			<div class="col-sm-9">
+			<span class="list-group-item" ng-repeat="group in groupsinmember">
+			 	{{group.name}}  
+
+			    <i class="glyphicon glyphicon-new-window pull-right text-danger" 
+			    	style="margin-left:10px" 
+			    	ng-show="group.leaveGroup" 
+			    	ng-click="leaveGroup('#requestLeave', group.id, group.ownerId)" tooltip-html-unsafe="Leave Group"></i>
+			    <i class="glyphicon glyphicon-search pull-right text-primary" 
+			    	style="margin-left:10px;margin-right:10px;" 
+			    	ng-show="group.leaveGroup" 
+			    	ui-sref="viewGroup({id: group.id})" tooltip-html-unsafe="View Details"></i>
+			    <i class="glyphicon glyphicon-list-alt pull-right" 
+			    	style="margin-right:10px" 
+			    	ng-show="group.leaveGroup" 
+			    	ng-click="groupReceipts(group.id, group.ownerId, group.name)" tooltip-html-unsafe="Receipts"></i>		    
+			    <span class="text-danger pull-right" ng-hide="group.leaveGroup">(request leave)</span>	
+		  	</span>
+		  	<span ng-hide="groupsinmember" class="list-group-item">No group as a member.</span>
+		  	</div>
+	  	</div>
+	</div>
+	<!-- Group as a member -->
+
+	<!-- Notification List  -->
+	<div class="list-group" ng-show="notifications">
+		<div class="row">
+		<hr class="col-sm-offset-3 col-sm-3" style="margin-top:5px;margin-bottom10px;">
+		</div>
+		<div class="row">
+			<label class="col-sm-3 control-label">Notification</label>
+			<div class="col-sm-9">
+				<div ng-repeat="notification in notifications">
+					<span class="list-group-item text-info">
+						<i class="glyphicon glyphicon-bell" style="margin-right:10px;" ></i>
+			 			Invitation for a group ({{notification.senderEmail}})
+			 			{{!notification.seen && notification.left ? " (re-invite)" : ""}}
+					    <i class="glyphicon glyphicon-ban-circle pull-right text-danger" 
+					    	style="margin-right:10px;margin-left:10px;" 
+					    	ng-click="refuseJoin(notification.id)" 
+					    	tooltip-html-unsafe="Refuse invitation"></i>			 			
+					    <i class="glyphicon glyphicon-zoom-in pull-right text-success" 
+					    	style="margin-left:10px;margin-right:10px;"
+					    	ng-click="showDetails =! showDetails" 
+					    	tooltip-html-unsafe="View Summary"></i>
+					    <i class="glyphicon glyphicon-ok pull-right text-primary" 
+					    	style="margin-right:10px;" 
+					    	ng-click="acceptJoin(notification.id)" 
+					    	tooltip-html-unsafe="Accept invitation"></i>	
+
+				  	</span>
+				  	<div class="invitation-desc" ng-show="showDetails">
+				  		<ul>
+				  			<li>
+				  				<strong>Group name: </strong> 
+				  				{{notification.group.name}}
+				  			</li>
+				  			<li>
+				  				<strong>Group owner: </strong>
+				  				{{notification.senderEmail}}
+				  			</li>
+				  			<li>
+				  				<strong>Group description: </strong>
+				  				{{notification.group.description}}
+				  			</li>
+				  		</ul>
+				  	</div>
 			  	</div>
 		  	</div>
 	  	</div>
-  	</div>
+	</div>
+
 </div>
-<div class="row">
-<div class="col-sm-offset-3 col-sm-3">
-	<button class="btn btn-default"  ng-click="backToPage()">
-		<i class="glyphicon glyphicon-circle-arrow-left" aria-hidden="true"></i> 
-		Back
-	</button>
 </div>
 </div>
 
+<div class="row" style="margin-top:20px;">
+	<div class="col-sm-3">
+		<button class="btn btn-default"  ng-click="backToPage()">
+			<i class="glyphicon glyphicon-circle-arrow-left" aria-hidden="true"></i> 
+			Back
+		</button>
+	</div>
+	<div class="col-sm-9">
+		<button 
+			class="btn btn-primary pull-right" 
+			ui-sref="addGroup" 
+			ng-hide="isDisabled" 
+			ng-disabled="isDisabled">
+			<i class="fa fa-plus-circle" aria-hidden="true"></i>
+			Add Group
+		</button>
+	</div>
+</div>
 
 <script type="text/javascript">
 	$(document).ready(function(){
@@ -139,10 +189,6 @@
 </div>	
 <!-- Notification List -->
 
-
-<div>
-	<button class="btn btn-default" ui-sref="addGroup" ng-hide="isDisabled" ng-disabled="isDisabled">Add Group</button>
-</div>
 </div>
 </section>
 </div>

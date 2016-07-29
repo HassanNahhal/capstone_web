@@ -50,6 +50,10 @@
         $scope.categories = categories;
     });
 
+    $scope.backToPage = function(){
+      window.history.back();
+    }
+    
     $scope.Stores = function(){
       if($stateParams.groupId == undefined){
         $state.go('Stores');
@@ -189,6 +193,10 @@
           });
       });
 
+      $scope.backToPage = function(){
+        window.history.back();
+      }
+      
       $scope.countSelectedCategory = function(){
         $scope.selCategoryCount=$scope.selectedCategory.length + " selected";
       }
@@ -209,6 +217,39 @@
            $state.go('groupStores', groupParameters);
         }      
       }
+
+      $scope.disableDelete = true;
+      $scope.delTooltip = '';
+      $scope.isAllowedToDelete = function(){
+        Store.findById({
+          id: $stateParams.id,
+          filter: {   
+            fields: {
+              id: true
+            },          
+            include:{
+              relation: 'receipts',
+              scope: {
+                fields: {
+                  id: true
+                },
+              }
+            }
+          }
+        })
+        .$promise
+        .then(function(store){
+          //console.log("store: ", store);
+          if(store.receipts.length > 0){
+            $scope.disableDelete = true;
+            $scope.delTooltip = 'Store has been used by receipt(s)';
+          }else{
+            $scope.disableDelete = false;
+            $scope.delTooltip = '';
+          } //if(store.receipts.length > 0){
+        }); // Store.findById({     
+      }    
+      $scope.isAllowedToDelete();  
 
       $scope.deleteStore = function(){
         if(confirm("Are you sure?")){
@@ -288,9 +329,44 @@
         } // if($scope.checkValues()){ 
 	    };
   }])
+  .filter('startFrom', function() {
+      return function(input, start) {
+          start = +start; //parse to int
+          return input.slice(start);
+      }
+  })
+  .filter('storeFilter', function(){
+    return function(dataArray, searchTerm) {
+        // If no array is given, exit.
+        if (!dataArray) {
+            return;
+        }
+        // If no search term exists, return the array unfiltered.
+        else if (!searchTerm) {
+            return dataArray;
+        }
+        // Otherwise, continue.
+        else {
+             // Convert filter text to lower case.
+             var term = searchTerm.toLowerCase();
+             // Return the array and filter it by looking for any occurrences of the search term in each items id or name. 
+             return dataArray.filter(function(store){
+                var name = store.name;
+                var storeName = name.toLowerCase().indexOf(term) > -1;
+                return storeName;
+             });
+        } 
+    }
+  }) 
   .controller('AllStoresController', [
-    '$stateParams', '$scope', 'Store', '$rootScope', '$state', 'ReceiptService', 
-    function($stateParams, $scope, Store, $rootScope, $state, ReceiptService) {       
+    '$stateParams', '$scope', 'Store', '$rootScope', '$state', 'ReceiptService', '$filter', 
+    function($stateParams, $scope, Store, $rootScope, $state, ReceiptService, $filter) { 
+
+      // Pagination
+      $scope.pageUnits = [5, 10, 15, 20];
+      $scope.pageSize = 10;
+      $scope.currentPage = 0;           
+      // Pagination
 
       $scope.groupName = $stateParams.groupName;
 
@@ -303,6 +379,7 @@
         groupId = $stateParams.groupId;
       }
 
+      $scope.stores = [];
       $scope.stores = Store     
             .find({
               filter: {
@@ -313,6 +390,23 @@
                 ]}
               }
             });
+
+      //Pagination - angular
+      $scope.getData = function(){
+        return $filter('filter')($scope.stores)
+      }
+
+      $scope.numberOfPages=function(){
+          return Math.ceil($scope.getData().length/$scope.pageSize);                
+      }
+      //$scope.number = $scope.numberOfPages();
+      $scope.getNumber = function(num) {
+          return new Array(num);   
+      }
+      $scope.changePageSize = function(){
+        $scope.currentPage = 0;
+      }     
+      //Pagination - angular            
 
       $scope.viewGroup = function(){
         if($stateParams.groupId != undefined){

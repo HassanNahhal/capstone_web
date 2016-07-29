@@ -6,51 +6,94 @@
 	{{ action }} {{groupName}} Store
 </h1>
 <hr>
+<div class="row" style="margin-bottom:20px;">	
+	<div class="col-sm-2">
+		<button class="btn btn-default"  ng-click="backToPage()">
+			<i class="glyphicon glyphicon-circle-arrow-left" aria-hidden="true"></i> 
+			Back
+		</button>
+	</div>	
+</div>
 <form name="storeForm" novalidate >
   <div class="form-group" ng-class="{'has-error': storeForm.name.$invalid && storeForm.name.$dirty}">
+	<div>
+	<div class="tabcontent" >	
 
-  	<div class="row">
-	  	<label class="col-sm-2 control-label">Store name</label>
-	  	<div class="col-sm-4">
-		    <input type="text" class="form-control" name="name" 
-		        placeholder="Name" autocomplete="off" required
-		        ng-model="store.name">
-		    <span class="has-error control-label" ng-show="storeForm.name.$invalid && storeForm.name.$dirty">
-		      Store name is required.
-		    </span>   
-		    <br>
-		    <!--
-		    <span>Selected category:<br>
-		    	<span>{{selectedCategory}}</span>
-		    </span>
-		    -->
+	  	<div class="row">
+		  	<label class="col-sm-2 control-label">Store name</label>
+		  	<div class="col-sm-4">
+			    <input type="text" class="form-control" name="name" 
+			        placeholder="Name" autocomplete="off" required
+			        maxlength="30" ng-model="store.name">
+			    <span class="has-error control-label" ng-show="storeForm.name.$invalid && storeForm.name.$dirty">
+			      Store name is required.
+			    </span>   
+			    <br>
+			</div>
+
+			<div class="col-sm-2 control-label" style="text-align:right;">
+		  	<label>Category</label>
+		  	<br><span style="text-align:center;">{{selCategoryCount}}</span>
+		  	</div>
+		  	<div class="col-sm-4">
+		  		<select multiple size=15 ng-multiple="true" ng-click="countSelectedCategory()"
+		  			ng-model="selectedCategory" class="form-control" 
+		  			ng-options="category as category.name for category in categories"></select>	  			
+		  	</div>
 		</div>
-
-		<div class="col-sm-2 control-label" style="text-align:right;">
-	  	<label>Category</label>
-	  	<br><span style="text-align:center;">{{selCategoryCount}}</span>
-	  	</div>
-	  	<div class="col-sm-4">
-	  		<select multiple size=15 ng-multiple="true" ng-click="countSelectedCategory()"
-	  			ng-model="selectedCategory" class="form-control" 
-	  			ng-options="category as category.name for category in categories"></select>	  			
-	  	</div>
 
 	</div>
+	</div>
 
-
-  	<hr>
-  	<div class="row">
-		<div class="col-sm-2">
-		<button class="btn btn-primary" ng-disabled="storeForm.$invalid" 
-		ng-click="submitForm()">{{ action }} Store</button>
-		</div>
-		<div  class="col-sm-4">
-			<button class="btn btn-default" ng-click="Stores()">Stores</button>
-		</div>	
-		<div ng-show="store.id" class="col-sm-offset-4 col-sm-2">
-			<button class="btn btn-danger" ng-disabled="storeForm.$invalid" ng-click="deleteStore()">Delete Store</button>
+	<div class="row" style="margin-top:20px;">
+		<div  class="col-sm-3">
+			<button class="btn btn-default"  ng-click="backToPage()">
+				<i class="glyphicon glyphicon-circle-arrow-left" aria-hidden="true"></i> 
+				Back
+			</button>
 		</div>		
+		<div class="col-sm-3">
+			<button 
+				ng-hide="!store.id" 
+				class="btn btn-primary" 
+				ng-disabled="storeForm.$invalid" 
+				ng-click="submitForm()">
+				<i class="glyphicon glyphicon-edit"></i>
+				{{ action }} Store
+			</button>
+		</div>	
+		<div class="col-sm-6">
+			<button 
+				ng-hide="store.id" 
+				class="btn btn-primary pull-right" 
+				ng-disabled="storeForm.$invalid" 
+				ng-click="submitForm()">
+				<i class="fa fa-plus-circle" aria-hidden="true"></i>
+				Add Store
+			</button>
+			<!--
+			<button  
+				ng-show="store.id" 
+				class="btn btn-default pull-right" 
+				ng-disabled="storeForm.$invalid" 
+				ng-click="deleteStore()">
+				<i class="fa fa-minus-circle" aria-hidden="true"></i>
+				Delete Store
+			</button>
+			-->
+			<span class=" pull-right" 
+				data-toggle="tooltip" 
+				tooltip-html-unsafe="{{delTooltip}}">			
+				<a 
+					ng-show="store.id" 
+					class="btn btn-default" 
+					ng-disabled="disableDelete" 
+					ng-click="deleteStore()">
+					<i class="fa fa-minus-circle" aria-hidden="true"></i>
+					Delete Store
+				</a>
+			</span>			
+		</div> 
 	</div> 
   </div>	
 </form>
@@ -72,3 +115,23 @@
   <i class="glyphicon glyphicon-info-sign text-danger"></i>
   <strong>Note:</strong> Store is already used by Receipt(s).
 </div>
+<script>
+	$('span').tooltip({
+	    'placement': 'top'
+	});
+</script>
+<style>
+	.btn.disabled {
+	    pointer-events: all !important;
+	}
+	div.tabcontent{
+		background-color:white ;
+		padding : 30px 40px 20px 40px;
+		border: 1px solid #ddd;
+		border-radius: 4px;
+	}
+	div.tabcontent .row{
+		 margin-top: 10px;
+		 margin-bottom: 10px;
+	}	
+</style>

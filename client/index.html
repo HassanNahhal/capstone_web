@@ -51,7 +51,20 @@
       .nav-logo:link {
         color: white;
         text-decoration: none; 
-      }         
+      } 
+      .fade.in{
+          opacity: 1;
+      }
+      .modal-backdrop.in {
+          opacity: .5 !important;
+      }
+      .modal-backdrop.fade {
+          opacity: .5  !important;
+      }
+      .modal-header {
+          padding: 10px;
+          border-bottom: 1px solid #e5e5e5;
+      }   
     </style>    
     <script src="vendor/angular/angular.min.js"></script>
     <script src="vendor/angular-file-upload/angular-file-upload.min.js"></script>   
@@ -108,47 +121,30 @@
               <span ng-click="open()" style="cursor:pointer;">Log In</span>
             </a>
           </li>         
-          <li ng-show="currentUser">
-            <a href="/#/chart">
+          <li class="userMenu" ng-show="currentUser">
+            <a href="/#/chart" style="padding-right:11px;padding-left:11px;">
               <i class="fa fa-bar-chart" aria-hidden="true"></i>
-              <!--<i class="glyphicon glyphicon-equalizer"></i> -->
               Charts
             </a>
           </li>   
-          <!--      
-          <li ng-show="currentUser">
-            <a href="/#/Customers">
-              <i class="glyphicon glyphicon-dashboard"></i>
-              Admin
-            </a>
-          </li>
-          -->  
-          <li ng-show="currentUser">
-            <a href="/#/Receipts">
+          <li class="userMenu" ng-show="currentUser">
+            <a href="/#/Receipts" style="padding-right:11px;padding-left:11px;">
               <i class="fa fa-barcode" aria-hidden="true"></i>  
               Receipts
             </a>
           </li>
-          <li ng-show="currentUser">
-            <a href="/#/Groups">
-              <i class="glyphicon glyphicon-blackboard"></i> 
-              Group
+          <li class="userMenu" ng-show="currentUser">
+            <a href="/#/Groups" style="padding-right:11px;padding-left:11px;">
+              <i class="fa fa-users" aria-hidden="true"></i>
+              Groups
             </a>
           </li>  
           <li ng-show="currentUser" class="dropdown">
-            <a href="" class="dropdown-toggle" data-toggle="dropdown">
+            <a href="" class="dropdown-toggle" data-toggle="dropdown" style="padding-right:11px;padding-left:11px;">
               <i class="glyphicon glyphicon-inbox"></i>
               Config <b class="caret"></b>
             </a>
-            <ul class="dropdown-menu">
-              <!--
-              <li>
-                <a href="/#/Items">
-                  <i class="glyphicon glyphicon-cd"></i>
-                  Item
-                </a>
-              </li>
-              -->          
+            <ul class="dropdown-menu">         
               <li>
                 <a href="/#/Categories">
                   <i class="glyphicon glyphicon-duplicate"></i>
@@ -160,11 +156,10 @@
                   <i class="glyphicon glyphicon-shopping-cart"></i>
                   Stores
                 </a>
-              </li>  
-              <li class="divider"></li>                            
+              </li>                              
               <li>
                 <a href="/#/Tags">
-                  <i class="glyphicon glyphicon-tag"></i>
+                  <i class="fa fa-tags" aria-hidden="true"></i>
                   Tags
                   </a>
               </li>
@@ -177,36 +172,12 @@
               <b class="caret"></b>
             </a>
             <ul class="dropdown-menu">  
-              <!--           
-              <li ng-show="currentUser">
-                <a href="/#/Profile">
-                  <i class="glyphicon glyphicon-king"></i> 
-                  Profile
-                </a>
-              </li>
-              -->
               <li ng-show="currentUser">
                 <a href="/#/Dashboard">
                   <i class="glyphicon glyphicon-dashboard"></i> 
                   Dashboard
                 </a>
-              </li>  
-              <!--
-              <li ng-show="currentUser">
-                <a href="/#/addFile">
-                  <i class="glyphicon glyphicon-open"></i>
-                  File
-                </a>
-              </li>  
-   
-              <li ng-show="currentUser" class="divider"></li>
-              <li ng-show="currentUser">
-                <a href="">
-                  <i class="glyphicon glyphicon-cog"></i>
-                  Settings
-                </a>
-              </li>
-              -->              
+              </li>                
               <li class="divider"></li>           
               <li ng-show="currentUser">
                 <a rel="nofollow" href="/#/Logout">
@@ -221,9 +192,6 @@
     </div>
   </nav>
 
-
-<!--<div class="ribbon" ng-show="currentUser"><a>MSD Capstone Project</a></div>-->
-
 <!-- Header -->
 <header>
   <div class="container">
@@ -235,6 +203,7 @@
   </div>
 </header>
 
+<!-- include content -->
 <div ui-view></div> 
 
 <!-- Login Modal Window -->
@@ -247,35 +216,34 @@
             </h1>
         </div>
         <div class="modal-body">
-            <div style="margin:25px;">
-            <form name="loginForm">
-              <div class="form-group" 
-                  ng-class="{'has-error': (loginForm.email.$invalid && loginForm.email.$dirty) ||
-                            (loginForm.password.$invalid && loginForm.password.$dirty) }">
+            <div class="row" style="margin:25px;">
+              <form name="loginForm">
+                <div class="form-group" 
+                    ng-class="{'has-error': (loginForm.email.$invalid && loginForm.email.$dirty) ||
+                              (loginForm.password.$invalid && loginForm.password.$dirty) }">
 
-                <div class="row">
-                <label for="email">Email</label>
-                <input class="form-control" type="email" required 
-                    ng-model="user.email" name="email" placeholder="Email">
-                <span class="has-error control-label" ng-show="loginForm.email.$invalid && loginForm.email.$dirty">
-                  Email is required.
-                </span>      
+                  <div class="row" style="margin-right: 0;margin-left: 0;">
+                    <label for="email">Email</label>
+                    <input class="form-control" type="email" required 
+                        ng-model="user.email" name="email" placeholder="Email">
+                    <span class="has-error control-label" ng-show="loginForm.email.$invalid && loginForm.email.$dirty">
+                      Email is required.
+                    </span>      
+                  </div>
+                  <div class="row" style="margin-right: 0;margin-left: 0;">
+                    <label for="password">Password</label>      
+                    <input class="form-control" type="password" required 
+                        ng-model="user.password" name="password" placeholder="Password"> 
+                    <span class="has-error control-label" ng-show="loginForm.password.$invalid && loginForm.password.$dirty">
+                      Password is required.
+                    </span>  
+                  </div>             
                 </div>
-                <div class="row">
-                <label for="password">Password</label>      
-                <input class="form-control" type="password" required 
-                    ng-model="user.password" name="password" placeholder="Password"> 
-                <span class="has-error control-label" ng-show="loginForm.password.$invalid && loginForm.password.$dirty">
-                  Password is required.
-                </span>  
-                </div>       
-             
-              </div>
-              <div class="modal-footer">
-                <button class="btn btn-primary" ng-disabled="loginForm.$invalid" ng-click="login()">Log In</button>
-                <button class="btn btn-warning" ng-click="cancel()">Cancel</button>
-              </div>
-            </form> 
+                <div class="modal-footer">
+                  <button class="btn btn-primary" ng-disabled="loginForm.$invalid" ng-click="login()">Log In</button>
+                  <button class="btn btn-warning" ng-click="cancel()">Cancel</button>
+                </div>
+              </form> 
               <p>New user? 
                 <a ><span ng-click="signup()" style="cursor:pointer;">Sign up here!</span></a> 
               </p>
@@ -323,7 +291,7 @@
   
   <div id="bottom-line">
     <div class="container">
-      <p>Spring/Summer 2016 Capstone Project by <a href="https://github.com/infomat/capstone_web">Group 2 of Mobile Solutions Development </a></p>
+      <p>Spring/Summer 2016 Capstone Project by <a href="https://github.com/infomat/capstone" target="_blank">Group 2 of Mobile Solutions Development </a></p>
     </div>
   </div> 
 
@@ -367,10 +335,8 @@
   <!-- Combo Chart using High Chart -->
   <script src="js/assets/highcharts.js"></script>
   <script src="js/assets/exporting.js"></script>  
-
   <!-- jsPDF -->
-  <script src="js/assets/jspdf.min.js"></script>  
-  
+  <script src="js/assets/jspdf.min.js"></script>    
   <!-- Collection of public function across controllers  -->
   <script src="js/services/receipt-services.js"></script> 
 

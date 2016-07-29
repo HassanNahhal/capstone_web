@@ -1,29 +1,95 @@
 <div class="container">
 <section>
 <div class="container">
-<h1 class="page-title">
-	<i class="glyphicon glyphicon-shopping-cart"></i> 
-	{{groupName}} Stores
-</h1>
-<hr>
-<div class="list-group">
-	<span class="list-group-item" ng-repeat="store in stores">
-	 	{{store.name}}&nbsp; &nbsp; 
-	    <i class="glyphicon glyphicon-remove pull-right text-danger" 
-	    	ng-click="deleteStore(store.id)" tooltip-html-unsafe="Delete"></i>	 	
-	 	<i class="glyphicon glyphicon-pencil pull-right text-primary" 
-	 		style="padding-right:20px" 
-	 		ng-click="editStore(store.id)" tooltip-html-unsafe="Edit"></i> 
-  	</span>
-</div>
-<div class="row">
-<div class="col-sm-3">
-	<button class="btn btn-default" ng-click="addStore()">Add Store</button>
-</div>
-<div ng-show="groupName" class="col-sm-3">
-	<button class="btn btn-default" ng-click="viewGroup()">View Group</button>
-</div>
-</div>
+	<h1 class="page-title">
+		<i class="glyphicon glyphicon-shopping-cart"></i> 
+		{{groupName}} Stores
+	</h1>
+	<hr>
+	<div class="row" style="margin-bottom:20px;">
+		<div class="col-sm-3">
+			<button class="btn btn-primary" ng-click="addStore()">
+				<i class="fa fa-plus-circle" aria-hidden="true"></i>
+				Add Store
+			</button>
+		</div>
+	</div>		
+	<div>
+	<div class="tabcontent" >
+		<div class="row">
+			<div class="col-sm-12">
+				<input type="text"
+					name="searchText"  
+					ng-model="searchText" 
+					class="form-control" 
+					placeholder="Search text" 
+					maxlength="30">
+			</div>		
+			<div class="col-sm-12">
+				<div class="list-group">
+					<span 
+						ng-click="sortType='name';sortReverse=!sortReverse;"
+						class="list-group-item" 
+						style="background-color:#f5f5f5;border-bottom:solid 2px #e5e5e5;cursor:pointer;">
+						<strong>Name</strong>
+						<span ng-show="sortReverse"  class="fa fa-caret-down"></span>
+						<span ng-show="!sortReverse"  class="fa fa-caret-up"></span>
+					</span>
+					<span class="list-group-item" ng-repeat="store in stores | orderBy:sortType:sortReverse | storeFilter:searchText | startFrom:currentPage*pageSize | limitTo:pageSize">
+					 	{{store.name}}
+					 	<!--
+					    <i class="glyphicon glyphicon-remove pull-right text-danger" 
+					    	ng-click="deleteStore(store.id)" tooltip-html-unsafe="Delete"></i>
+					    -->
+					 	<i class="glyphicon glyphicon-pencil pull-right text-primary" 
+					 		style="padding-right:20px" 
+					 		ng-click="editStore(store.id)" tooltip-html-unsafe="Edit"></i> 
+				  	</span>
+				</div>
+			</div>
+		</div>
+		<!-- Pagination -->
+		<div style="margin-bottom:20px;">
+		<div class="row">
+			<div class="col-sm-2">
+				<select ng-model="pageSize" 
+					id="pageSize" 
+					class="form-control" 
+					style="width:80px;"
+					ng-change="changePageSize()"
+					ng-options="unit for unit in pageUnits">
+				</select>
+			</div>
+			<div class="col-sm-4">
+				<ul class="list-group list-group-horizontal">
+					<button  class="btn btn-default" ng-disabled="currentPage == 0"  ng-click="currentPage=currentPage-1">Previous</button>
+					<button  class="btn btn-default" ng-disabled="currentPage >= getData().length/pageSize - 1" ng-click="currentPage=currentPage+1">Next</button>
+				</ul>
+			</div>
+			<div class="col-sm-6 text-center">
+				<pre style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;font-size: 14px;">
+				Selected page: {{currentPage+1}}/{{numberOfPages()==0? 1:numberOfPages();}}</pre>
+			</div>
+		</div>
+    	</div>
+    	<!-- Pagination -->		
+	</div>
+	</div>
+
+	<div class="row" style="margin-top:20px;">
+		<div class="col-sm-3">
+			<button class="btn btn-primary" ng-click="addStore()">
+				<i class="fa fa-plus-circle" aria-hidden="true"></i>
+				Add Store
+			</button>
+		</div>
+		<div ng-show="groupName" class="col-sm-9">
+			<button class="btn btn-default pull-right" ng-click="viewGroup()">
+				<i class="fa fa-users" aria-hidden="true"></i>
+				View Group
+			</button>
+		</div>		
+	</div>
 </div>
 </section>
 </div>
@@ -32,3 +98,32 @@
   <i class="glyphicon glyphicon-info-sign text-danger"></i>
   <strong>Note:</strong> Store is already used by Receipt(s).
 </div>
+<style>
+	div.tabcontent{
+		background-color:white ;
+		padding : 30px 40px 10px 40px;
+		border: 1px solid #ddd;
+		border-radius: 4px;
+	}
+	div.tabcontent .row{
+		 margin-top: 10px;
+		 margin-bottom: 10px;
+	}
+	.list-group-item:first-child {
+	    border-top-left-radius: 0;
+	    border-top-right-radius: 0;
+	}
+	.list-group-item {
+	    position: relative;
+	    display: block;
+	    padding: 8px 15px;
+	    margin-bottom: -1px;
+	    border-top: 1px solid #ddd;
+	    border-bottom: 1px solid #ddd;
+	    border-left: none;
+	    border-right: none;
+	}
+	span.list-group-item:hover{
+		background-color:#f5f5f5; 
+	}	
+</style>

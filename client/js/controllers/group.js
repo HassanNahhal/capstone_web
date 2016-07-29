@@ -27,7 +27,7 @@
       })
       .$promise
       .then(function(memberNotifications){
-        console.log("memberNotifications: ", memberNotifications);
+        //console.log("memberNotifications: ", memberNotifications);
         $scope.memberNotifications = memberNotifications;
         if(memberNotifications.length > 0){
           var groupId;
@@ -39,7 +39,7 @@
               notificationId: memberNotifications[i].id
             };
           }
-          console.log("fromMemberLeaveGroup: ", fromMemberLeaveGroup);
+          //console.log("fromMemberLeaveGroup: ", fromMemberLeaveGroup);
         }
       }); // Notification.find({      
 
@@ -54,7 +54,7 @@
       })
       .$promise
       .then(function(notifications){
-        console.log("notifications: ", notifications);
+        //console.log("notifications: ", notifications);
         if(notifications.length > 0){
           $scope.notifications = notifications;
 
@@ -98,7 +98,7 @@
         })
         .$promise
         .then(function(customer){
-          console.log("customer-groups: ", customer);
+          //console.log("customer-groups: ", customer);
           if(customer.groups.length > 0){
             var isOwner = false;
             var groups = [];
@@ -136,7 +136,7 @@
               $scope.groupsinmember = memberInGroups;
             }
             //console.log("owner groups: ", $scope.groups);
-            console.log("member groups: ", $scope.groupsinmember);
+            //console.log("member groups: ", $scope.groupsinmember);
             if(isOwner){
               $scope.isDisabled = true;
             }else{
@@ -259,7 +259,7 @@
               )
               .$promise
               .then(function(result){
-                console.log("result: ", result);
+                //console.log("result: ", result);
                 if($scope.groupsinmember == undefined){
                   $scope.groupsinmember = [];              
                 }
@@ -320,6 +320,10 @@
         }
       });      
 
+    $scope.backToPage = function(){
+      window.history.back();
+    }
+    
     $scope.submitForm = function() {
 
       // Get the default group limitation
@@ -396,7 +400,7 @@
         .then(function(group){
 
           $scope.group = group;
-          console.log("$scope.group: ", $scope.group);
+          //console.log("$scope.group: ", $scope.group);
           //if current user is the owner of group
           //enable invite member and show the member list of group        
           if(group.ownerId == userId){
@@ -419,6 +423,10 @@
           }
         });
 
+        $scope.backToPage = function(){
+          window.history.back();
+        }
+        
         $scope.leaveGroup = function(flashMessageId){
           if(confirm("Are you sure?")){
 
@@ -438,31 +446,6 @@
                 $state.go('Groups');
               }, 3500);                    
             });   
-        
-
-
-            /*
-            CustomerGroup
-              .find({
-                filter: {
-                  where: {and: [
-                    {customerId: userId},
-                    {groupId: $scope.group.id}
-                  ]}
-                }
-              })
-              .$promise
-              .then(function(customergroup){                
-                if(customergroup.length != 0){
-                  CustomerGroup
-                    .deleteById({ id: customergroup[0].id })
-                    .$promise
-                    .then(function(){
-                      $state.go('Groups');
-                    });
-                }
-              });  // .then(function(customergroup){
-            */
 
           } // if(confirm("Are you sure?" + groupId)){
         }
@@ -531,10 +514,10 @@
             }
           })
           .$promise
-          .then(function(notifications){
-            console.log("owner-notifications: ", notifications);
-            $scope.notifications = notifications;
-            if($scope.notifications.length > 0){
+          .then(function(notifications){            
+            if(notifications.length > 0){
+              $scope.notifications = notifications;
+              //console.log("$scope.notifications: ", $scope.notifications);
               for(var i = 0 ; i < $scope.notifications.length ; i++){
                 if($scope.notifications[i].accepted == false){
                   if($scope.notifications[i].seen == true && 
@@ -566,7 +549,7 @@
           })
           .$promise
           .then(function(notifications){
-            console.log("member-notifications: ", notifications);            
+            //console.log("member-notifications: ", notifications);            
             if(notifications.length > 0){
               $scope.memberNotifications = notifications;
               for(var i = 0 ; i < $scope.memberNotifications.length ; i++){
@@ -767,11 +750,54 @@
           }, 4000);          
         } 
 
+        $scope.disableDelete = true;
+        $scope.delTooltip = '';
+        $scope.isAllowedToDelete = function(){
+          Group.findById({
+            id: $stateParams.id,
+            filter: {   
+              fields: {
+                id: true,
+                ownerId: true
+              },          
+              include:{
+                relation: 'customers',
+                scope: {
+                  fields: {
+                    id: true,
+                    groupId: true
+                  },
+                }
+              }
+            }
+          })
+          .$promise
+          .then(function(group){
+            //console.log("group: ", group);
+            if(group.customers.length > 1){
+              $scope.disableDelete = true;
+              $scope.delTooltip = 'Group already has member(s)';
+            }else if(group.customers.length === 1){
+                if(group.customers[0].id === group.ownerId){
+                  $scope.disableDelete = false;
+                  $scope.delTooltip = '';
+                }else{
+                  $scope.disableDelete = true;
+                  $scope.delTooltip = 'Group already has member(s)';
+                }
+            }else{
+              $scope.disableDelete = false;
+              $scope.delTooltip = '';
+            } //if(group.customers.length > 1){
+          }); // Group.findById({      
+        }    
+        $scope.isAllowedToDelete();        
+
         $scope.deleteGroup = function(){
           if(confirm("Are you sure?")){
 
             Group.findById({
-              id: $scope.group.id,
+              id: $stateParams.id,
               filter: {   
                 fields: {
                   id: true,
@@ -790,7 +816,7 @@
             })
             .$promise
             .then(function(group){
-              console.log("group: ", group);
+              //console.log("group: ", group);
               if(group.customers.length > 1){
                 ReceiptService.publicShowMessage('#deleteGroupErrorMessage');
               }else if(group.customers.length === 1){

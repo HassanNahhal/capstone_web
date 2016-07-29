@@ -31,7 +31,11 @@
       }
     });  
 
-    //console.log("$scope.tags: ", $scope.tags);  
+    //console.log("$scope.tags: ", $scope.tags);
+      
+    $scope.backToPage = function(){
+      window.history.back();
+    }
 
     $scope.submitForm = function() {
       var newTagName = (($scope.tagname).trim()).toLowerCase();
@@ -80,9 +84,44 @@
     }
 
   }])  
+  .filter('startFrom', function() {
+      return function(input, start) {
+          start = +start; //parse to int
+          return input.slice(start);
+      }
+  })
+  .filter('tagFilter', function(){
+    return function(dataArray, searchTerm) {
+        // If no array is given, exit.
+        if (!dataArray) {
+            return;
+        }
+        // If no search term exists, return the array unfiltered.
+        else if (!searchTerm) {
+            return dataArray;
+        }
+        // Otherwise, continue.
+        else {
+             // Convert filter text to lower case.
+             var term = searchTerm.toLowerCase();
+             // Return the array and filter it by looking for any occurrences of the search term in each items id or name. 
+             return dataArray.filter(function(tag){
+                var name = tag.name;
+                var tagName = name.toLowerCase().indexOf(term) > -1;
+                return tagName;
+             });
+        } 
+    }
+  })  
   .controller('AllTagsController', [
-  	'$scope', 'Tag', '$rootScope', '$stateParams', '$state', 'ReceiptService', 
-    function($scope, Tag, $rootScope, $stateParams, $state, ReceiptService) {     
+  	'$scope', 'Tag', '$rootScope', '$stateParams', '$state', 'ReceiptService', '$filter', 
+    function($scope, Tag, $rootScope, $stateParams, $state, ReceiptService, $filter) {  
+
+      // Pagination
+      $scope.pageUnits = [5, 10, 15, 20];
+      $scope.pageSize = 10;
+      $scope.currentPage = 0;  
+      // Pagination      
 
       $scope.groupName = $stateParams.groupName;
 
@@ -95,6 +134,7 @@
         groupId = $stateParams.groupId;
       }  
 
+      $scope.tags = [];
 	    $scope.tags = Tag.find({
         filter: {
           order: 'name ASC',
@@ -104,6 +144,23 @@
             ]}
         }
       });
+
+      //Pagination - angular
+      $scope.getData = function(){
+        return $filter('filter')($scope.tags)
+      }
+
+      $scope.numberOfPages=function(){
+          return Math.ceil($scope.getData().length/$scope.pageSize);                
+      }
+      //$scope.number = $scope.numberOfPages();
+      $scope.getNumber = function(num) {
+          return new Array(num);   
+      }
+      $scope.changePageSize = function(){
+        $scope.currentPage = 0;
+      }     
+      //Pagination - angular       
 
       $scope.viewGroup = function(){
         if($stateParams.groupId != undefined){
@@ -220,13 +277,49 @@
 
         //console.log("groupParameters: ", groupParameters);       
 
+        $scope.backToPage = function(){
+          window.history.back();
+        }
+        
         $scope.Tags = function(){
           if($stateParams.groupId == undefined){
             $state.go('Tags');
           }else{
              $state.go('groupTags', groupParameters);
           }      
-        }       
+        } 
+
+        $scope.disableDelete = true;
+        $scope.delTooltip = '';
+        $scope.isAllowedToDelete = function(){
+          Tag.findById({
+            id: $stateParams.id,
+            filter: {   
+              fields: {
+                id: true
+              },          
+              include:{
+                relation: 'receipts',
+                scope: {
+                  fields: {
+                    id: true
+                  },
+                }
+              }
+            }
+          })
+          .$promise
+          .then(function(tag){
+            if(tag.receipts.length > 0){
+              $scope.disableDelete = true;
+              $scope.delTooltip = 'Tag has been used by receipt(s)';
+            }else{
+              $scope.disableDelete = false;
+              $scope.delTooltip = '';
+            } //if(tag.receipts.length > 0){
+          }); // Tag.findById({      
+        }    
+        $scope.isAllowedToDelete();
 
         $scope.deleteTag = function(){
 

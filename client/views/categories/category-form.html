@@ -6,30 +6,82 @@
 	{{ action }} {{groupName}} Category
 </h1>
 <hr>
+<div class="row" style="margin-bottom:20px;">	
+	<div class="col-sm-2">
+		<button class="btn btn-default"  ng-click="backToPage()">
+			<i class="glyphicon glyphicon-circle-arrow-left" aria-hidden="true"></i> 
+			Back
+		</button>
+	</div>	
+</div>
 <form name="categoryForm" novalidate>
-	<div class="form-group" ng-class="{'has-error': categoryForm.name.$invalid && categoryForm.name.$dirty}">
-		<div class="row">
-			<label class="col-sm-3 control-label">Category name</label>
-			<div  class="col-sm-9">
-				<input type="text" class="form-control" name="name" 
-				    placeholder="Name" autocomplete="off" required
-				    ng-model="categoryname">
-				<span class="has-error control-label" ng-show="categoryForm.name.$invalid && categoryForm.name.$dirty">
-				  Category name is required.
-				</span> 
-			</div>
-		</div>     
-		<div class="row">
-			<div class="col-sm-3">
-			<button class="btn btn-primary" 
-			ng-disabled="categoryForm.$invalid" 
-			ng-click="submitForm()">{{ action }} Category</button>
-			</div>
+	<div>
+		<div class="tabcontent" >	
+
+		<div class="form-group" ng-class="{'has-error': categoryForm.name.$invalid && categoryForm.name.$dirty}">
+			<div class="row">
+				<label class="col-sm-3 control-label">Category name</label>
+				<div  class="col-sm-9">
+					<input type="text" class="form-control" name="name" 
+					    placeholder="Name" autocomplete="off" required
+					    maxlength="30" ng-model="categoryname">
+					<span class="has-error control-label" ng-show="categoryForm.name.$invalid && categoryForm.name.$dirty">
+					  Category name is required.
+					</span> 
+				</div>
+			</div>  
+
+		</div>
+		</div>
+		<div class="row" style="margin-top:20px;">
 			<div  class="col-sm-3">
-				<button class="btn btn-default"  ng-click="Categories()">Categories</button>
+				<button class="btn btn-default"  ng-click="backToPage()">
+					<i class="glyphicon glyphicon-circle-arrow-left" aria-hidden="true"></i> 
+					Back
+				</button>
+			</div>		
+			<div class="col-sm-3">
+				<button 
+					ng-hide="!category.id" 
+					class="btn btn-primary" 
+					ng-disabled="categoryForm.$invalid" 
+					ng-click="submitForm()">
+					<i class="glyphicon glyphicon-edit"></i>
+					{{ action }} Category
+				</button>
 			</div>	
-			<div ng-show="category.id" class="col-sm-offset-3 col-sm-3">
-				<button class="btn btn-danger pull-right" ng-disabled="categoryForm.$invalid" ng-click="deleteCategory()">Delete Category</button>
+			<div class="col-sm-6">
+				<button 
+					ng-hide="category.id" 
+					class="btn btn-primary pull-right" 
+					ng-disabled="categoryForm.$invalid" 
+					ng-click="submitForm()">
+					<i class="fa fa-plus-circle" aria-hidden="true"></i>
+					Add Category
+				</button>
+				<!--
+				<button 
+					tooltip-html-unsafe="Delete Category"  
+					ng-show="category.id" 
+					class="btn btn-danger pull-right" 
+					ng-disabled="disableDelete" 
+					ng-click="deleteCategory()">
+					<i class="fa fa-minus-circle" aria-hidden="true"></i>
+					Delete Category
+				</button>
+				-->
+				<span class=" pull-right" 
+					data-toggle="tooltip" 
+					tooltip-html-unsafe="{{delTooltip}}">			
+					<a 
+						ng-show="category.id" 
+						class="btn btn-default" 
+						ng-disabled="disableDelete" 
+						ng-click="deleteCategory()">
+						<i class="fa fa-minus-circle" aria-hidden="true"></i>
+						Delete Category
+					</a>
+				</span>
 			</div> 
 		</div> 
 	</div>		
@@ -47,3 +99,23 @@
   <i class="glyphicon glyphicon-info-sign text-danger"></i>
   <strong>Note:</strong> Category name already exists.
 </div>
+<script>
+	$('span').tooltip({
+	    'placement': 'top'
+	});
+</script>
+<style>
+	.btn.disabled {
+	    pointer-events: all !important;
+	}
+	div.tabcontent{
+		background-color:white ;
+		padding : 30px 40px 20px 40px;
+		border: 1px solid #ddd;
+		border-radius: 4px;
+	}
+	div.tabcontent .row{
+		 margin-top: 10px;
+		 margin-bottom: 10px;
+	}	
+</style>

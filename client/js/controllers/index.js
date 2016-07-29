@@ -23,8 +23,8 @@
       function($scope, AuthService, $state, $rootScope, $modalInstance) {           
 
     $scope.user = {
-      email: "joe@gmail.com",
-      password: "aaa"
+      //email: "joe@gmail.com",
+      //password: "aaa"
     };
 
     var flashMessage;

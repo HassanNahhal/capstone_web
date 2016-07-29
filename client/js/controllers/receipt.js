@@ -44,7 +44,7 @@
       $scope.tablehead = {
         'store.name': "Store",
         'total': "Total",
-        'numberOfItem': "# Item",
+        'numberOfItem': "#Item(s)",
         'date': "Date"
       };
 
@@ -68,20 +68,18 @@
           }else{
             valComma = Math.floor(tmp[0]).toLocaleString() + ".00";
           }
-          val = valComma;
-          /*
-          while (/(\d+)(\d{3})/.test(val.toString())){
-            val = val.toString().replace(/(\d+)(\d{3})/, '$1'+','+'$2');
-          } 
-          */         
+          val = valComma;        
         }    
         return val;
       };   
       
+      // Sorting
       $scope.selectedCls = function(column) {
           return column == $scope.sort.column && 'sort-' + $scope.sort.symbol;
       };
 
+      $scope.sortColumn = 'date';
+      $scope.sortDesc = true;
       $scope.changeSorting = function(column) {
           var sort = $scope.sort;
           if (sort.column == column) {
@@ -91,10 +89,28 @@
                 sort.descending = '';
              }
              sort.symbol = !sort.symbol;
+
+             $scope.sortDesc = !$scope.sortDesc;
           } else {
               sort.column = column;
               sort.descending = '';
               sort.symbol = false;
+
+              $scope.sortDesc = false;
+          }
+          switch(column){
+            case 'store.name':
+              $scope.sortColumn = 'store.name';
+              break;
+            case 'total':
+              $scope.sortColumn = 'total';
+              break;
+            case 'numberOfItem':
+              $scope.sortColumn = 'numberOfItem';
+              break;
+            case 'date':
+              $scope.sortColumn = 'date';
+              break;                            
           }
       };  
       // Sorting    
@@ -115,7 +131,6 @@
         $scope.currentPage = 0;
       }     
       //Pagination - angular
-
 
       $scope.viewGroup = function(){
         if($stateParams.groupId != undefined){
@@ -393,7 +408,6 @@
       ReceiptService.getCategoriesBySelectedStore($scope.selectedStore.id, null);
     } 
     */
-
 
     $scope.commaSeparateNumber =   function(val){
       if(val != undefined){
@@ -684,7 +698,7 @@
       $scope.tablehead = {
         'store.name': "Store",
         'total': "Total",
-        'numberOfItem': "# Item",
+        'numberOfItem': "#Item(s)",
         'date': "Date"
       };
 
@@ -708,12 +722,7 @@
           }else{
             valComma = Math.floor(tmp[0]).toLocaleString() + ".00";
           }
-          val = valComma;
-          /*
-          while (/(\d+)(\d{3})/.test(val.toString())){
-            val = val.toString().replace(/(\d+)(\d{3})/, '$1'+','+'$2');
-          } 
-          */         
+          val = valComma;        
         }
         return val;
       };       
@@ -722,6 +731,8 @@
           return column == $scope.sort.column && 'sort-' + $scope.sort.symbol;
       };
 
+      $scope.sortColumn = 'date';
+      $scope.sortDesc = true;
       $scope.changeSorting = function(column) {
           var sort = $scope.sort;
           if (sort.column == column) {
@@ -731,10 +742,28 @@
                 sort.descending = '';
              }
              sort.symbol = !sort.symbol;
+
+             $scope.sortDesc = !$scope.sortDesc;
           } else {
               sort.column = column;
               sort.descending = '';
               sort.symbol = false;
+
+              $scope.sortDesc = false;
+          }
+          switch(column){
+            case 'store.name':
+              $scope.sortColumn = 'store.name';
+              break;
+            case 'total':
+              $scope.sortColumn = 'total';
+              break;
+            case 'numberOfItem':
+              $scope.sortColumn = 'numberOfItem';
+              break;
+            case 'date':
+              $scope.sortColumn = 'date';
+              break;                            
           }
       };  
       // Sorting 
@@ -901,6 +930,11 @@
       ReceiptService.getCategoriesBySelectedStore($scope.selectedStore.id, null);
     } 
     */
+
+    $scope.backToPage = function(){
+      window.history.back();
+    }
+
     $scope.removePhoto = function(){
       $scope.receipt.imageFilePath = "";
     }
@@ -1251,6 +1285,11 @@
       ReceiptService.getCategoriesBySelectedStore($scope.selectedStore.id, null); 
     }
     */
+
+    $scope.backToPage = function(){
+      window.history.back();
+    }
+         
     $scope.showMessage = function(flashMessage){
       $(flashMessage).addClass("in"); 
       window.setTimeout(function(){

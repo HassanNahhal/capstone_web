@@ -7,6 +7,7 @@ angular
         if(!$('header').is(":visible")){
           $('header').show();
           $('.navbar-default').removeClass('navbar-shrink' );
+          $('.navbar-default').removeClass('navbar-show' );
         } 
         if(!$rootScope.currentUser){    
             $('.staticNavMenu').removeClass("active");   
@@ -25,6 +26,7 @@ angular
         if($('header').is(":visible")){
           $('header').hide();
           $('.navbar-default').addClass('navbar-shrink' );        
+          $('.navbar-default').addClass('navbar-show' );
         } 
         if(!$rootScope.currentUser){    
             if($('.staticNavMenu').is(":visible")){

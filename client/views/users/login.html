@@ -1,41 +1,45 @@
 <div class="container">
 <section>
 <div class="container">
-<h1 class="page-title">
-  <i class="fa fa-sign-in" aria-hidden="true"></i>
-  Log In
-</h1>
-<hr>
-<div class="row">
-  <div class="col-md-6 col-md-offset-3">
-    <form name="loginForm" ng-submit="login()">
-      <div class="form-group" 
-          ng-class="{'has-error': (loginForm.email.$invalid && loginForm.email.$dirty) ||
-                    (loginForm.password.$invalid && loginForm.password.$dirty) }">
+  <h1 class="page-title">
+    <i class="fa fa-sign-in" aria-hidden="true"></i>
+    Log In
+  </h1>
+  <hr>
+  <div class="tabcontent" >
+    <div class="row">
+      <div class="col-md-6 col-md-offset-3">
+        <form name="loginForm" ng-submit="login()">
+          <div class="form-group" 
+              ng-class="{'has-error': (loginForm.email.$invalid && loginForm.email.$dirty) ||
+                        (loginForm.password.$invalid && loginForm.password.$dirty) }">
 
-        <div class="row">
-        <label for="email">Email</label>
-        <input class="form-control" type="email" required 
-            ng-model="user.email" name="email" placeholder="Email">
-        <span class="has-error control-label" ng-show="loginForm.email.$invalid && loginForm.email.$dirty">
-          Email is required.
-        </span>      
-        </div>
-        <div class="row">
-        <label for="password">Password</label>      
-        <input class="form-control" type="password" required 
-            ng-model="user.password" name="password" placeholder="Password"> 
-        <span class="has-error control-label" ng-show="loginForm.password.$invalid && loginForm.password.$dirty">
-          Password is required.
-        </span>  
-        </div>       
-     
+            <div class="row">
+            <label for="email">Email</label>
+            <input class="form-control" type="email" required 
+                ng-model="user.email" name="email" placeholder="Email">
+            <span class="has-error control-label" ng-show="loginForm.email.$invalid && loginForm.email.$dirty">
+              Email is required.
+            </span>      
+            </div>
+            <div class="row">
+            <label for="password">Password</label>      
+            <input class="form-control" type="password" required 
+                ng-model="user.password" name="password" placeholder="Password"> 
+            <span class="has-error control-label" ng-show="loginForm.password.$invalid && loginForm.password.$dirty">
+              Password is required.
+            </span>  
+            </div>       
+         
+          </div>
+          <div class="row">
+            <button class="btn btn-primary" ng-disabled="loginForm.$invalid">Log In</button>
+          </div>
+        </form>    
+
       </div>
-      <button class="btn btn-primary" ng-disabled="loginForm.$invalid">Log In</button>
-    </form>    
-
+    </div>
   </div>
-</div>
 </div>
 </section>
 </div>
@@ -44,3 +48,15 @@
   <i class="glyphicon glyphicon-info-sign text-danger"></i>
   <strong>Note:</strong> Email or passowrd is invalid.
 </div>
+<style>
+  div.tabcontent{
+    background-color:white ;
+    padding : 30px 40px 10px 40px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+  }
+  div.tabcontent .row{
+     margin-top: 10px;
+     margin-bottom: 10px;
+  } 
+</style>

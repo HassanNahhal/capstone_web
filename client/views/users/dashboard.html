@@ -6,8 +6,12 @@
         opacity: .5 !important;
     }
     .modal-backdrop.fade {
-        opacity: 0  !important;
+        opacity: .5  !important;
     }
+    .modal-header {
+        padding: 10px;
+        border-bottom: 1px solid #e5e5e5;
+    }    
 </style>
 <div class="container">
 <section>
@@ -303,7 +307,7 @@
             </h1>
         </div>
         <div class="modal-body">
-            <div style="margin:25px;">
+            <div style="margin:20px;">
 
                 <div class="row">
                     <div class="col-sm-12">
@@ -439,8 +443,8 @@
             <span style="margin-left:10px;"
                 class="btn btn-primary fileinput-button pull-left" 
                 ng-class="{disabled: disabled}">
-                <i class="glyphicon glyphicon-plus"></i>
-                <span>Add Photo...</span>
+                <i class="fa fa-plus-circle" aria-hidden="true"></i>
+                <span>Add Photo</span>
                 <input nv-file-select uploader="uploader" type="file" ng-disabled="disabled"/>
             </span> 
         </div>      
@@ -471,22 +475,25 @@
                             <div class="panel-body">
                                 <!-- Receipts in Tag of Table -->
                                 <div class="row">
-                                    <label class="col-sm-1 control-label text-right">Search</label>
-                                    <div class="col-sm-3">          
-                                        <input ng-model="searchText" id="search" class="form-control" placeholder="Search text">
+                                    <!--<label class="col-sm-2 control-label text-right">Search</label>-->
+                                    <div class="col-sm-12">          
+                                        <input style="margin-bottom:15px;" ng-model="searchText" id="search" class="form-control" placeholder="Search text" maxlength="30">
                                     </div>
                                 </div>
                                 <div class="table-responsive">
                                     <table class="table table-hover">
                                         <thead>
-                                            <tr style="background:#ffffff;">
+                                            <tr style="background:#f5f5f5;border-top:solid 1px #e5e5e5;">
                                                 <th style="display:none;">ID</th>
                                                 <!--<th style="text-align: center; ">Store</th>-->
                                                 <th class="sortable" 
                                                     style="text-align: center; "
                                                     ng-repeat="(key,value) in tablehead" 
-                                                    ng-class="selectedCls(key)" 
-                                                    ng-click="changeSorting(key)">{{value}}</th>
+                                                    ng-click="changeSorting(key)">
+                                                    {{value}}
+                                                    <span ng-show="sortDesc && (sortColumn == key)"  class="fa fa-caret-down"></span>
+                                                    <span ng-show="!sortDesc && (sortColumn == key)"  class="fa fa-caret-up"></span>    
+                                                </th>
                                                 <th colspan="2">Comment</th>
                                             </tr>
                                         </thead>
@@ -521,16 +528,15 @@
                                     </div>
                                     <div class="col-sm-4">
                                         <ul class="list-group list-group-horizontal">
-                                            <button  class="btn btn-primary" ng-disabled="currentPage == 0"  ng-click="currentPage=currentPage-1">Previous</button>
-                                            <button  class="btn btn-primary" ng-disabled="currentPage >= getData().length/pageSize - 1" ng-click="currentPage=currentPage+1">Next</button>
+                                            <button  class="btn btn-default" ng-disabled="currentPage == 0"  ng-click="currentPage=currentPage-1">Previous</button>
+                                            <button  class="btn btn-default" ng-disabled="currentPage >= getData().length/pageSize - 1" ng-click="currentPage=currentPage+1">Next</button>
                                         </ul>
                                     </div>
                                     <div class="col-sm-6 text-center">
-                                        <pre>Selected page: {{currentPage+1}}/{{numberOfPages()==0? 1:numberOfPages();}}</pre>
+                                        <pre style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;font-size: 14px;">Selected page: {{currentPage+1}}/{{numberOfPages()==0? 1:numberOfPages();}}</pre>
                                     </div>
                                 </div>
                                 <!-- Receipts in Tag of Table -->
-
                             </div>
                         </div>
                     </div>
