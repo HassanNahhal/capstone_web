@@ -22,14 +22,6 @@ angular
 			url: '/',
 			templateUrl: 'views/pages/home.html',
 			controller: 'IndexController'
-		})
-		.state('About', {
-			url: '/About',
-			templateUrl: 'views/pages/about.html'
-		})
-		.state('Contact', {
-			url: '/Contact',
-			templateUrl: 'views/pages/contact.html'
 		})				
       	.state('Items', {
 			url: '/Items',
@@ -253,7 +245,7 @@ angular
 	        url: '/deleteReceipt/:id',
 	        controller: 'DeleteReceiptController',
 	        authenticate: true
-      	})
+      	})   		
 		.state('Customers', {
 			url: '/Customers',
 			templateUrl: 'views/users/users.html',
@@ -291,12 +283,6 @@ angular
 			url: '/Signup',
 			templateUrl: 'views/users/signup.html',
 			controller: 'SignUpController'
-		})
-		.state('Profile', {
-			url: '/Profile',
-			templateUrl: 'views/users/profile.html',
-			controller: 'ProfileController', 
-			authenticate: true
 		})
 		.state('Groups', {
 			url: '/Groups',
@@ -337,10 +323,15 @@ angular
 			url: '/forbidden',
 			templateUrl: 'views/pages/forbidden.html'
 		})
+		.state('registered', {
+			url: '/registered',
+			templateUrl: 'views/pages/register.html'
+		})			
 		.state('groupChart',{
 			url:'/groupChart/:groupId/:ownerId/:groupName',
 			templateUrl:'views/charts/chart.html',			
 			controller:'ChartCtrl',
+			authenticate: true,
 			resolve: {
 			  loadMyFile:function($ocLazyLoad) {
 			    return $ocLazyLoad.load({
@@ -361,6 +352,7 @@ angular
 			url:'/chart',
 			templateUrl:'views/charts/chart.html',			
 			controller:'ChartCtrl',
+			authenticate: true,
 			resolve: {
 			  loadMyFile:function($ocLazyLoad) {
 			    return $ocLazyLoad.load({

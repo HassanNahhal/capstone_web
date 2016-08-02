@@ -29,10 +29,10 @@
         B;
     r(A.lang, {
         printChart: "Print chart",
-        downloadPNG: "Download PNG image",
-        downloadJPEG: "Download JPEG image",
-        downloadPDF: "Download PDF document",
-        downloadSVG: "Download SVG vector image",
+        downloadPNG: "Download PNG",
+        downloadJPEG: "Download JPEG",
+        downloadPDF: "Download PDF",
+        downloadSVG: "Download SVG",
         contextButtonTitle: "Chart context menu"
     });
     A.navigation = {

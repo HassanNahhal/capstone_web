@@ -225,7 +225,7 @@
                   <div class="row" style="margin-right: 0;margin-left: 0;">
                     <label for="email">Email</label>
                     <input class="form-control" type="email" required 
-                        ng-model="user.email" name="email" placeholder="Email">
+                        ng-model="user.email" name="email" placeholder="Email" maxlength="50">
                     <span class="has-error control-label" ng-show="loginForm.email.$invalid && loginForm.email.$dirty">
                       Email is required.
                     </span>      
@@ -233,19 +233,29 @@
                   <div class="row" style="margin-right: 0;margin-left: 0;">
                     <label for="password">Password</label>      
                     <input class="form-control" type="password" required 
-                        ng-model="user.password" name="password" placeholder="Password"> 
+                        ng-model="user.password" name="password" placeholder="Password" maxlength="30"> 
                     <span class="has-error control-label" ng-show="loginForm.password.$invalid && loginForm.password.$dirty">
                       Password is required.
                     </span>  
                   </div>             
                 </div>
                 <div class="modal-footer">
-                  <button class="btn btn-primary" ng-disabled="loginForm.$invalid" ng-click="login()">Log In</button>
-                  <button class="btn btn-warning" ng-click="cancel()">Cancel</button>
+                  <button class="btn btn-primary" ng-disabled="loginForm.$invalid" ng-click="login()">
+                    <i class="fa fa-sign-in" aria-hidden="true"></i>
+                    Log In
+                  </button>
+                  <button class="btn btn-warning" ng-click="cancel()">
+                    <i class="fa fa-ban" aria-hidden="true"></i>
+                    Cancel
+                  </button>
                 </div>
               </form> 
               <p>New user? 
-                <a ><span ng-click="signup()" style="cursor:pointer;">Sign up here!</span></a> 
+                <a style="text-decoration:none;">
+                <span ng-click="signup()" style="cursor:pointer;">
+                  <i class="fa fa-user-plus" aria-hidden="true"></i> 
+                  Sign up here!
+                </span></a> 
               </p>
             </div>
         </div>
@@ -268,10 +278,10 @@
         <div class="col-sm-6">
           <h5>Email</h5>
           <ul>
-            <li>Cchoi1803@conestogac.on.ca</li> 
-            <li>Hnahhal2602@conestogac.on.ca </li>
-            <li>Ncollins9293@conestogac.on.ca </li>
-            <li>Skim0082@conestogac.on.ca </li>
+            <li>Chnagho Choi (Cchoi1803@conestogac.on.ca)</li> 
+            <li>Hassan Nahhal (Hnahhal2602@conestogac.on.ca)</li>
+            <li>Nicholas Collins (Ncollins9293@conestogac.on.ca)</li>
+            <li>SungJoe Kim (Skim0082@conestogac.on.ca)</li>
           </ul>
         </div>
         <div class="col-sm-3">
@@ -291,7 +301,7 @@
   
   <div id="bottom-line">
     <div class="container">
-      <p>Spring/Summer 2016 Capstone Project by <a href="https://github.com/infomat/capstone" target="_blank">Group 2 of Mobile Solutions Development </a></p>
+      <p>Spring/Summer 2016 Capstone Project in <a href="https://github.com/infomat/capstone" target="_blank">Mobile Solutions Development</a></p>
     </div>
   </div> 
 

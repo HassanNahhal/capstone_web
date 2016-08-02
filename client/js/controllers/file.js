@@ -4,8 +4,8 @@ angular
   .module('app')
   // The example of the full functionality
   .controller('UploadController',['$state', '$scope', 'FileUploader', 
-      '$rootScope', 'Container', '$stateParams', 
-            function ($state, $scope, FileUploader, $rootScope, Container, $stateParams) {
+      '$rootScope', 'Container', '$stateParams', 'ReceiptService', 
+            function ($state, $scope, FileUploader, $rootScope, Container, $stateParams, ReceiptService) {
 
       var userId = "";
       var repositoryPath = "";
@@ -69,6 +69,10 @@ angular
     // --------------------
     uploader.onAfterAddingFile = function(item) {
       console.info('After adding a file', item);
+      if((item.file.size/1024/1024)>2){
+        uploader.queue = [];
+        ReceiptService.publicShowMessage('#invalidFileSizeMessage');
+      }
     };
     // --------------------
     uploader.onAfterAddingAll = function(items) {

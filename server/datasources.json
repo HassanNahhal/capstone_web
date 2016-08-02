@@ -18,5 +18,5 @@
     "name": "MongoDB",
     "user": "receiptmongo",
     "connector": "mongodb"
-  }
+  }  
 }

@@ -105,7 +105,7 @@
 					    <div class="col-sm-4">
 					    	<div class="input-group">
 					    	<div class="input-group-addon">$</div>
-					    	<input type="number" class="form-control" ng-change="changeItemPrice()" 
+					    	<input type="number" class="form-control" ng-change="changeItemPrice()" min="0" 
 					    		name="itemprice" placeholder="Item price" ng-model="item.price">
 					    	</div>
 					    </div>
@@ -117,14 +117,14 @@
 					<div class="col-sm-4">
 				    	<div class="input-group">
 					    	<div class="input-group-addon">$</div>
-							<input type="number" class="form-control" name="total" 
+							<input type="number" class="form-control" name="total" min="0" 
 								placeholder="Total Price" ng-change="changeTotal()"  
 								ng-model="receipt.total">  
 						</div>
 					</div>
 					<label class="col-sm-2 control-label" style="text-align:right;">#Item(s)</label>
 					<div class="col-sm-4">
-						<input type="number" class="form-control" name="numberOfItem" 
+						<input type="number" class="form-control" name="numberOfItem" min="1" 
 							placeholder="Number of item" 
 							ng-model="receipt.numberOfItem">      
 					</div>
@@ -188,18 +188,10 @@
 					</div>				
 					<div  class="col-sm-4">
 						<button class="btn btn-primary"  ng-click="submitForm()" ng-disabled="isDisabled">
-							<i class="glyphicon glyphicon-edit"></i>
-							Edit Receipt
+							<i class="fa fa-hdd-o" aria-hidden="true"></i>
+							Save Receipt
 						</button>
-					</div>
-					<!--
-					<div ng-show="receipt.id" class="col-sm-3">
-						<button class="btn btn-default" ng-click="viewReceipt()">
-							<i class="glyphicon glyphicon-circle-arrow-left" aria-hidden="true"></i> 
-							Receipt Details
-						</button>
-					</div>	
-					-->			
+					</div>		
 					<div ng-show="receipt.id" class="col-sm-3">
 						<button class="btn btn-default pull-right" ng-click="deleteReceipt()">
 							<i class="fa fa-minus-circle" aria-hidden="true"></i>
@@ -216,11 +208,12 @@
 </div>
 
 <!-- Receipts File Upload Modal Window -->
-<div ng-controller="EditReceiptController" uploader="uploader">
+<div ng-controller="EditReceiptController" uploader="uploader" id="uploadReceiptImage">
     <script type="text/ng-template" id="ModalReceiptFile.html">
+    	<div style="z-index:99;">
         <div class="modal-header">
             <h1 class="page-title text-center">
-              <i class="fa fa-file-image-o" aria-hidden="true"></i> 
+              <i class="fa fa-upload" aria-hidden="true"></i>
               Upload Receipt
             </h1>
         </div>
@@ -289,18 +282,27 @@
             </div>
         </div>
 		<div class="modal-footer">
-        <!-- The fileinput-button span is used to style the file input field as button -->
-        <div>
-            <span style="margin-left:10px;"
-            	class="btn btn-primary fileinput-button pull-left" 
-            	ng-class="{disabled: disabled}">
-                <i class="fa fa-plus-circle" aria-hidden="true"></i>
-                <span>Add Receipt</span>
-                <input nv-file-select uploader="uploader" type="file" ng-disabled="disabled"/>
-            </span> 
-        </div>		
-		<button class="btn btn-warning" ng-click="close()" style="margin-right:10px;">Close</button>
-		</div>        
+	        <!-- The fileinput-button span is used to style the file input field as button -->
+	        <div>
+	            <span style="margin-left:10px;"
+	            	class="btn btn-primary fileinput-button pull-left" 
+	            	ng-class="{disabled: disabled}">
+	                <i class="fa fa-plus-circle" aria-hidden="true"></i>
+	                <span>Add Receipt</span>
+	                <input nv-file-select uploader="uploader" type="file" ng-disabled="disabled"/>
+	            </span> 
+	        </div>		
+			<button class="btn btn-warning" ng-click="close()" style="margin-right:10px;">
+				<i class="fa fa-ban" aria-hidden="true"></i>
+				Cancel
+			</button>
+		</div> 
+		</div>
+		<div id="invalidFileSizeMessage" class="alert alert-danger fade" style="z-index:100;">
+		  <a href="" class="close" data-dismiss="alert"></a>
+		  <i class="glyphicon glyphicon-info-sign text-danger"></i>
+		  <strong>Note:</strong> Over 2MB file is not allowed to upload.
+		</div>		       
     </script>
 </div>
 <!-- Receipts File Upload Modal Window -->

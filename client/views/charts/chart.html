@@ -74,7 +74,7 @@
                 </div>
             </div> 
             <div class="col-lg-6 col-sm-6" id="store-amount-chart">
-                <div class="panel panel-info"> 
+                <div class="panel panel-warning"> 
                     <div class="panel-heading">
                         <i class="fa fa-usd" aria-hidden="true"></i> 
                         Store Amount ({{thisYear}}/ {{selectedMonth.name}})
@@ -96,7 +96,7 @@
                 <div class="panel panel-green">
                     <div class="panel-heading">
                         <i class="fa fa-percent" aria-hidden="true"></i> 
-                        Category ({{thisYear}}:{{selectedMonth.name}})                     
+                        Category ({{thisYear}}/{{selectedMonth.name}})                     
                     </div>
                     <div class="panel-body">
                     <canvas id="doughnut" class="chart chart-doughnut chart-xs" data="donut.data" labels="donut.labels"></canvas>
@@ -129,7 +129,7 @@
 
         <div class="row" style="margin-top:20px;">
             <div class="col-sm-12">
-                <div class="panel panel-warning">
+                <div class="panel panel-info">
                     <div class="panel-heading">
                         <strong>
                         <i class="fa fa-percent" aria-hidden="true"></i> 
@@ -144,7 +144,8 @@
                                     class="progress-striped active" 
                                     value="tag.value" 
                                     max="100" 
-                                    type="{{tag.type}}">{{tag.value}}%</progressbar>
+                                    type="{{tag.type}}" 
+                                     tooltip-html-unsafe="{{tag.value}}%">{{tag.value}}%</progressbar>
                             </div>                    
                         </div>
                     </div>

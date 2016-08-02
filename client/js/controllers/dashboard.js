@@ -9,7 +9,7 @@
       $state, Customer, Notification, Group) {     
 
       $scope.groupName = $stateParams.groupName;
-      $scope.receipts = [];
+      $scope.receipts;
       $scope.tagcloud = true;
       $scope.recentReceiptsCount;
       var tagnames = {};
@@ -55,12 +55,12 @@
       })
       .$promise
       .then(function(receipts){
-        //console.log("receipts: ", receipts);
-
-        $scope.receipts = receipts;
 
         var name;
         if(receipts.length > 0){
+          $scope.receipts = [];
+          $scope.receipts = receipts;
+
           angular.forEach(receipts, function(receipt, receipt_key){
             if(receipt.tags.length > 0){
               angular.forEach(receipt.tags, function(tag, tag_key){
@@ -129,7 +129,241 @@
           {text: "Ipsum", weight: 9, link: "http://jquery.com/"},
           {text: "Dolor", weight: 6, html: {title: "I can haz any html attribute"}},
       ];
-      */
+      */  
+
+      //ComboChart -- Get last month receipt as day of the week
+      $scope.enabledComboChart;
+      var totals;
+      var dates; 
+      var monthlyTotalLastYearKey;
+      var monthNameFromDate;      
+      var date = new Date();
+      var year = date.getFullYear();
+      var month = date.getMonth();
+      var startDate;  // first day
+      var startDateThisYear;
+      var strThisMonthFirstDay;
+
+      var monthFullNames = [  "January", "Feburary.", "March", "April", 
+                                    "May ", "June", "July", "August", 
+                                    "September", "October", "November", "December"
+                                ];      
+      $scope.thisYearLastMonth = "" + year + " " + monthFullNames[(month-1)];
+
+      if(month - 1 >= 0){
+          startDate = new Date(year, month - 1, 1);
+      }else{
+          startDate = new Date(year -1 , 11, 1);        
+      }      
+      startDateThisYear = new Date(startDate - 1);
+  
+      var endDate;
+      endDate = new Date(year, month, 1);
+
+      if(("" + month).length > 1){
+        strThisMonthFirstDay = "" + (month+1) + "-01";
+      }else{
+        strThisMonthFirstDay = "0" + (month+1) + "-01";
+      } 
+
+      totals = [];
+      dates = []; 
+      var monthTotal = 0;     
+
+      Receipt.find({
+          filter: {
+              order: 'date ASC', 
+              fields: { 
+                id: true, 
+                customerId: true,
+                groupId: true,
+                total: true,
+                date: true
+              },               
+              where: {and: [
+                  {and: [
+                      {customerId: userId},
+                      {groupId: groupId}
+                  ]}, 
+                  {and: [
+                          {date: {gt: startDateThisYear}},
+                          {date: {lt: endDate}}
+                  ]}                        
+              ]}
+          }
+      })
+      .$promise
+      .then(function(lastMonthReceipts){
+          //console.log("lastMonthReceipts: ", lastMonthReceipts);    
+          var dayOfWeek = {};
+          var numberOfWeek;
+          var lastDate;
+          var dailyTotals = {};
+          var dailyTotalSum = new Array(lastDate);
+
+          //var thisYearLastMonth;
+          lastDate = new Date(endDate - 1);
+          lastDate = ("" + lastDate).substring(8,10);
+
+          totals = [];
+          dates = [];
+          totals = lastMonthReceipts.map(function(receipt){ return receipt.total});
+          dates = lastMonthReceipts.map(function(receipt){ return receipt.date});
+
+          var monthNames = [  "Jan.", "Feb.", "Mar.", "Apr.", 
+                              "May ", "Jun.", "Jul.", "Aug.", 
+                              "Sep.", "Oct.", "Nov.", "Dec."
+                          ];   
+          var comboChartCategories = [];       
+          var numberOfDate;
+          for(var i = 0; i < totals.length ; i++){
+            if((dates[i]).substring(5,10) != strThisMonthFirstDay){
+              $scope.enabledComboChart = true;
+              //cumulate daily total
+              numberOfDate = Number((dates[i]).substring(8,10));              
+              if(dailyTotals[numberOfDate] == undefined){
+                dailyTotals[numberOfDate] = [];
+              }              
+              dailyTotals[numberOfDate].push(totals[i]);
+            } // if((dates[i]).substring(5,10) != strThisMonthFirstDay){
+          } // for(var i = 0; i < totals.length ; i++){
+          
+          for(var j = 1 ; j <= lastDate ; j++){
+            if(dailyTotals[j] == undefined){
+              dailyTotals[j] = [0];
+              dailyTotalSum[j-1] = 0;
+            }else{
+              var totalSum = dailyTotals[j].reduce($scope.getSum);
+              dailyTotalSum[j-1] = totalSum;
+            }
+          }
+
+          monthTotal = dailyTotalSum.reduce($scope.getSum);
+
+          for(var k = 0 ; k < dailyTotalSum.length ; k++){
+            var today = new Date(startDate);
+            today.setDate(today.getDate() + k);
+            numberOfWeek = today.getDay();
+            if(("" + today).substring(8,10) == "01"){
+              if(numberOfWeek != 0){
+                for(var j = 0 ; j < numberOfWeek ; j++){
+                  dayOfWeek[j] = [];
+                  dayOfWeek[j].push(0);  
+                }
+              }
+              if(numberOfWeek != 0){
+                comboChartCategories.push(("Week/" + monthNames[month-1] + "01"));  
+              }                
+            }
+
+            if(numberOfWeek == 0){
+              comboChartCategories.push(("Week/" + monthNames[month-1] + ("" + today).substring(8,10)));  
+            }              
+
+            if(dayOfWeek[numberOfWeek] == undefined){
+              dayOfWeek[numberOfWeek] = [];
+            }  
+            dayOfWeek[numberOfWeek].push(dailyTotalSum[k]);  
+
+            if(("" + today).substring(8,10) == lastDate){
+              if(numberOfWeek != 6){
+                for(var j = 6; j > numberOfWeek ; j--){
+                  dayOfWeek[j].push(0);
+                }
+              }
+            }
+          } // for(var k = 0 ; k < dailyTotalSum.length ; k++){
+
+          var averagePerWeek = new Array(dayOfWeek[0].length);
+          for(var j = 0 ; j < dayOfWeek[0].length ; j++){
+            var weekSum = {};
+            weekSum[j] = [];
+            for(var h = 0 ; h < 7 ; h ++){
+              weekSum[j].push(dayOfWeek[h][j]);
+            }
+            averagePerWeek[j] = Number((weekSum[j].reduce($scope.getSum)/7).toFixed(2));
+          }  // for(var j = 0 ; j < dayOfWeek[0].length ; j++){          
+
+          var splineAverage =  {
+                    type: 'spline',
+                    name: 'Average',
+                    data: averagePerWeek,
+                    marker: {
+                        lineWidth: 2,
+                        lineColor: Highcharts.getOptions().colors[7],
+                        fillColor: 'white'
+                    }
+                };
+
+          monthlyTotalLastYearKey = $scope.commaSeparateNumber(monthTotal);   
+
+          var comboChartSeries = [];
+          var comboChartWeekSum = [];
+          var numberToDate = ['Sun', 'Mon', 'Tue', 'Wed', 'Thr', 'Fri', 'Sat'];
+
+          angular.forEach(dayOfWeek, function(value_totals, key_datenumber){
+            var eachWeek = {
+              type: 'column',
+              name: numberToDate[key_datenumber],
+              data: value_totals
+            };
+            comboChartSeries.push(eachWeek);
+            var weekSum =  {
+                      name: numberToDate[key_datenumber],
+                      y: Number($scope.commaSeparateNumber(value_totals.reduce($scope.getSum))),
+                      color: Highcharts.getOptions().colors[key_datenumber] 
+                  };
+            comboChartWeekSum.push(weekSum);
+
+          });
+          comboChartSeries.push(splineAverage);
+
+          var pieChart = {
+                    type: 'pie',
+                    name: 'Total consumption',
+                    data: comboChartWeekSum,
+                    center: [100, 80],
+                    size: 100,
+                    showInLegend: false,
+                    dataLabels: {
+                        enabled: false
+                    }
+                  };    
+          comboChartSeries.push(pieChart);  
+
+        $scope.comboChart = function(){
+          // High Chart
+          $('#container1').highcharts({
+              title: {
+                  text: $scope.thisYearLastMonth + ' day of the week ($' + monthlyTotalLastYearKey + ')'
+              },
+              xAxis: {
+                  categories: comboChartCategories
+              },
+              labels: {
+                  items: [{
+                      html: ($scope.thisYearLastMonth).substring(5,9) + ' total consumption',
+                      style: {
+                          left: '50px',
+                          top: '18px',
+                          color: (Highcharts.theme && Highcharts.theme.textColor) || 'black'
+                      }
+                  }]
+              },
+              series: comboChartSeries
+          }); // $('#container1').highcharts({   
+        };
+        window.setTimeout(function(){
+          $scope.comboChart();
+        }, 500);         
+
+      });  // .then(function(lastYearReceipts){   
+      //ComboChart -- END -- Get last month receipt as day of the week      
+
+      // Get Array Sum
+      $scope.getSum = function(total, num) {
+          return total + num;
+      }   
          
       $scope.commaSeparateNumber =   function(val){
         if(val != undefined){
@@ -455,10 +689,8 @@
                     }
                   }
                 }
-              }); 
-                           
+              });                           
             }
-
           });
 
         } // if($scope.showNotification){
@@ -472,96 +704,6 @@
       $scope.viewEditGroup = function(groupId){
         $state.go('editGroup', {id: groupId});
       }
-
-      //Combo chart using Hight Chart Open Source for non comercial
-      $scope.combChart =    function () {
-          $('#container1').highcharts({
-              title: {
-                  text: '2016-06 day of the week (Total: $1,375)'
-              },
-              xAxis: {
-                  categories: ['Jun.01', 'Jun.06', 'Jun.13', 'Jun.20', 'Jun.27']
-              },
-              labels: {
-                  items: [{
-                      html: 'June total consumption',
-                      style: {
-                          left: '50px',
-                          top: '18px',
-                          color: (Highcharts.theme && Highcharts.theme.textColor) || 'black'
-                      }
-                  }]
-              },
-              series: [{
-                  type: 'column',
-                  name: 'Mon',
-                  data: [0, 32, 42, 22, 67]
-              }, {
-                  type: 'column',
-                  name: 'Tue',
-                  data: [0, 28, 15, 50, 33]
-              }, {
-                  type: 'column',
-                  name: 'Wed',
-                  data: [45,30,15,100,85]
-              }, {
-                  type: 'column',
-                  name: 'Thr',
-                  data: [50,55,20,66,54]
-              }, {
-                  type: 'column',
-                  name: 'Fri',
-                  data: [35,20,33,80,0]
-              }, {
-                  type: 'column',
-                  name: 'Sat/Sun',
-                  data: [60,88,130,120,0]
-              }, {
-                  type: 'spline',
-                  name: 'Average',
-                  data: [31.67,42.17,42.50,73.00,39.83],
-                  marker: {
-                      lineWidth: 2,
-                      lineColor: Highcharts.getOptions().colors[6],
-                      fillColor: 'white'
-                  }
-              }, {
-                  type: 'pie',
-                  name: 'Total consumption',
-                  data: [{
-                      name: 'Mon',
-                      y: 163,
-                      color: Highcharts.getOptions().colors[0] // Jane's color
-                  }, {
-                      name: 'Tue',
-                      y: 126,
-                      color: Highcharts.getOptions().colors[1] // John's color
-                  }, {
-                      name: 'Wed',
-                      y: 275,
-                      color: Highcharts.getOptions().colors[2] // Joe's color
-                  }, {
-                      name: 'Thr',
-                      y: 245,
-                      color: Highcharts.getOptions().colors[3] // Joe's color
-                  }, {
-                      name: 'Fri',
-                      y: 168,
-                      color: Highcharts.getOptions().colors[4] // Joe's color
-                  }, {
-                      name: 'Sat/Sun',
-                      y: 398,
-                      color: Highcharts.getOptions().colors[5] // Joe's color
-                  }],
-                  center: [100, 80],
-                  size: 100,
-                  showInLegend: false,
-                  dataLabels: {
-                      enabled: false
-                  }
-              }]
-          });
-      } // Combo chart using Hight Chart Open Source for non comercial
 
   }])  
   .controller('DashboardUserController', [
@@ -670,10 +812,20 @@
       };
   }])
   .controller('ModalEditCustomerInstanceCtrl', [
-    '$scope', '$state', '$modalInstance', 'params', 'Customer',   
-      function($scope, $state, $modalInstance, params, Customer) {
+    '$scope', '$state', '$modalInstance', 'params', 'Customer', '$rootScope', '$http', 'ReceiptService', 
+      function($scope, $state, $modalInstance, params, Customer, $rootScope, $http, ReceiptService) {
+
+      $http.defaults.headers.common.authorization = $rootScope.currentUser.tokenId;
+
       $scope.customer = params;
-      $scope.submit = function(){
+
+      $scope.hasWhiteSpace = function(pw){
+        retrun (/^\s*$/).test(pw);
+      }
+
+      $scope.disabled = false;
+
+      $scope.updateUserProfile = function(){
           Customer.prototype$updateAttributes(
               { id:$scope.customer.userId }, 
               { 
@@ -685,8 +837,57 @@
           .$promise
           .then(function(customer){            
             $modalInstance.close(customer);
-          });      
+          });        
       }
+
+      $scope.submit = function(){
+
+        $scope.disabled = true;
+
+        if($scope.customer.password != undefined){
+          if($scope.customer.password =='' && 
+            ($scope.customer.password1 == undefined || $scope.customer.password1 == '')){
+              // Update User Profile
+              $scope.updateUserProfile();
+          }else if($scope.customer.password != $scope.customer.password1){
+            ReceiptService.publicShowMessage('#invalidPasswordMessage');
+            $scope.disabled = false; 
+          }else{
+            var newPassword = $scope.customer.password;
+            var re = /^\w*$/;
+            if(re.test(newPassword) == false){
+              ReceiptService.publicShowMessage('#invalidWhiteSpaceMessage');
+              $scope.disabled = false;
+            }else if(newPassword == ''){
+              // Update User Profile
+              $scope.updateUserProfile();             
+            }else{
+              // Change Password **************************
+              Customer.prototype$updateAttributes(
+                  { id:$scope.customer.userId }, 
+                  { 
+                    username: $scope.customer.username,
+                    firstName: $scope.customer.firstName,
+                    lastName: $scope.customer.lastName,
+                    password: newPassword
+                  }
+              )
+              .$promise
+              .then(function(customer){ 
+                ReceiptService.publicShowMessage('#showChangePasswordMessage');   
+                window.setTimeout(function(){
+                  $modalInstance.close(customer);
+                }, 3100);                
+              }); 
+              // Change Password **************************             
+            } // if($scope.hasWhiteSpace($scope.customer.password)){
+          } // if($scope.customer.password === $scope.customer.password1){
+        }else{
+          //Update User Profile
+          $scope.updateUserProfile();
+        } // if($scope.customer.password != undefined){
+      } // $scope.submit = function(){
+
       $scope.cancel = function () {
         $modalInstance.dismiss('cancel');
       };
@@ -714,9 +915,9 @@
   })
   .controller('ModalUserPohtoFileInstanceCtrl', [
     '$scope', '$state', '$modalInstance', 'params', 
-    'Customer', 'FileUploader', 'Container', '$rootScope', 
+    'Customer', 'FileUploader', 'Container', '$rootScope', 'ReceiptService', 
       function($scope, $state, $modalInstance, params, Customer, 
-        FileUploader, Container, $rootScope) {
+        FileUploader, Container, $rootScope, ReceiptService) {
       
       $scope.params = params;
 
@@ -770,6 +971,12 @@
     // --------------------
     uploader.onAfterAddingFile = function(item) {
       //console.info('After adding a file', item);
+      if((item.file.size/1024/1024)>2){
+        ReceiptService.publicShowMessage('#invalidFileSizeMessage');
+        uploader.queue = [];
+      }else{
+        $scope.disabled = true;
+      }      
     };
     // --------------------
     uploader.onAfterAddingAll = function(items) {
@@ -866,8 +1073,8 @@
       };
   })
   .controller('ModalDashboardTagReceiptsInstanceCtrl', [
-    '$scope', '$state', '$modalInstance', 'params', 'Tag', '$filter', 
-      function($scope, $state, $modalInstance, params, Tag, $filter) {           
+    '$scope', '$state', '$modalInstance', 'params', 'Tag', '$filter', 'Excel', '$timeout', 
+      function($scope, $state, $modalInstance, params, Tag, $filter, Excel, $timeout) {           
 
       $scope.receipts = [];
       $scope.userId = params.userId;
@@ -920,6 +1127,11 @@
           descending: '-',
           symbol: true
       };      
+
+      $scope.exportToExcel=function(tableId, tagName){ 
+            $scope.exportHref=Excel.tableToExcel(tableId,'Receipts in ' + tagName);
+            $timeout(function(){location.href=$scope.exportHref;},100); 
+      };         
          
       $scope.commaSeparateNumber =   function(val){
         if(val != undefined){

@@ -267,6 +267,10 @@ footer nav ul li{
   margin-right:5%;
 }
 
+#showChangePasswordMessage, 
+#invalidWhiteSpaceMessage, 
+#invalidPasswordMessage, 
+#invalidFileSizeMessage, 
 #invalidCategoryMessage,
 #deleteGroupErrorMessage, 
 #addStoreErrorMessage, 

@@ -116,5 +116,5 @@
   "Notification": {
     "dataSource": "MongoDB",
     "public": true
-  }
+  } 
 }

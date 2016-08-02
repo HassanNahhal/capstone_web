@@ -17,7 +17,7 @@
             <div class="row">
             <label for="email">Email</label>
             <input class="form-control" type="email" required 
-                ng-model="user.email" name="email" placeholder="Email">
+                ng-model="user.email" name="email" placeholder="Email" maxlength="50">
             <span class="has-error control-label" ng-show="loginForm.email.$invalid && loginForm.email.$dirty">
               Email is required.
             </span>      
@@ -25,7 +25,7 @@
             <div class="row">
             <label for="password">Password</label>      
             <input class="form-control" type="password" required 
-                ng-model="user.password" name="password" placeholder="Password"> 
+                ng-model="user.password" name="password" placeholder="Password" maxlength="30"> 
             <span class="has-error control-label" ng-show="loginForm.password.$invalid && loginForm.password.$dirty">
               Password is required.
             </span>  
@@ -33,7 +33,10 @@
          
           </div>
           <div class="row">
-            <button class="btn btn-primary" ng-disabled="loginForm.$invalid">Log In</button>
+            <button class="btn btn-primary" ng-disabled="loginForm.$invalid">
+              <i class="fa fa-sign-in" aria-hidden="true"></i>
+              Log In
+            </button>
           </div>
         </form>    
 

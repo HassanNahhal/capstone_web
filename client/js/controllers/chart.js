@@ -140,8 +140,6 @@ angular.module('app')
             startDate = new Date(year -1 , 12 + (month-rangeOfMonth), 1);        
         }
         startDateThisYear = new Date(startDate - 1);
-        //console.log("startDate: ", startDate);
-        //console.log("startDateThisYear: ", startDateThisYear);
 
         var j = 0;
         var m = 0;

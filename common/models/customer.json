@@ -119,7 +119,19 @@
       "permission": "ALLOW",
       "property": "resetPassword",
       "accessType": "EXECUTE"
-    }
+    },
+    {
+      "accessType": "WRITE",
+      "principalType": "ROLE",
+      "principalId": "$everyone",
+      "permission": "ALLOW"
+    },
+    {
+      "principalType": "ROLE",
+      "principalId": "$everyone",
+      "accessType": "READ",
+      "permission": "ALLOW"
+    }    
   ],
   "methods": {}
 }
