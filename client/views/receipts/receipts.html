@@ -6,14 +6,6 @@
 		{{groupName}} Receipts
 	</h1>
 	<hr>
-	<div class="row" style="margin-bottom:20px;">
-		<div class="col-sm-12">
-			<button class="btn btn-primary" ng-click="addReceipt()">
-				<i class="fa fa-plus-circle" aria-hidden="true"></i>
-				Add Receipt
-			</button>
-		</div>
-	</div>
 	<!-- Start Receipts Table -->
 	<div class="row">
 	    <div class="col-sm-12">
@@ -59,7 +51,7 @@
 						        <td style="text-align: center;">{{receipt.numberOfItem}}</td>
 						        <td style="text-align: center; ">{{(receipt.date).substring(0, 10)}}</td>
 						        <td style="min-width:150px;">
-						        	{{receipt.comment}}
+						        	{{receipt.comment}}{{$last ? checkFooter($index, searchText) :'';}}
 								 	<i class="glyphicon glyphicon-search pull-right text-primary" 
 								 		style="padding-right:10px" 
 								 		ng-click="viewReceipt(receipt.id)" tooltip-html-unsafe="View Details"></i>
@@ -81,11 +73,11 @@
 						</div>
 						<div class="col-sm-7 col-xs-4">
 							<ul class="list-group list-group-horizontal">
-                                <button  class="btn btn-default" ng-disabled="currentPage == 0"  ng-click="currentPage=currentPage-1">
+                                <button  class="btn btn-default" ng-disabled="currentPage == 0"  ng-click="changePageNumber(-1)">
                                     <i class="fa fa-arrow-left" aria-hidden="true"></i>
                                     Previous
                                 </button>
-                                <button  class="btn btn-default" ng-disabled="currentPage >= getData().length/pageSize - 1" ng-click="currentPage=currentPage+1">
+                                <button  class="btn btn-default" ng-disabled="NextDisabled" ng-click="changePageNumber(1)">
                                     Next
                                     <i class="fa fa-arrow-right" aria-hidden="true"></i>
                                 </button>
@@ -93,7 +85,7 @@
 						</div>
 						<div class="col-sm-3 col-xs-4 text-right" style="padding-top:7px;padding-right:30px;">
                             <span style="font-family:'Helvetica Neue', Helvetica, Arial, sans-serif;font-size: 14px;">
-                                page: {{currentPage+1}}/{{numberOfPages()==0? 1:numberOfPages();}}
+                                page: {{calNumberOfPages()}}
                             </span>
 						</div>
 					</div>

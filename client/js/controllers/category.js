@@ -6,7 +6,18 @@
       '$state', '$rootScope', '$stateParams', 'ReceiptService', 
       function($scope, Category, $state, $rootScope, $stateParams, ReceiptService) {
 
-    //console.log("$stateParams: ", $stateParams);
+    $scope.relocateFooter = function(){
+      if(window.innerWidth < 768 || window.innerHeight < 860){
+        $('pagefooter').removeAttr('style');
+      }else{
+        $('pagefooter.myfooter').css('position', 'absolute').css('bottom',0);
+      }       
+    }
+    $scope.relocateFooter();     
+    $(window).resize(function(){
+      $scope.relocateFooter(); 
+    });  
+
     $scope.groupName = $stateParams.groupName;
 
     var userId, groupId;
@@ -133,8 +144,42 @@
         groupId = $stateParams.groupId;
       }
 
+      $scope.lineNum = -1;
+      $(window).resize(function(){
+        if($scope.searchText == undefined || $scope.searchText == ''){
+          $scope.changePageRelocateFooter();
+        }else{
+          if($scope.numberOfPages() == 0){
+            $scope.relocateFooter(3);
+          }else{
+            $scope.relocateFooterAfterFilter($scope.filterNum, $scope.searchText);  
+          }
+        }       
+      });
+
+      $scope.relocateFooter = function(lineNum){
+        if(window.innerHeight < 860){
+          $('pagefooter').removeAttr('style');
+        }else{
+          if( window.innerHeight == screen.height) {
+            if(lineNum < 8){
+              $('pagefooter.myfooter').css('position', 'absolute').css('bottom',0);
+            }else{
+              $('pagefooter').removeAttr('style'); 
+            } 
+          }else{
+            if(lineNum < 4){
+              $('pagefooter.myfooter').css('position', 'absolute').css('bottom',0);
+            }else{
+              $('pagefooter').removeAttr('style'); 
+            }          
+          }            
+        }
+      
+      }
+
       $scope.categorys = [];
-      $scope.categorys = Category.find({
+      Category.find({
         filter: {
           order: 'name ASC',
           where: {and: [
@@ -142,29 +187,141 @@
             {groupId: groupId}
           ]}
         }
-      });   
+      })
+      .$promise
+      .then(function(categories){
+        $scope.categorys = categories;
+        $scope.lineNum = categories.length;
+        $scope.changePageRelocateFooter();        
+      }); 
 
       //Pagination - angular
       $scope.getData = function(){
-        return $filter('filter')($scope.categorys)
+        //return $filter('filter')($scope.categorys);
+        if($scope.searchText == undefined || $scope.searchText == ''){
+          return $filter('filter')($scope.categorys);
+        }else{
+          return $filter('categoryFilter')($scope.categorys, $scope.searchText);
+        }        
       }
 
       $scope.numberOfPages=function(){
           return Math.ceil($scope.getData().length/$scope.pageSize);                
       }
-      //$scope.number = $scope.numberOfPages();
+
+      $scope.totalPages;
+      $scope.calNumberOfPages = function(){
+          //console.log("$scope.getData().length: ", $scope.getData().length);
+          $scope.totalPages = ($scope.currentPage+1) + "/";
+          var numPage = $scope.numberOfPages();
+          if(numPage == 0){
+            $scope.totalPages += '1';
+            $scope.NextDisabled = true;
+            $scope.relocateFooter(3);
+          }else{
+            $scope.totalPages += numPage;
+          }
+          return $scope.totalPages;      
+      } 
+
       $scope.getNumber = function(num) {
           return new Array(num);   
       }
       $scope.changePageSize = function(){
         $scope.currentPage = 0;
-      }     
+        if($scope.pageSize == 5){
+          $scope.changePageRelocateFooter();
+        }else{
+          $scope.relocateFooter($scope.pageSize);
+        }
+      } 
+      $scope.changePageNumber = function(num){
+        $scope.currentPage = $scope.currentPage + num;
+        $scope.changePageRelocateFooter();
+      }   
+
+      $scope.changePageRelocateFooter = function(){      
+        if($scope.currentPage >= $scope.getData().length/$scope.pageSize - 1){
+          $scope.NextDisabled = true;
+          var restLineNum = ($scope.getData().length)%$scope.pageSize;
+          if(window.innerHeight < 860){
+            $('pagefooter').removeAttr('style');
+          }else{
+            if(restLineNum < 8){
+              if(restLineNum == 0){
+                if($scope.getData().length == 0){
+                  $('pagefooter.myfooter').css('position', 'absolute').css('bottom',0);
+                }else{
+                  if(window.innerHeight == screen.height && $scope.pageSize == 5){
+                    $('pagefooter.myfooter').css('position', 'absolute').css('bottom',0);
+                  }else{
+                    $('pagefooter').removeAttr('style');                
+                  }                 
+                }
+              }else{
+                if(window.innerHeight == screen.height){
+                  $scope.relocateFooter(5);
+                }else{
+                  if(restLineNum < 4){
+                    $('pagefooter.myfooter').css('position', 'absolute').css('bottom',0);
+                  }else{
+                    $('pagefooter').removeAttr('style'); 
+                  }
+                }              
+              }              
+            }else{
+              $('pagefooter').removeAttr('style'); 
+            }
+          }        
+        }else{
+          $scope.NextDisabled = false;
+          $scope.relocateFooter($scope.pageSize);
+        }          
+      }      
       //Pagination - angular    
 
-      // Sorting
+      $scope.filterNum = 0;
       $scope.searchText;
-      $scope.sortType;
-      $scope.sortReverse;              
+      $scope.checkFooter = function(num, searchText){
+        $scope.filterNum = num;
+        $scope.searchText = searchText;
+        $scope.relocateFooterAfterFilter(num, searchText);
+
+        if(num < $scope.pageSize-1){
+          $scope.NextDisabled = true;
+        }else{          
+          if($scope.currentPage >= $scope.getData().length/$scope.pageSize - 1){
+            $scope.NextDisabled = true;
+          }else{
+            $scope.NextDisabled = false;
+          }
+        }        
+      }
+  
+      $scope.relocateFooterAfterFilter = function(num, searchText){
+        if(searchText !=undefined && searchText != ''){  
+          $scope.calNumberOfPages();
+          if(window.innerHeight < 860){
+            $('pagefooter').removeAttr('style');
+          }else{
+            if(num < 8){
+              if(window.innerHeight == screen.height){
+                $scope.relocateFooter(5);
+              }else{
+                if(num < 4){
+                  $('pagefooter.myfooter').css('position', 'absolute').css('bottom',0);
+                }else{
+                  $scope.relocateFooter(10);
+                }
+              }
+            }else{
+                  $scope.relocateFooter(10);
+            }            
+          }
+        }else{
+          $scope.changePageRelocateFooter();
+        }      
+      }                    
 
       $scope.viewGroup = function(){
         if($stateParams.groupId != undefined){
@@ -257,6 +414,19 @@
   }])
   .controller('EditCategoryController', ['$scope', 'Category', '$stateParams', '$state', '$location', 'ReceiptService', 
       function($scope, Category, $stateParams, $state, $location, ReceiptService) {
+
+        $scope.relocateFooter = function(){
+          if(window.innerWidth < 768 || window.innerHeight < 860){
+            $('pagefooter').removeAttr('style');
+          }else{
+            $('pagefooter.myfooter').css('position', 'absolute').css('bottom',0);
+          }       
+        }
+        $scope.relocateFooter();     
+        $(window).resize(function(){
+          $scope.relocateFooter(); 
+        }); 
+            
 		    $scope.action = 'Edit';
         $scope.category = {};
         $scope.groupName = $stateParams.groupName;

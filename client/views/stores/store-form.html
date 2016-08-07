@@ -6,14 +6,6 @@
 	{{ action }} {{groupName}} Store
 </h1>
 <hr>
-<div class="row" style="margin-bottom:20px;">	
-	<div class="col-sm-2">
-		<button class="btn btn-default"  ng-click="backToPage()">
-			<i class="glyphicon glyphicon-circle-arrow-left" aria-hidden="true"></i> 
-			Back
-		</button>
-	</div>	
-</div>
 <form name="storeForm" novalidate >
   <div class="form-group" ng-class="{'has-error': storeForm.name.$invalid && storeForm.name.$dirty}">
 	<div>
@@ -68,19 +60,9 @@
 				class="btn btn-primary pull-right" 
 				ng-disabled="storeForm.$invalid" 
 				ng-click="submitForm()">
-				<i class="fa fa-plus-circle" aria-hidden="true"></i>
-				Add Store
+				<i class="fa fa-hdd-o" aria-hidden="true"></i>
+				Save Store
 			</button>
-			<!--
-			<button  
-				ng-show="store.id" 
-				class="btn btn-default pull-right" 
-				ng-disabled="storeForm.$invalid" 
-				ng-click="deleteStore()">
-				<i class="fa fa-minus-circle" aria-hidden="true"></i>
-				Delete Store
-			</button>
-			-->
 			<span class=" pull-right" 
 				data-toggle="tooltip" 
 				tooltip-html-unsafe="{{delTooltip}}">			
@@ -133,5 +115,5 @@
 	div.tabcontent .row{
 		 margin-top: 10px;
 		 margin-bottom: 10px;
-	}	
+	}		
 </style>

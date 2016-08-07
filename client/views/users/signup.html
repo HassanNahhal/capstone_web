@@ -15,18 +15,26 @@
                           (signupForm.password.$invalid && signupForm.password.$dirty) }">
 
               <div class="row">
-              <label for="email">Email</label>
+              <label for="email">
+                <i class="fa fa-envelope-o" aria-hidden="true"></i> 
+                Email
+              </label>
               <input class="form-control" type="email" required 
                   ng-model="user.email" name="email" placeholder="Email">
-              <span class="has-error control-label" ng-show="signupForm.email.$invalid && signupForm.email.$dirty">
+              <span class="has-error control-label" ng-show="signupForm.email.$invalid && signupForm.email.$dirty" style="margin-bottom:15px;">
+                <i class="fa fa-exclamation-circle" aria-hidden="true"></i>
                 Email is required.
               </span>      
               </div>
               <div class="row">
-              <label for="password">Password</label>      
+              <label for="password">
+                <i class="fa fa-key" aria-hidden="true"></i> 
+                Password
+              </label>      
               <input class="form-control" type="password" required 
                   ng-model="user.password" name="password" placeholder="Password"> 
-              <span class="has-error control-label" ng-show="signupForm.password.$invalid && signupForm.password.$dirty">
+              <span class="has-error control-label" ng-show="signupForm.password.$invalid && signupForm.password.$dirty" style="margin-bottom:15px;">
+                <i class="fa fa-exclamation-circle" aria-hidden="true"></i>
                 Password is required.
               </span>  
               </div>       
@@ -60,5 +68,5 @@
   div.tabcontent .row{
      margin-top: 10px;
      margin-bottom: 10px;
-  } 
+  }  
 </style>

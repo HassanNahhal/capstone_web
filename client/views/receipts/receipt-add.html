@@ -19,14 +19,6 @@
 	</h1>
 	<hr>
 	<div class="col-sm-12">
-		<div class="row" style="margin-bottom:20px;">	
-			<div class="col-sm-2">
-				<button class="btn btn-default"  ng-click="backToPage()">
-					<i class="glyphicon glyphicon-circle-arrow-left" aria-hidden="true"></i> 
-					Back
-				</button>
-			</div>	
-		</div>	
 		<form name="receiptForm" novalidate>
 		 	<div class="form-group" >
 
@@ -138,19 +130,6 @@
 
 					</div>
 
-					<!--
-					<div class="row" ng-show="receipt.imageFilePath">
-						<div class="row">
-							<div class="col-sm-offset-2 col-sm-10">
-								<hr style="margin-top:0">
-							</div>		
-							<label class="col-sm-2 control-label">Receipt Photo</label>
-							<div class="col-sm-8" style="margin-left:15px;margin-bottom:15px;">
-								<img ng-src="{{receipt.imageFilePath}}" style="margin:0 auto;width:100%; height: auto; max-width:600px;" />
-							</div>
-						</div>
-					</div>
-					-->
 				</div>
 				</div>
 
@@ -167,25 +146,11 @@
 							class="btn btn-primary pull-right" 
 							ng-click="submitForm()"
 							ng-disabled="isDisabled">
-							<i class="fa fa-plus-circle" aria-hidden="true"></i>
-							Add Receipt
+							<i class="fa fa-hdd-o" aria-hidden="true"></i>
+							Save Receipt
 						</button>
 					</div>
-
-					<!--
-					<div  class="col-sm-3">
-						<button class="btn btn-default"  ng-click="Receipts()">Receipts</button>
-					</div>					
-					<div ng-show="receipt.id" class="col-sm-3">
-						<button class="btn btn-default" ng-click="viewReceipt()">
-							<i class="glyphicon glyphicon-circle-arrow-left" aria-hidden="true"></i> 
-							View Receipt
-						</button>
-					</div>				
-					<div ng-show="receipt.id" class="col-sm-3">
-						<button class="btn btn-danger pull-right" ng-click="deleteReceipt()">Delete Receipt</button>
-					</div>	
-					-->					
+				
 				</div>
 			</div>		
 		</form>
@@ -194,9 +159,6 @@
 </div>
 </section>
 </div>
-
-<!-- Receipts File Upload Modal Window -->
-<!-- Receipts File Upload Modal Window -->
 
 <div id="invalidCategoryMessage" class="alert alert-danger fade">
   <a href="" class="close" data-dismiss="alert"></a>

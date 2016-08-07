@@ -4,9 +4,14 @@
 	.module('app')
 	.controller('IndexController', ['$scope', '$state', 'IntroHeaderService', 
 	function($scope, $state, IntroHeaderService) {
+
+    $('pagefooter').removeAttr('style'); 
+    $(window).resize(function(){
+        $('pagefooter').removeAttr('style');
+    });     
 		//Fix nav bar and hid the intro header
 		IntroHeaderService.isIntroHeaderVisible(true); 
-		$scope.name = "index"; 	
+		$scope.name = "index";    
 
 	}])
 	.controller('ModalLoginCtrl', function ($scope, $modal, $log) {
@@ -22,11 +27,7 @@
   	'$scope', 'AuthService', '$state', '$rootScope', '$modalInstance', 
       function($scope, AuthService, $state, $rootScope, $modalInstance) {           
 
-    $scope.user = {
-      //email: "joe@gmail.com",
-      //password: "aaa"
-    };
-
+    $scope.user = {};
     var flashMessage;
 
     $scope.login = function() {
@@ -35,21 +36,22 @@
           if($rootScope.currentUser == undefined){
           	flashMessage = "#loginErrorMessage"
           	$scope.showMessage(flashMessage); 
-          }
-          $modalInstance.close('login');
+          }else{
+            $modalInstance.close('login');
+          }          
         }, function(err){
-        	console.log("Error of login at Index page: ", err);
+        	console.log("Error when user logged in at Index page: ", err);
         });
     };
 
-	$scope.cancel = function () {
-	$modalInstance.dismiss('cancel');
-	};
+  	$scope.cancel = function () {
+  	$modalInstance.dismiss('cancel');
+  	};
 
-	$scope.signup = function(){
-    	$modalInstance.close('signup');
-      	$state.go('Signup');			
-	};
+  	$scope.signup = function(){
+      	$modalInstance.close('signup');
+        	$state.go('Signup');			
+  	};
 
     $scope.showMessage = function(flashMessage){
       $(flashMessage).addClass("in"); 

@@ -6,14 +6,6 @@
 		{{groupName}} Tags
 	</h1>
 	<hr>
-	<div class="row" style="margin-bottom:20px;">
-		<div class="col-sm-3">
-			<button class="btn btn-primary" ng-click="addTag()">
-				<i class="fa fa-plus-circle" aria-hidden="true"></i>
-				Add Tag
-			</button>
-		</div>
-	</div>		
 	<div>
 	<div class="tabcontent" >
 		<div class="row">
@@ -36,11 +28,7 @@
 						<span ng-show="!sortReverse"  class="fa fa-caret-up"></span>
 					</span>			
 					<span class="list-group-item" ng-repeat="tag in tags | orderBy:sortType:sortReverse | tagFilter:searchText | startFrom:currentPage*pageSize | limitTo:pageSize">
-					 	{{tag.name}}
-					 	<!--
-					    <i class="glyphicon glyphicon-remove pull-right text-danger" 
-					    	ng-click="deleteTag(tag.id)" tooltip-html-unsafe="Delete"></i>	
-					    --> 	
+					 	{{tag.name}}{{$last ? checkFooter($index, searchText) :'';}}	
 					 	<i class="glyphicon glyphicon-pencil pull-right text-primary" 
 					 		style="padding-right:20px" 
 					 		ng-click="editTag(tag.id)" tooltip-html-unsafe="Edit"></i> 
@@ -51,7 +39,7 @@
 		<!-- Pagination -->
 		<div style="margin-bottom:20px;">
 		<div class="row">
-			<div class="col-sm-2">
+			<div class="col-sm-2 col-xs-4">
 				<select ng-model="pageSize" 
 					id="pageSize" 
 					class="form-control" 
@@ -60,15 +48,22 @@
 					ng-options="unit for unit in pageUnits">
 				</select>
 			</div>
-			<div class="col-sm-4">
+			<div class="col-sm-7 col-xs-4">
 				<ul class="list-group list-group-horizontal">
-					<button  class="btn btn-default" ng-disabled="currentPage == 0"  ng-click="currentPage=currentPage-1">Previous</button>
-					<button  class="btn btn-default" ng-disabled="currentPage >= getData().length/pageSize - 1" ng-click="currentPage=currentPage+1">Next</button>
+                    <button  class="btn btn-default" ng-disabled="currentPage == 0"  ng-click="changePageNumber(-1)">
+                        <i class="fa fa-arrow-left" aria-hidden="true"></i>
+                        Previous
+                    </button>
+                    <button  class="btn btn-default" ng-disabled="NextDisabled" ng-click="changePageNumber(1)">
+                        Next
+                        <i class="fa fa-arrow-right" aria-hidden="true"></i>
+                    </button>
 				</ul>
 			</div>
-			<div class="col-sm-6 text-center">
-				<pre style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;font-size: 14px;">
-				Selected page: {{currentPage+1}}/{{numberOfPages()==0? 1:numberOfPages();}}</pre>
+			<div class="col-sm-3 col-xs-4 text-right" style="padding-top:7px;padding-right:30px;">
+                <span style="font-family:'Helvetica Neue', Helvetica, Arial, sans-serif;font-size: 14px;">
+                    page: {{calNumberOfPages()}}
+                </span>
 			</div>
 		</div>
     	</div>
@@ -126,5 +121,5 @@
 	}
 	span.list-group-item:hover{
 		background-color:#f5f5f5; 
-	}	
+	}		
 </style>

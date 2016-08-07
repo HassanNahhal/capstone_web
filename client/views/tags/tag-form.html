@@ -6,14 +6,6 @@
 	{{ action }} {{groupName}} Tag
 </h1>
 <hr>
-<div class="row" style="margin-bottom:20px;">	
-	<div class="col-sm-2">
-		<button class="btn btn-default"  ng-click="backToPage()">
-			<i class="glyphicon glyphicon-circle-arrow-left" aria-hidden="true"></i> 
-			Back
-		</button>
-	</div>	
-</div>
 <form name="tagForm" novalidate>
 	<div>
 		<div class="tabcontent" >	
@@ -54,19 +46,9 @@
 					class="btn btn-primary pull-right" 
 					ng-disabled="tagForm.$invalid" 
 					ng-click="submitForm()">
-					<i class="fa fa-plus-circle" aria-hidden="true"></i>
-					Add Tag
+					<i class="fa fa-hdd-o" aria-hidden="true"></i>
+					Save Tag
 				</button>
-				<!--
-				<button  
-					ng-show="tag.id" 
-					class="btn btn-default pull-right" 
-					ng-disabled="tagForm.$invalid" 
-					ng-click="deleteTag()">
-					<i class="fa fa-minus-circle" aria-hidden="true"></i>
-					Delete Tag
-				</button>
-				-->
 				<span class=" pull-right" 
 					data-toggle="tooltip" 
 					tooltip-html-unsafe="{{delTooltip}}">			

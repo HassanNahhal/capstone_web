@@ -15,6 +15,7 @@
       $scope.pageUnits = [5, 10, 15, 20];
       $scope.pageSize = 10;
       $scope.currentPage = 0;    
+      $scope.NextDisabled;
 
       var userId, groupId;
       if($stateParams.groupId == undefined){
@@ -23,6 +24,40 @@
       }else{
         userId = $stateParams.ownerId;
         groupId = $stateParams.groupId;
+      }
+
+      $scope.lineNum = -1;
+      $(window).resize(function(){
+        if($scope.searchText == undefined || $scope.searchText == ''){
+          //console.log("$scope.numberOfPages(): ", $scope.numberOfPages());
+          $scope.changePageRelocateFooter();
+        }else{
+          if($scope.numberOfPages() == 0){
+            $scope.relocateFooter(3);
+          }else{
+            $scope.relocateFooterAfterFilter($scope.filterNum, $scope.searchText);  
+          }
+        }         
+      });
+
+      $scope.relocateFooter = function(lineNum){
+        if(window.innerHeight < 860){
+          $('pagefooter').removeAttr('style');
+        }else{
+          if( window.innerHeight == screen.height) {
+            if(lineNum < 8){
+              $('pagefooter.myfooter').css('position', 'absolute').css('bottom',0);
+            }else{
+              $('pagefooter').removeAttr('style'); 
+            } 
+          }else{
+            if(lineNum < 4){
+              $('pagefooter.myfooter').css('position', 'absolute').css('bottom',0);
+            }else{
+              $('pagefooter').removeAttr('style'); 
+            }          
+          }
+        }         
       }
 
       Receipt.find({
@@ -37,7 +72,9 @@
       })
       .$promise
       .then(function(receipts){
-        $scope.receipts = receipts;
+        $scope.receipts = receipts;        
+        $scope.lineNum = receipts.length;  
+        $scope.changePageRelocateFooter();     
       }); 
 
       // Sorting
@@ -122,20 +159,130 @@
 
       //Pagination - angular
       $scope.getData = function(){
-        return $filter('filter')($scope.receipts)
+        if($scope.searchText == undefined || $scope.searchText == ''){
+          return $filter('filter')($scope.receipts);
+        }else{
+          return $filter('receiptFilter')($scope.receipts, $scope.searchText);
+        }
       }
 
       $scope.numberOfPages=function(){
           return Math.ceil($scope.getData().length/$scope.pageSize);                
       }
-      //$scope.number = $scope.numberOfPages();
+
+      $scope.totalPages;
+      $scope.calNumberOfPages = function(){
+          $scope.totalPages = ($scope.currentPage+1) + "/";
+          var numPage = $scope.numberOfPages();
+          if(numPage == 0){
+            $scope.totalPages += '1';
+            $scope.NextDisabled = true;
+            $scope.relocateFooter(3);
+          }else{
+            $scope.totalPages += numPage;
+          }
+          return $scope.totalPages;    
+      }   
+
       $scope.getNumber = function(num) {
           return new Array(num);   
       }
       $scope.changePageSize = function(){
         $scope.currentPage = 0;
-      }     
+        if($scope.pageSize == 5){
+          $scope.changePageRelocateFooter();
+        }else{
+          $scope.relocateFooter($scope.pageSize);
+        }
+      } 
+      $scope.changePageNumber = function(num){
+        $scope.currentPage = $scope.currentPage + num;
+        $scope.changePageRelocateFooter();        
+      } 
+
+      $scope.changePageRelocateFooter = function(){
+        if($scope.currentPage >= $scope.getData().length/$scope.pageSize - 1){
+          $scope.NextDisabled = true;
+          var restLineNum = ($scope.getData().length)%$scope.pageSize;
+          if(window.innerHeight < 860){
+            $('pagefooter').removeAttr('style');
+          }else{
+            if(restLineNum < 8){
+              if(restLineNum == 0){
+                if($scope.getData().length == 0){
+                  $('pagefooter.myfooter').css('position', 'absolute').css('bottom',0);
+                }else{
+                  if(window.innerHeight == screen.height && $scope.pageSize == 5){
+                    $('pagefooter.myfooter').css('position', 'absolute').css('bottom',0);
+                  }else{
+                    $('pagefooter').removeAttr('style');                
+                  }                 
+                } 
+              }else{
+                if(window.innerHeight == screen.height){
+                  $scope.relocateFooter(5);
+                }else{
+                  if(restLineNum < 4){
+                    $('pagefooter.myfooter').css('position', 'absolute').css('bottom',0);
+                  }else{
+                    $('pagefooter').removeAttr('style'); 
+                  }
+                }              
+              }            
+            }else{
+              $('pagefooter').removeAttr('style'); 
+            }            
+          }          
+        }else{
+          $scope.NextDisabled = false;                    
+          $scope.relocateFooter($scope.pageSize);          
+        }        
+      }    
       //Pagination - angular
+
+      $scope.filterNum = 0;
+      $scope.searchText;
+      $scope.checkFooter = function(num, searchText){
+        $scope.filterNum = num;
+        $scope.searchText = searchText;
+        $scope.relocateFooterAfterFilter(num, searchText);
+
+        if(num < $scope.pageSize-1){
+          $scope.NextDisabled = true;
+        }else{          
+          if($scope.currentPage >= $scope.getData().length/$scope.pageSize - 1){
+            $scope.NextDisabled = true;
+          }else{
+            $scope.NextDisabled = false;
+          }
+        }
+      }
+  
+      $scope.relocateFooterAfterFilter = function(num, searchText){
+        //console.log("$scope.getData().length: ", $filter('receiptFilter')($scope.receipts, searchText).length); 
+        if(searchText !=undefined && searchText != ''){     
+          $scope.calNumberOfPages(); 
+          if(window.innerHeight < 860){
+            $('pagefooter').removeAttr('style');
+          }else{
+            if(num < 8){
+              if(window.innerHeight == screen.height){
+                $scope.relocateFooter(5);
+              }else{
+                if(num < 4){
+                  $('pagefooter.myfooter').css('position', 'absolute').css('bottom',0);
+                }else{
+                  $scope.relocateFooter(10);
+                }
+              }
+            }else{
+                  $scope.relocateFooter(10);
+            }
+          }
+        }else{
+          $scope.changePageRelocateFooter();
+        }         
+      }  
 
       $scope.viewGroup = function(){
         if($stateParams.groupId != undefined){
@@ -294,9 +441,21 @@
       '$stateParams', 'Store', 'Item', 'ReceiptItem', 'Category', 
       'Tag', 'ReceiptTag', '$location', '$rootScope',  
       function($scope, Receipt, $state, $stateParams, Store, 
-        Item, ReceiptItem, Category, Tag, ReceiptTag, $location, $rootScope) {
+        Item, ReceiptItem, Category, Tag, ReceiptTag, $location, $rootScope) {        
 
     window.scrollTo(0,0); // Always move to top of page
+
+    $scope.relocateFooter = function(){
+      if(window.innerWidth < 768 || window.innerHeight < 860){
+        $('pagefooter').removeAttr('style');
+      }else{
+        $('pagefooter.myfooter').css('position', 'absolute').css('bottom',0);
+      }         
+    }
+    $scope.relocateFooter(); 
+    $(window).resize(function(){
+      $scope.relocateFooter();
+    });    
 
     $scope.stores = [];
     $scope.selectedStore;
@@ -844,6 +1003,23 @@
     $scope.groupName = $stateParams.groupName;
     $scope.ownerId = userId;
 
+    $(window).resize(function(){
+      $scope.relocateFooter();
+    });
+
+    $scope.relocateFooter = function(){
+      if(window.innerWidth < 768 || window.innerHeight < 860){
+        $('pagefooter').removeAttr('style');
+      }else{
+        if( window.innerHeight == screen.height) {
+          $('pagefooter.myfooter').css('position', 'absolute').css('bottom',0); 
+        }else{
+          $('pagefooter').removeAttr('style');          
+        } 
+      } 
+    }    
+    $scope.relocateFooter();
+
     Store
       .find({
         filter: {
@@ -888,6 +1064,10 @@
           //console.log("receipt: ", receipt);   
           // Set Items related to Receipt       
           $scope.receipt = receipt; 
+
+          //Extract only yyyy-mm-dd from date
+          $scope.receipt.date = ($scope.receipt.date).substring(0,10);
+
           $scope.items = receipt.items;
           if($scope.items.length > 0){ 
             $scope.delDisabled = false;
@@ -898,10 +1078,7 @@
           }).indexOf($scope.receipt.storeId);
           $scope.selectedStore = stores[selectedStoreIndex];   
           // Call to get the categories from selected store
-          $scope.getStoreCategories($scope.selectedStore.id, $scope.receipt.categoryId);
-
-          // Get categories by selected store using Service named 'ReceiptService'
-          //ReceiptService.getCategoriesBySelectedStore($scope.selectedStore.id, $scope.receipt.categoryId);                  
+          $scope.getStoreCategories($scope.selectedStore.id, $scope.receipt.categoryId);               
 
           // Set Tag related to Receipt
           Tag.find({
@@ -1148,6 +1325,7 @@
         var receiptDate = $('#receiptdate input').prop('value');
         var temp_date = new Date(receiptDate);
         $scope.receipt.date = temp_date.setHours(temp_date.getHours() + 12);
+        //Update Receipt
         $scope.receipt
         .$save()
         .then(function(){
@@ -1165,7 +1343,6 @@
                   customerId: userId,
                   groupId: groupId
                 }, function(item){
-                  //console.log('new related item id : ', item.id);
                   ReceiptItem
                     .create({
                       receiptId: $scope.receipt.id,
@@ -1235,7 +1412,24 @@
     }else{
       userId = $stateParams.ownerId;
       groupId = $stateParams.groupId;
-    }    
+    }  
+    
+    $scope.relocateFooter = function(){
+      if(window.innerWidth < 768 || window.innerHeight < 860){
+        $('pagefooter').removeAttr('style');
+      }else{
+        if( window.innerHeight == screen.height) {
+          $('pagefooter.myfooter').css('position', 'absolute').css('bottom',0); 
+        }else{
+          $('pagefooter').removeAttr('style');          
+        } 
+      }     
+    }  
+    $scope.relocateFooter();
+
+    $(window).resize(function(){
+      $scope.relocateFooter(); 
+    });
 
     Store
       .find({

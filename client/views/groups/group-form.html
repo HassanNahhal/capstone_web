@@ -7,14 +7,7 @@
 		{{ action }} Group
 	</h1>
 	<hr>
-	<div class="row" style="margin-bottom:20px;">
-		<div class="col-sm-3">
-			<button class="btn btn-default"  ng-click="backToPage()">
-				<i class="glyphicon glyphicon-circle-arrow-left" aria-hidden="true"></i> 
-				Back
-			</button>
-		</div>
-	</div>	
+
 		<form name="groupForm" novalidate>
 		  	<div class="form-group" ng-class="{'has-error': groupForm.name.$invalid && groupForm.name.$dirty}">
 
@@ -65,8 +58,8 @@
 							ng-hide="group.id" 
 							ng-disabled="isDisabled" 
 							ng-click="submitForm()">
-							<i class="fa fa-plus-circle" aria-hidden="true"></i>
-							Add Group
+							<i class="fa fa-hdd-o" aria-hidden="true"></i>
+							Save Group
 						</button>
 				</div>
 				<div class="col-sm-6">
@@ -76,8 +69,8 @@
 							ng-show="group.id"  
 							ng-disabled="isDisabled" 
 							ng-click="submitForm()">
-							<i class="fa fa-edit" aria-hidden="true"></i>
-							{{ action }} Group
+							<i class="fa fa-hdd-o" aria-hidden="true"></i>
+							Save Group
 						</button>
 				</div>
 				<div class="col-sm-3" style="padding-left:0;">
@@ -241,14 +234,6 @@
 			</form>
 
 		</div>
-		<div class="row" style="margin-top:20px;" ng-show="isEnabled">
-			<div class="col-sm-3">
-				<button class="btn btn-default"  ng-click="backToPage()">
-					<i class="glyphicon glyphicon-circle-arrow-left" aria-hidden="true"></i> 
-					Back
-				</button>
-			</div>
-		</div>		
 	</div>
 
  </div>
@@ -294,6 +279,5 @@
 	    border-bottom: 1px solid #ddd;
 	    border-left: none;
 	    border-right: none;
-	}		
+	}
 </style>
-

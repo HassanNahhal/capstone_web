@@ -6,29 +6,32 @@
 angular
   .module('app')
   .controller('AuthLoginController', ['$scope', 'AuthService', '$state', '$rootScope', 
-      function($scope, AuthService, $state, $rootScope) {    
+      function($scope, AuthService, $state, $rootScope) {   
 
-    //if(!$('.staticNavSigup').is(":visible")){
-    //  $('.staticNavSigup').show();       
-    //}        
+    $scope.relocateFooter = function(){
+      if(window.innerHeight < 860){
+        $('pagefooter').removeAttr('style');
+      }else{
+        $('pagefooter.myfooter').css('position', 'absolute').css('bottom',0);
+      }         
+    }
+    $scope.relocateFooter();
+    $(window).resize(function(){
+      $scope.relocateFooter();
+    });              
 
-    $scope.user = {
-      //email: "joe@gmail.com",
-      //password: "aaa"
-    };
-
+    $scope.user = {};
     var flashMessage;
 
     $scope.login = function() {
       AuthService.login($scope.user.email, $scope.user.password)
         .then(function() {
-          //Check the invalid user, and giving a message will need
           flashMessage = '#loginErrorMessage';
           if($rootScope.currentUser == undefined){
             $scope.showMessage(flashMessage); 
           }
         }, function(err){
-          //console.log("Error of login at Login page: ", err);
+          console.log("Error when user logged in at Login page: ", err);
         });
     };
 
@@ -41,7 +44,6 @@ angular
   }])
   .controller('AuthLogoutController', ['$scope', 'AuthService', '$state', 
       function($scope, AuthService, $state) {
-        
       AuthService.logout()
         .then(function() {          
           $state.go('/');
@@ -49,6 +51,18 @@ angular
   }])
   .controller('SignUpController', ['$scope', 'AuthService', '$state', '$rootScope', 'Customer', 
       function($scope, AuthService, $state, $rootScope, Customer) {
+
+    $scope.relocateFooter = function(){
+      if(window.innerHeight < 860){
+        $('pagefooter').removeAttr('style');
+      }else{
+        $('pagefooter.myfooter').css('position', 'absolute').css('bottom',0);
+      }         
+    }
+    $scope.relocateFooter();
+    $(window).resize(function(){
+      $scope.relocateFooter();
+    });         
 
     $scope.user = {};
     var flashMessage;
@@ -65,11 +79,9 @@ angular
         if(user.length > 0){
           flashMessage = '#signUpErrorMessage';
           $scope.showMessage(flashMessage); 
-          //console.log("Already exist user", user);
         }else{
           AuthService.register($scope.user.email, $scope.user.password)
             .then(function(user) {
-              //console.log("SignUp user: ", user);
             });          
         }
       });    
@@ -87,12 +99,10 @@ angular
     '$scope', '$state', 'Customer', '$rootScope', 
     function($scope, $state, Customer, $rootScope) {     
 
-      //console.log("currentUser: ", $rootScope.currentUser);
       if($rootScope.currentUser == null || $rootScope.currentUser == undefined){
         $state.go('forbidden');
       }else{
-        $scope.user = Customer.findById({id: $rootScope.currentUser.id});
-        //console.log("loggedin user; ", $scope.user);        
+        $scope.user = Customer.findById({id: $rootScope.currentUser.id});    
       }
   }])   
   // Admin Activities : admin codes are for Test, need to modify with correct authentication later

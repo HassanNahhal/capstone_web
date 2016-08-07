@@ -321,10 +321,12 @@ angular
 		})      	 					
 		.state('forbidden', {
 			url: '/forbidden',
+			controller: 'StaticPagesController', 
 			templateUrl: 'views/pages/forbidden.html'
 		})
 		.state('registered', {
 			url: '/registered',
+			controller: 'StaticPagesController', 
 			templateUrl: 'views/pages/register.html'
 		})			
 		.state('groupChart',{
@@ -383,7 +385,7 @@ angular
 		// redirect to login page if not logged in
 		if (next.authenticate && !$rootScope.currentUser) {
 		event.preventDefault(); //prevent current page from loading
-		$state.go('forbidden');
+		$state.go('Login');
 		}
     });
  }]);

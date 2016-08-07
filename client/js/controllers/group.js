@@ -16,7 +16,34 @@
       $scope.memberNotifications;
       var fromMemberLeaveGroup = {};
 
-      // from member notification (Leave Group)
+      $scope.listNum = -1;
+      $(window).resize(function(){
+        $scope.footerRelocate();
+      });   
+      $scope.footerRelocate = function(){
+        if(window.innerWidth < 768 || window.innerHeight < 860){
+          $('pagefooter').removeAttr('style');
+        }else{
+          if($scope.listNum != -1 && $scope.listNum < 3){
+            if( window.innerHeight == screen.height) {
+              $('pagefooter.myfooter').css('position', 'absolute').css('bottom',0); 
+            }else{
+              $('pagefooter').removeAttr('style');          
+            }              
+          }else{
+            if($scope.listNum == -1){
+              $('pagefooter.myfooter').css('position', 'absolute').css('bottom',0); 
+            }else{
+              if($scope.listNum >= 2){
+                $('pagefooter').removeAttr('style');  
+              }
+            }           
+          }
+        }         
+      }
+      $scope.footerRelocate();          
+
+      // from member notification (Leave Group) -- Show in 'Group as member' member perspective
       Notification.find({
         filter: {
           where: { and: [
@@ -43,7 +70,7 @@
         }
       }); // Notification.find({      
 
-      // Find invitation notification
+      // Find invitation notification -- show in 'Notification' owner perspective
       Notification.find({
         filter: {
           where: { and: [
@@ -77,8 +104,15 @@
               $scope.notifications[i].group = groups[i];
             }
           });
+          if($scope.listNum == -1){
+            $scope.listNum = notifications.length;
+          }  
+          //console.log("$scope.listNum: ", $scope.listNum);        
         }
       }); // Notification.find({
+
+      $scope.memberLeaveNotifications;       
+      $scope.ownerGroupId;
 
       // Find Group whose owner is current logged in user
       Customer
@@ -123,6 +157,7 @@
                 isOwner = true;
 
                 groups.push(customer.groups[i]);
+                $scope.ownerGroupId = customer.groups[i].id;
                 //$scope.groups.push(customer.groups[i]);
               }else{
                 memberInGroups.push(customer.groups[i]);
@@ -141,7 +176,46 @@
               $scope.isDisabled = true;
             }else{
               $scope.isDisabled = false;
-            }            
+            } 
+
+            //Notification from member leave group request - owner perspective
+            if($scope.ownerGroupId != undefined){
+              Notification.find({
+                filter: {
+                  where: { and: [
+                    {receiverId: userId},
+                    {and: [
+                      {removeFromMember: true},
+                      {groupId: $scope.ownerGroupId}           
+                    ]}                
+                  ]}
+                }
+              })
+              .$promise
+              .then(function(notifications){
+                //console.log("member-notifications: ", notifications);            
+                if(notifications.length > 0){
+                  $scope.memberLeaveNotifications = notifications;
+                  for(var i = 0 ; i < $scope.memberLeaveNotifications.length ; i++){
+                    if($scope.memberLeaveNotifications[i].removeFromOwner == false && 
+                        $scope.memberLeaveNotifications[i].rejectLeaveGroup == false){
+                        $scope.memberLeaveNotifications[i].display = 
+                          $scope.memberLeaveNotifications[i].senderEmail + " (request of leaving group)";                
+                    }else if($scope.memberLeaveNotifications[i].removeFromOwner == false && 
+                        $scope.memberLeaveNotifications[i].rejectLeaveGroup == true){
+                        $scope.memberLeaveNotifications[i].display = 
+                          $scope.memberLeaveNotifications[i].senderEmail + " (reject leaving request)";
+                    } //if($scope.memberNotifications[i].removeFromOwner == false){
+                  } // for(var i = 0 ; i < $scope.memberNotifications.length ; i++){
+                  if($scope.listNum != -1){
+                    $scope.listNum += notifications.length;
+                  }else{
+                    $scope.listNum = notifications.length;
+                  }               
+                } // if($scope.memberNotifications.length > 0){            
+              });               
+            }
+
           }else{
             $scope.isDisabled = false;
           } // if(customer.groups.length > 0){
@@ -181,7 +255,8 @@
                     receiverId:         ownerId,
                     receiverEmail:      customer.email,
                     groupId:            groupId,
-                    removeFromMember:   true
+                    removeFromMember:   true,
+                    seen:               true
                   })
                   .$promise
                   .then(function(notification){
@@ -292,6 +367,18 @@
     $scope.isDisabled = true;
     var userId = $rootScope.currentUser.id;
 
+    $scope.relocateFooter = function(){
+      if(window.innerWidth < 768 || window.innerHeight < 860){
+        $('pagefooter').removeAttr('style');
+      }else{
+        $('pagefooter.myfooter').css('position', 'absolute').css('bottom',0);
+      }       
+    }
+    $scope.relocateFooter();     
+    $(window).resize(function(){
+      $scope.relocateFooter(); 
+    });            
+
     // Find group whose owner is current user
     Customer
       .findById({
@@ -382,6 +469,18 @@
       'CustomerGroup', function($scope, Group, $stateParams, 
         $state, $rootScope, Customer, Notification, CustomerGroup) {
 
+        $scope.relocateFooter = function(){
+          if(window.innerWidth < 768 || window.innerHeight < 860){
+            $('pagefooter').removeAttr('style');
+          }else{
+            $('pagefooter.myfooter').css('position', 'absolute').css('bottom',0);
+          }       
+        }
+        $scope.relocateFooter();     
+        $(window).resize(function(){
+          $scope.relocateFooter(); 
+        });         
+
         $scope.isEnabled = false;
         $scope.isLeave = false;
         $scope.email;
@@ -471,6 +570,37 @@
         $scope.group;
         $scope.notifications;
 
+        $scope.listNum = -1;
+        $(window).resize(function(){
+          $scope.footerRelocate(); 
+        }); 
+        $scope.footerRelocate = function(){
+          if(window.innerWidth < 768 || window.innerHeight < 860){
+            $('pagefooter').removeAttr('style');
+          }else{
+            if($scope.listNum != -1 && $scope.listNum < 3){
+              if( window.innerHeight == screen.height) {
+                $('pagefooter.myfooter').css('position', 'absolute').css('bottom',0); 
+              }else{
+                $('pagefooter').removeAttr('style');          
+              }             
+            }else{
+              if($scope.listNum == -1){
+                if( window.innerHeight == screen.height) {
+                  $('pagefooter.myfooter').css('position', 'absolute').css('bottom',0); 
+                }else{
+                  $('pagefooter').removeAttr('style');                
+                }    
+              }else if($scope.listNum > 2){
+                $('pagefooter').removeAttr('style');  
+              }else{
+                $('pagefooter.myfooter').css('position', 'absolute').css('bottom',0);
+              }            
+            }
+          } 
+        }  
+        $scope.footerRelocate();     
+
         Group.findById({
          id: $stateParams.id, 
          filter: {
@@ -503,6 +633,12 @@
                 $scope.members.push(group.customers[i]);
               }
             }
+            if($scope.listNum == -1){
+              $scope.listNum = $scope.members.length;
+            }
+            if($scope.listNum > 2){
+              $scope.footerRelocate();
+            }
           }
           //Find invite notification from Group owner
           Notification.find({
@@ -533,9 +669,17 @@
                   }                  
                 }//if($scope.notifications[i].accepted == false){
               } // for(var i = 0 ; i < $scope.notifications.length ; i++){
+              if($scope.listNum != -1){
+                $scope.listNum += notifications.length;
+              }else{
+                $scope.listNum = notifications.length;
+              }  
+              if($scope.listNum > 2){
+                $scope.footerRelocate();
+              }                          
             } // if($scope.notifications.length > 0){
           });
-          //Notification from member
+          //Notification from member leave group request
           Notification.find({
             filter: {
               where: { and: [
@@ -560,9 +704,15 @@
                 }else if($scope.memberNotifications[i].removeFromOwner == false && 
                     $scope.memberNotifications[i].rejectLeaveGroup == true){
                     $scope.memberNotifications[i].display = 
-                      $scope.memberNotifications[i].senderEmail + " (reject leaving group)";
+                      $scope.memberNotifications[i].senderEmail + " (reject leaving request)";
                 } //if($scope.memberNotifications[i].removeFromOwner == false){
               } // for(var i = 0 ; i < $scope.memberNotifications.length ; i++){
+              if($scope.listNum != -1){
+                $scope.listNum += notifications.length;
+              }  
+              if($scope.listNum > 2){
+                $scope.footerRelocate();
+              }                            
             } // if($scope.memberNotifications.length > 0){            
           });
         }); // .then(function(group){

@@ -6,7 +6,12 @@
   	'$scope', 'Receipt', '$rootScope', '$stateParams', 
     '$state', 'Customer', 'Notification', 'Group', 
     function($scope, Receipt, $rootScope, $stateParams, 
-      $state, Customer, Notification, Group) {     
+      $state, Customer, Notification, Group) {   
+
+      $('pagefooter').removeAttr('style'); 
+      $(window).resize(function(){
+        $('pagefooter').removeAttr('style');
+      });        
 
       $scope.groupName = $stateParams.groupName;
       $scope.receipts;

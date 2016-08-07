@@ -13,14 +13,9 @@ angular
             $('.staticNavMenu').removeClass("active");   
             if(!$('.staticNavMenu').is(":visible")){
               $('.staticNavMenu').show();       
-            } 
-            //if($('.staticNavSigup').is(":visible")){
-            //  $('.staticNavSigup').hide();       
-            //}     
+            }     
         }  
-        if($('.ribbon').is(":visible")){
-          $('.ribbon').hide();
-        }       
+        $('pagefooter').removeAttr('style');     
       }else{
         $('.navbar-brand').attr("href", "/");
         if($('header').is(":visible")){
@@ -32,12 +27,8 @@ angular
             if($('.staticNavMenu').is(":visible")){
               $('.staticNavMenu').removeClass("active");
               $('.staticNavMenu').hide();       
-            }
-            //$('.staticNavSigup').hide();      
-        }
-        if(!$('.ribbon').is(":visible")){
-          $('.ribbon').show();
-        }         
+            }     
+        }        
       } 
 
     };

@@ -28,6 +28,7 @@ angular
     }
 
     function logout() {
+      $('pagefooter').removeAttr('style');  
       return User
        .logout({
           access_token: $rootScope.currentUser.tokenId

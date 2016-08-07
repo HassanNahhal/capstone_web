@@ -261,7 +261,7 @@ footer nav ul li{
 #refuseInvitation,
 #invitationSuccess {
   position: fixed;
-  top: 52px;
+  top: 55px;
   left: 35%;
   width: 60%;
   margin-right:5%;
@@ -286,7 +286,7 @@ footer nav ul li{
 #loginErrorMessage,
 #signUpErrorMessage {
   position: fixed;
-  top: 52px;
+  top: 55px;
   margin-right:5%;  
   width: 350px;
   right:5%;
