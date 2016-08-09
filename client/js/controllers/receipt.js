@@ -1012,7 +1012,11 @@
         $('pagefooter').removeAttr('style');
       }else{
         if( window.innerHeight == screen.height) {
-          $('pagefooter.myfooter').css('position', 'absolute').css('bottom',0); 
+          if($('#receiptPhoto').is(":visible")){
+            $('pagefooter').removeAttr('style');
+          }else{
+            $('pagefooter.myfooter').css('position', 'absolute').css('bottom',0);   
+          }          
         }else{
           $('pagefooter').removeAttr('style');          
         } 
@@ -1061,7 +1065,11 @@
         })
         .$promise
         .then(function(receipt){ 
-          //console.log("receipt: ", receipt);   
+          //console.log("receipt: ", receipt); 
+
+          if(receipt.imageFilePath != ""){
+            $('pagefooter').removeAttr('style');  
+          }  
           // Set Items related to Receipt       
           $scope.receipt = receipt; 
 
@@ -1113,6 +1121,9 @@
 
     $scope.removePhoto = function(){
       $scope.receipt.imageFilePath = "";
+      window.setTimeout(function(){
+        $scope.relocateFooter();
+      }, 100);      
     }
 
     $scope.Receipts = function(){
@@ -1275,6 +1286,9 @@
 
         modalInstance.result.then(function (imageFilePath) {
           $scope.receipt.imageFilePath = imageFilePath;
+          if(imageFilePath != ''){
+            $('pagefooter').removeAttr('style'); 
+          }
         }, function () {
         });
 
